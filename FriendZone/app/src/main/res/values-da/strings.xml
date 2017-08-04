@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FriendZone</string>
+    <string name="emailTextView">Email</string>
+    <string name="errorFieldRequired">Dette felt er påkrævet</string>
+    <string name="errorIncorrecPassword">Koden er forkert</string>
+    <string name="errorInvalidEmail">Email\'en er forkert</string>
+    <string name="errorInvalidPassword">Koden er for kort</string>
+    <string name="passwordTextView">Kode (valgfri)</string>
+    <string name="signInButton">Log ind eller registrer</string>
+    <string name="signInButtonShort">Log ind</string>
+</resources>

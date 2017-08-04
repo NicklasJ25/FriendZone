@@ -10,5 +10,5 @@
     <string name="errorInvalidPassword">This password is too short</string>
     <string name="errorIncorrecPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
-    <string name="permissionRationale">"Contacts permissions are needed for providing email completions.</string>
+    <string name="permissionRationale" translatable="false">"Contacts permissions are needed for providing email completions.</string>
 </resources>
