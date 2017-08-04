@@ -3,12 +3,12 @@
 
     //LoginActivity
     <string name="emailTextView">Email</string>
-    <string name="passwordTextView">Password (optional)</string>
-    <string name="signInButton">Sign in or register</string>
-    <string name="signInButtonShort">Sign in</string>
+    <string name="passwordTextView">Password</string>
+    <string name="signInButton">Sign in</string>
     <string name="errorInvalidEmail">This email address is invalid</string>
     <string name="errorInvalidPassword">This password is too short</string>
     <string name="errorIncorrecPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
     <string name="permissionRationale" translatable="false">"Contacts permissions are needed for providing email completions.</string>
+    <string name="createUserButton">Create user</string>
 </resources>
