@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "610296106947",
+    "firebase_url": "https://friendzone-5ecba.firebaseio.com",
+    "project_id": "friendzone-5ecba",
+    "storage_bucket": "friendzone-5ecba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610296106947:android:84b98e362b7b24a6",
+        "android_client_info": {
+          "package_name": "nist.friendzone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610296106947-m1t24lp2f7m0mq83pumlpivlrocttodk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nist.friendzone",
+            "certificate_hash": "0c87327aa2f008b49d7802cbdadfda961590c681"
+          }
+        },
+        {
+          "client_id": "610296106947-cc3johc44jpk0arbbt1mgni4qqnq1uof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbIM_e-kuigEVHWVkRlC1Mq6ynkgzHQ9I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610296106947-cc3johc44jpk0arbbt1mgni4qqnq1uof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
