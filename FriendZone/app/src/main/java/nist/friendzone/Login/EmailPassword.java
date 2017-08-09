@@ -20,10 +20,6 @@ import nist.friendzone.LoginActivity;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by nickl on 04-08-2017.
- */
-
 public class EmailPassword
 {
     private LoginActivity context;
