@@ -6,83 +6,57 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import nist.friendzone.NewsFeedFragment.OnListFragmentInteractionListener;
-import nist.friendzone.dummy.DummyContent.DummyItem;
+ import nist.friendzone.dummy.UserPairs.UserPair;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecyclerViewAdapter.ViewHolder>
 {
+    private final List<UserPair> userPairs;
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
-
-    public MyNewsRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener)
+    public MyNewsRecyclerViewAdapter(List<UserPair> userPairs)
     {
-        mValues = items;
-        mListener = listener;
+        this.userPairs = userPairs;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_news, parent, false);
+                .inflate(R.layout.news_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
-        holder.mView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (null != mListener)
-                {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        holder.mItem = userPairs.get(position);
+        holder.nameTextView.setText(userPairs.get(position).names);
+        holder.ageTextView.setText(userPairs.get(position).ages);
+        holder.descriptionTextView.setText(userPairs.get(position).descriptions);
     }
 
     @Override
     public int getItemCount()
     {
-        return mValues.size();
+        return userPairs.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final View view;
+        public final TextView nameTextView;
+        public final TextView ageTextView;
+        public final TextView descriptionTextView;
+        public UserPair mItem;
 
         public ViewHolder(View view)
         {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString()
-        {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            this.view = view;
+            nameTextView = (TextView) view.findViewById(R.id.nameTextView);
+            ageTextView = (TextView) view.findViewById(R.id.ageTextView);
+            descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextView);
         }
     }
 }

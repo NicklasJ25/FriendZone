@@ -12,9 +12,9 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import nist.friendzone.dummy.DummyContent;
+import nist.friendzone.dummy.UserPairs;
 
-public class MainActivity extends AppCompatActivity implements NewsFeedFragment.OnListFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
@@ -60,12 +60,6 @@ public class MainActivity extends AppCompatActivity implements NewsFeedFragment.
                 return true;
         }
         return false;
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item)
-    {
-
     }
 
     @Override
