@@ -26,7 +26,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/emailTextInputLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="32dp"
@@ -36,9 +36,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.100000024"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
+=======
+        app:layout_constraintVertical_bias="0.100000024">
+>>>>>>> eefb24afb09b22154854f0f2fc82209d56905c1f
 
         <EditText
             android:id="@+id/emailTextView"
@@ -54,15 +58,19 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/passwordTextInputLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
+=======
+        app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout">
+>>>>>>> eefb24afb09b22154854f0f2fc82209d56905c1f
 
         <EditText
             android:id="@+id/passwordTextView"
