@@ -11,6 +11,7 @@
     <string name="errorIncorrecPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
     <string name="permissionRationale" translatable="false">"Contacts permissions are needed for providing email completions.</string>
+    <string name="createUserButton">Create user</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
