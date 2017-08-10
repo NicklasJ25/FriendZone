@@ -7,6 +7,6 @@
     <string name="errorInvalidEmail">Email\'en er forkert</string>
     <string name="errorInvalidPassword">Koden er for kort</string>
     <string name="passwordTextView">Kode</string>
-    <string name="signInButton">Log ind</string>
     <string name="createUserButton">Opret bruger</string>
+    <string name="signInButton">Log ind</string>
 </resources>

@@ -3,9 +3,8 @@
 
     //LoginActivity
     <string name="emailTextView">Email</string>
-    <string name="passwordTextView">Password (optional)</string>
-    <string name="signInButton">Sign in or register</string>
-    <string name="signInButtonShort">Sign in</string>
+    <string name="passwordTextView">Password</string>
+    <string name="signInButton">Sign in</string>
     <string name="errorInvalidEmail">This email address is invalid</string>
     <string name="errorInvalidPassword">This password is too short</string>
     <string name="errorIncorrecPassword">This password is incorrect</string>
@@ -16,4 +15,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="facebook_app_id">1784677361557369</string>
+    <string name="fb_login_protocol_scheme">fb1784677361557369</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

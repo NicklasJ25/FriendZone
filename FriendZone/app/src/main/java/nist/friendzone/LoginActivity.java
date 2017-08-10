@@ -1,27 +1,17 @@
 package nist.friendzone;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import nist.friendzone.Login.EmailPassword;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity implements OnClickListener
+public class LoginActivity extends AppCompatActivity
 {
-    public TextView emailTextView;
-    private EditText passwordTextView;
-    public ProgressBar loginProgressBar;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,25 +19,34 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
-        emailTextView = (TextView) findViewById(R.id.emailTextView);
-        passwordTextView = (EditText) findViewById(R.id.passwordTextView);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, new LoginFragment())
+                .commit();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
     }
 
     @Override
-    public void onClick(View v)
-    {
-        EmailPassword emailPassword = new EmailPassword(this);
-        String email = emailTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-        switch (v.getId())
-        {
-            case R.id.loginButton:
-                emailPassword.LoginUser(email, password);
-                break;
-            case R.id.createUserButton:
-                emailPassword.CreateUser(email,password);
-                break;
+    public void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
 }
