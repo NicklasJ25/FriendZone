@@ -9,12 +9,11 @@
     <string name="errorInvalidPassword">This password is too short</string>
     <string name="errorIncorrecPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
-    <string name="permissionRationale" translatable="false">"Contacts permissions are needed for providing email completions.</string>
     <string name="createUserButton">Create user</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
+    <string name="newsFeedNavigation">Newsfeed</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="oursiteNavigation">Our site</string>
     <string name="facebook_app_id">1784677361557369</string>
     <string name="fb_login_protocol_scheme">fb1784677361557369</string>
 
