@@ -13,12 +13,6 @@ import android.view.ViewGroup;
 import nist.friendzone.dummy.DummyContent;
 import nist.friendzone.dummy.DummyContent.DummyItem;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class NewsFeedFragment extends Fragment
 {
 

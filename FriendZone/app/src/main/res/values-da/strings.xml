@@ -10,4 +10,6 @@
     <string name="createUserButton">Opret bruger</string>
     <string name="signInButton">Log ind</string>
     <string name="signOutMenu">Log ud</string>
+    <string name="newsFeedNavigation">Nyheder</string>
+    <string name="oursiteNavigation">Vores side</string>
 </resources>

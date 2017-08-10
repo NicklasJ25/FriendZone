@@ -14,33 +14,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import nist.friendzone.dummy.DummyContent;
 
-public class MainActivity extends AppCompatActivity implements NewsFeedFragment.OnListFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements NewsFeedFragment.OnListFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener()
-    {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item)
-        {
-            switch (item.getItemId())
-            {
-                case R.id.navigation_home:
-
-                    return true;
-                case R.id.navigation_dashboard:
-
-                    return true;
-                case R.id.navigation_notifications:
-                    return true;
-            }
-            return false;
-        }
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,11 +25,9 @@ public class MainActivity extends AppCompatActivity implements NewsFeedFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, new NewsFeedFragment())
-                .commit();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(this);
+        navigation.setSelectedItemId(R.id.newsFeedNavigation);
 
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -65,6 +40,26 @@ public class MainActivity extends AppCompatActivity implements NewsFeedFragment.
                 }
             }
         };
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.newsFeedNavigation:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content, new NewsFeedFragment())
+                        .commit();
+                return true;
+            case R.id.navigation_dashboard:
+
+                return true;
+            case R.id.oursiteNavigation:
+
+                return true;
+        }
+        return false;
     }
 
     @Override
