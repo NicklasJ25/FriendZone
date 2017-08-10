@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "610296106947-987een437fokm25v697vh799md3ecubb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "nist.friendzone",
-            "certificate_hash": "4ec4cbaffa18b0c015866fceeb7163cd1def27f8"
-          }
-        },
-        {
           "client_id": "610296106947-m1t24lp2f7m0mq83pumlpivlrocttodk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
