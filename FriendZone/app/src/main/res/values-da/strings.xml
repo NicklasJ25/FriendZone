@@ -9,4 +9,5 @@
     <string name="passwordTextView">Kode</string>
     <string name="createUserButton">Opret bruger</string>
     <string name="signInButton">Log ind</string>
+    <string name="signOutMenu">Log ud</string>
 </resources>

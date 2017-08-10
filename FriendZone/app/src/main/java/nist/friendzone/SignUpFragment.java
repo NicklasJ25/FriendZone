@@ -12,6 +12,7 @@ import nist.friendzone.Login.EmailPassword;
 public class SignUpFragment extends Fragment implements View.OnClickListener
 {
     private EditText emailEditText;
+    private EditText nameEditText;
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
 
@@ -21,6 +22,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         emailEditText = (EditText) view.findViewById(R.id.emailEditText);
+        nameEditText = (EditText) view.findViewById(R.id.nameEditText);
         passwordEditText = (EditText) view.findViewById(R.id.passwordEditText);
         confirmPasswordEditText = (EditText) view.findViewById(R.id.confirmPasswordEditText);
 
@@ -35,7 +37,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener
         if (confirmPasswordEditText.getText().toString().equals(passwordEditText.getText().toString()))
         {
             EmailPassword emailPassword = new EmailPassword(getActivity());
-            emailPassword.CreateUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+            emailPassword.CreateUser(emailEditText.getText().toString(), passwordEditText.getText().toString(), nameEditText.getText().toString());
             emailPassword.LoginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
         }
     }
