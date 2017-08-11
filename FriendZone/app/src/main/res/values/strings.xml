@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">FriendZone</string>
-
-    //LoginActivity
-    <string name="emailTextView">Email</string>
-    <string name="passwordTextView">Password</string>
+    <string name="emailEditText">Email</string>
+    <string name="passwordEditText">Password</string>
+    <string name="confirmPasswordEditText">Confirm password</string>
+    <string name="nameEditText">Name</string>
+    <string name="birthdayTextView">Birthday</string>
     <string name="signInButton">Sign in</string>
     <string name="errorInvalidEmail">This email address is invalid</string>
     <string name="errorInvalidPassword">This password is too short</string>
@@ -14,10 +15,18 @@
     <string name="newsFeedNavigation">Newsfeed</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="oursiteNavigation">Our site</string>
-    <string name="facebook_app_id">1784677361557369</string>
-    <string name="fb_login_protocol_scheme">fb1784677361557369</string>
+    <string name="facebook_app_id" translatable="false">1784677361557369</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1784677361557369</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="signOutMenu">Sign out</string>
+    <string name="postalcodeEditText">Postalcode</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="signOutMenu">Sign out</string>
+    <string name="firstnameEditText">First name</string>
+    <string name="lastnameEditText">Last name</string>
+    <string name="signupNameTextView">What is you name?</string>
+    <string name="nextButton">Next</string>
+    <string name="signupBirthdayTextView">When is your birthday?</string>
 </resources>

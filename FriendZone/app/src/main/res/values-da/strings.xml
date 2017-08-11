@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FriendZone</string>
-    <string name="emailTextView">Email</string>
+    <string name="emailEditText">Email</string>
     <string name="errorFieldRequired">Dette felt er påkrævet</string>
     <string name="errorIncorrecPassword">Koden er forkert</string>
     <string name="errorInvalidEmail">Email\'en er forkert</string>
     <string name="errorInvalidPassword">Koden er for kort</string>
-    <string name="passwordTextView">Kode</string>
+    <string name="passwordEditText">Kode</string>
     <string name="createUserButton">Opret bruger</string>
     <string name="signInButton">Log ind</string>
     <string name="signOutMenu">Log ud</string>
     <string name="newsFeedNavigation">Nyheder</string>
     <string name="oursiteNavigation">Vores side</string>
+    <string name="birthdayTextView">Fødselsdag</string>
+    <string name="confirmPasswordEditText">Gentag kode</string>
+    <string name="nameEditText">Navn</string>
+    <string name="postalcodeEditText">Postnummer</string>
+    <string name="firstnameEditText">Fornavn</string>
+    <string name="lastnameEditText">Efternavn</string>
+    <string name="signupNameTextView">Hvad hedder du?</string>
+    <string name="nextButton">Næste</string>
+    <string name="signupBirthdayTextView">Hvornår har du fødselsdag?</string>
 </resources>
