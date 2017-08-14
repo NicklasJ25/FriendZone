@@ -7,7 +7,6 @@
     <string name="errorInvalidEmail">Email\'en er forkert</string>
     <string name="errorInvalidPassword">Koden er for kort</string>
     <string name="passwordEditText">Kode</string>
-    <string name="createUserButton">Opret bruger</string>
     <string name="signInButton">Log ind</string>
     <string name="signOutMenu">Log ud</string>
     <string name="newsFeedNavigation">Nyheder</string>
@@ -21,4 +20,15 @@
     <string name="signupNameTextView">Hvad hedder du?</string>
     <string name="nextButton">Næste</string>
     <string name="signupBirthdayTextView">Hvornår har du fødselsdag?</string>
+    <string name="phoneEditText">Mobil</string>
+    <string name="signupContactTextView">Hvad er dine kontakt informationer?</string>
+    <string name="firstnameEditTextError">Fornavn er nødvendigt</string>
+    <string name="lastnameEditTextError">Efternavn er nødvendigt</string>
+    <string name="emailEditTextError">Email er nødvendigt</string>
+    <string name="phoneEditTextError">Mobil er forkert format</string>
+    <string name="createAccountButton">Opret konto</string>
+    <string name="signupPasswordTextView">Vælg en kode</string>
+    <string name="passwordEditTextError">Kode er nødvendigt</string>
+    <string name="confirmPasswordEditTextError">Det er nødvendigt at gentage koden</string>
+    <string name="passwordDoesNotMatch">Koderne matcher ikke</string>
 </resources>

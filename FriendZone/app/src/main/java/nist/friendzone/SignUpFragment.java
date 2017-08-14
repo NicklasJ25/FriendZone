@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import nist.friendzone.Login.EmailPassword;
+import nist.friendzone.Firebase.EmailPassword;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener
 {
@@ -51,7 +51,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener
         if (confirmPasswordEditText.getText().toString().equals(passwordEditText.getText().toString()))
         {
             EmailPassword emailPassword = new EmailPassword(getActivity());
-            emailPassword.CreateUser(emailEditText.getText().toString(), passwordEditText.getText().toString(), nameEditText.getText().toString());
+            emailPassword.CreateUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
             emailPassword.LoginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
         }
     }

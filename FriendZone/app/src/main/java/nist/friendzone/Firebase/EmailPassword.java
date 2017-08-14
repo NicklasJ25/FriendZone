@@ -1,8 +1,9 @@
-package nist.friendzone.Login;
+package nist.friendzone.Firebase;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -22,7 +23,7 @@ import nist.friendzone.R;
 
 import static android.content.ContentValues.TAG;
 
-public class EmailPassword
+public class EmailPassword implements OnCompleteListener<Void>
 {
     private FragmentActivity context;
 
@@ -34,7 +35,7 @@ public class EmailPassword
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void CreateUser(String email, String password, final String name)
+    public void CreateUser(String email, String password)
     {
         showProgress(true);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
@@ -44,20 +45,6 @@ public class EmailPassword
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build();
-
-                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User profile updated.");
-                            }
-                        }
-                    });
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -93,6 +80,37 @@ public class EmailPassword
         });
     }
 
+    public void UpdateUser(String key, String value)
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        UserProfileChangeRequest profileUpdates;
+
+        if (user != null)
+        {
+            switch (key)
+            {
+                case "DisplayName":
+                    profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(value)
+                            .build();
+                    user.updateProfile(profileUpdates).addOnCompleteListener(this);
+                    break;
+                case "Email":
+                    user.updateEmail(value).addOnCompleteListener(this);
+                    break;
+                case "Password":
+                    user.updatePassword(value).addOnCompleteListener(this);
+                    break;
+                case "PhotoUri":
+                    profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setPhotoUri(Uri.parse(value))
+                            .build();
+                    user.updateProfile(profileUpdates).addOnCompleteListener(this);
+                    break;
+            }
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show)
     {
@@ -121,6 +139,14 @@ public class EmailPassword
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             loginProgressBar.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<Void> task)
+    {
+        if (task.isSuccessful()) {
+            Log.d(TAG, "User updated.");
         }
     }
 }

@@ -10,7 +10,6 @@
     <string name="errorInvalidPassword">This password is too short</string>
     <string name="errorIncorrecPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
-    <string name="createUserButton">Create user</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="newsFeedNavigation">Newsfeed</string>
     <string name="title_dashboard">Dashboard</string>
@@ -29,4 +28,15 @@
     <string name="signupNameTextView">What is you name?</string>
     <string name="nextButton">Next</string>
     <string name="signupBirthdayTextView">When is your birthday?</string>
+    <string name="phoneEditText">Phone</string>
+    <string name="signupContactTextView">What is your contact information?</string>
+    <string name="firstnameEditTextError">Firstname is required</string>
+    <string name="lastnameEditTextError">Lastname is required</string>
+    <string name="emailEditTextError">Email is required</string>
+    <string name="phoneEditTextError">Phone is wrong format</string>
+    <string name="createAccountButton">Create account</string>
+    <string name="signupPasswordTextView">Choose a password</string>
+    <string name="passwordEditTextError">Password is required</string>
+    <string name="confirmPasswordEditTextError">Password confirmation is required</string>
+    <string name="passwordDoesNotMatch">Passwords doesn\'t match</string>
 </resources>

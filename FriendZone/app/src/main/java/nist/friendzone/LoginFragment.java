@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import nist.friendzone.Login.EmailPassword;
+import nist.friendzone.Firebase.EmailPassword;
 
 
 /**
@@ -37,18 +37,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        EmailPassword emailPassword = new EmailPassword(getActivity());
-        String email = emailTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
         switch (v.getId())
         {
             case R.id.loginButton:
+                EmailPassword emailPassword = new EmailPassword(getActivity());
+                String email = emailTextView.getText().toString();
+                String password = passwordTextView.getText().toString();
                 emailPassword.LoginUser(email, password);
                 break;
             case R.id.createUserButton:
+                Bundle bundle = new Bundle();
+                bundle.putString("AccountType", "EmailPassword");
+
+                Fragment fragment = new SignupNameFragment();
+                fragment.setArguments(bundle);
                 getFragmentManager().beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.frameLayout, new SignUpFragment())
+                        .replace(R.id.frameLayout, fragment)
                         .commit();
                 break;
         }
