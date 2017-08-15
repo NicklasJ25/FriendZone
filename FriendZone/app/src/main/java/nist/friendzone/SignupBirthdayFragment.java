@@ -35,12 +35,10 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
         int day = birthdayDatePicker.getDayOfMonth();
         int month = birthdayDatePicker.getMonth();
         int year = birthdayDatePicker.getYear();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+        String birthday = day + "/" + month + "/" + year;
 
         Bundle bundle = getArguments();
-        bundle.putInt("Birthday", calendar.DATE);
+        bundle.putString("Birthday", birthday);
 
         Fragment fragment = new SignupContactFragment();
         fragment.setArguments(bundle);

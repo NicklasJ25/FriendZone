@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import nist.friendzone.dummy.UserPairs;
-
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -56,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 return true;
             case R.id.oursiteNavigation:
-
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content, new OurSiteFragment())
+                        .commit();
                 return true;
         }
         return false;

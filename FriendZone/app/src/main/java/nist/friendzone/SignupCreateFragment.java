@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import nist.friendzone.Firebase.Database;
 import nist.friendzone.Firebase.EmailPassword;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
@@ -31,14 +32,18 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
         {
             String firstname = getArguments().getString("Firstname");
             String lastname = getArguments().getString("Lastname");
-            int birthday = getArguments().getInt("Birthday");
+            String birthday = getArguments().getString("Birthday");
             String email = getArguments().getString("Email");
             String phone = getArguments().getString("Phone");
             String password = getArguments().getString("Password");
 
             EmailPassword emailPassword = new EmailPassword(getActivity());
             emailPassword.CreateUser(email, password);
-            emailPassword.UpdateUser("DisplayName", firstname + " " + lastname);
+
+            Database database = new Database();
+            database.UpdateUser("DisplayName", firstname + " " + lastname);
+            database.UpdateUser("Birthday", birthday);
+            database.UpdateUser("Phone", phone);
         }
     }
 }
