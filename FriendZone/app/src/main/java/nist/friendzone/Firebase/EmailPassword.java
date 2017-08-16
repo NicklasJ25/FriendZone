@@ -3,6 +3,9 @@ package nist.friendzone.Firebase;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -35,7 +38,7 @@ public class EmailPassword implements OnCompleteListener<Void>
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void CreateUser(String email, String password)
+    public void CreateUser(String email, String password, final String firstname, final String lastname, final String birthday, final String phone)
     {
         showProgress(true);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
@@ -43,6 +46,10 @@ public class EmailPassword implements OnCompleteListener<Void>
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    Database database = new Database();
+                    database.UpdateUser("DisplayName", firstname + " " + lastname);
+                    database.UpdateUser("Birthday", birthday);
+                    database.UpdateUser("Phone", phone);
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
                 } else {

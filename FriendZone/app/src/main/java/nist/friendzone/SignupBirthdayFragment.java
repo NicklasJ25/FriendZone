@@ -38,7 +38,7 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
         String birthday = day + "/" + month + "/" + year;
 
         Bundle bundle = getArguments();
-        bundle.putString("Birthday", birthday);
+        bundle.putString("BirthdayDay", birthday);
 
         Fragment fragment = new SignupContactFragment();
         fragment.setArguments(bundle);

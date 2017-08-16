@@ -1,5 +1,8 @@
 package nist.friendzone;
 
+import java.util.Calendar;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,12 +41,7 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             String password = getArguments().getString("Password");
 
             EmailPassword emailPassword = new EmailPassword(getActivity());
-            emailPassword.CreateUser(email, password);
-
-            Database database = new Database();
-            database.UpdateUser("DisplayName", firstname + " " + lastname);
-            database.UpdateUser("Birthday", birthday);
-            database.UpdateUser("Phone", phone);
+            emailPassword.CreateUser(email, password, firstname, lastname, birthday, phone);
         }
     }
 }

@@ -14,7 +14,7 @@ public class Database
         database = FirebaseDatabase.getInstance();
     }
 
-    public void UpdateUser(String key, String value)
+    public void UpdateUser(String key, Object value)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
