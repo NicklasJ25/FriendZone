@@ -15,6 +15,8 @@ import nist.friendzone.Firebase.EmailPassword;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
 {
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -43,5 +45,19 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             EmailPassword emailPassword = new EmailPassword(getActivity());
             emailPassword.CreateUser(email, password, firstname, lastname, birthday, phone);
         }
+    }
+    
+    Public void UploadProfilePicture()
+    {
+        //TODO get user id
+    	    string path = uid + "ProfilePicture.png"
+    	    StorageReference storageReference = storage.getReference(path);
+    	    
+    	    StorageMetadata metadata = new StorageMetadata.Builder()
+    	    .setCustomMetadata("Test", "Test")
+    	    .build();
+    	    
+    	    UploadTask uploadTask = storageReference.putBytes(bytedata, metadata);
+    	    Upload.addOnSuccess......
     }
 }
