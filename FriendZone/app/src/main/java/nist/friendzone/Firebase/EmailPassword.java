@@ -26,7 +26,7 @@ import nist.friendzone.R;
 
 import static android.content.ContentValues.TAG;
 
-public class EmailPassword implements OnCompleteListener<Void>
+public class EmailPassword
 {
     private FragmentActivity context;
 
@@ -38,7 +38,7 @@ public class EmailPassword implements OnCompleteListener<Void>
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void CreateUser(String email, String password, final String firstname, final String lastname, final String birthday, final String phone)
+    public void CreateUser(String email, String password, final String firstname, final String lastname, final String birthday, final Uri profilePicture, final String phone)
     {
         showProgress(true);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
@@ -49,6 +49,7 @@ public class EmailPassword implements OnCompleteListener<Void>
                     Database database = new Database();
                     database.UpdateUser("DisplayName", firstname + " " + lastname);
                     database.UpdateUser("Birthday", birthday);
+                    database.UploadProfilePicture(profilePicture);
                     database.UpdateUser("Phone", phone);
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
@@ -87,37 +88,6 @@ public class EmailPassword implements OnCompleteListener<Void>
         });
     }
 
-    public void UpdateUser(String key, String value)
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        UserProfileChangeRequest profileUpdates;
-
-        if (user != null)
-        {
-            switch (key)
-            {
-                case "DisplayName":
-                    profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(value)
-                            .build();
-                    user.updateProfile(profileUpdates).addOnCompleteListener(this);
-                    break;
-                case "Email":
-                    user.updateEmail(value).addOnCompleteListener(this);
-                    break;
-                case "Password":
-                    user.updatePassword(value).addOnCompleteListener(this);
-                    break;
-                case "PhotoUri":
-                    profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setPhotoUri(Uri.parse(value))
-                            .build();
-                    user.updateProfile(profileUpdates).addOnCompleteListener(this);
-                    break;
-            }
-        }
-    }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show)
     {
@@ -146,14 +116,6 @@ public class EmailPassword implements OnCompleteListener<Void>
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             loginProgressBar.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onComplete(@NonNull Task<Void> task)
-    {
-        if (task.isSuccessful()) {
-            Log.d(TAG, "User updated.");
         }
     }
 }

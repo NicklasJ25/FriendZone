@@ -1,5 +1,7 @@
 package nist.friendzone.dummy;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,8 @@ public class UserPairs
     {
         for (int i = 1; i <= COUNT; i++)
         {
-            User user1 = new User("Nicklas", 24, "Elsker at spille PS4");
-            User user2 = new User("Camilla", 23, "Elsker at spille Ipad");
+            User user1 = new User("", "Nicklas", 24, "Elsker at spille PS4");
+            User user2 = new User("", "Camilla", 23, "Elsker at spille Ipad");
             addItem(createDummyItem(user1, user2));
         }
     }
