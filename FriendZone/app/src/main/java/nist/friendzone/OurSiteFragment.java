@@ -43,14 +43,14 @@ public class OurSiteFragment extends Fragment
         myAvatarView = (ImageView) view.findViewById(R.id.myAvatarView);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        SetUserInformation(user.getUid());
+        SetUserInformation(user.getEmail());
 
         return view;
     }
 
-    private void SetUserInformation(String uid)
+    private void SetUserInformation(String email)
     {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(uid);
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(email);
         myRef.child("UserProfile").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

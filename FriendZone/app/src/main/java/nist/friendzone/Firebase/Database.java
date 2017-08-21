@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -27,15 +26,15 @@ public class Database
     public void UpdateUser(String key, Object value)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-        DatabaseReference myRef = database.getReference(uid);
+        String email = user.getEmail();
+        DatabaseReference myRef = database.getReference(email);
         myRef.child("UserProfile").child(key).setValue(value);
     }
 
     public void UploadProfilePicture(Uri profilePicture)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getUid() + "/ProfilePicture.png";
+        String path = user.getEmail() + "/ProfilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
