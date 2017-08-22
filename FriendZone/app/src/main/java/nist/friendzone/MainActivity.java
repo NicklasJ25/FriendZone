@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference database;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,13 +44,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
                 else
                 {
-                    database = FirebaseDatabase.getInstance().getReference();
-                    database.child(user.getEmail().replace(".", "")).child("Partner").addListenerForSingleValueEvent(new ValueEventListener()
+                    DatabaseReference databaseReference = database.getReference(user.getEmail().replace(".", ""));
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
                     {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            if (dataSnapshot.getValue() == null)
+                            if (!(dataSnapshot.getValue() instanceof String))
                             {
                                 Intent intent = new Intent(getBaseContext(), FindPartnerActivity.class);
                                 startActivity(intent);
