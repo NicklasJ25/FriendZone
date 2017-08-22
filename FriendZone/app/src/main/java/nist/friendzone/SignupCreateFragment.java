@@ -1,9 +1,6 @@
 package nist.friendzone;
 
-import java.util.Calendar;
-
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.storage.FirebaseStorage;
-
-import nist.friendzone.Firebase.Database;
 import nist.friendzone.Firebase.EmailPassword;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
@@ -39,7 +33,12 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             String firstname = getArguments().getString("Firstname");
             String lastname = getArguments().getString("Lastname");
             String birthday = getArguments().getString("BirthDay");
-            Uri profilePicture = Uri.parse(getArguments().getString("ProfilePicture"));
+            String profilePictureString = getArguments().getString("ProfilePicture");
+            Uri profilePicture = null;
+            if (profilePictureString != null)
+            {
+                profilePicture = Uri.parse(profilePictureString);
+            }
             String email = getArguments().getString("Email");
             String phone = getArguments().getString("Phone");
             String password = getArguments().getString("Password");

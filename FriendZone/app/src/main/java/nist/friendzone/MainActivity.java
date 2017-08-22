@@ -42,28 +42,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
                 }
-            }
-        };
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        database = FirebaseDatabase.getInstance().getReference();
-        database.child("users").child(user.getUid()).child("Partner").addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.getValue() == null)
+                else
                 {
-                    
+                    database = FirebaseDatabase.getInstance().getReference();
+                    database.child(user.getEmail().replace(".", "")).child("Partner").addListenerForSingleValueEvent(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            if (dataSnapshot.getValue() == null)
+                            {
+                                Intent intent = new Intent(getBaseContext(), FindPartnerActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError)
+                        {
+
+                        }
+                    });
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-
-            }
-        });
+        };
     }
 
     @Override

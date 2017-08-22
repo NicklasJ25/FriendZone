@@ -26,7 +26,7 @@ public class Database
     public void UpdateUser(String key, Object value)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = user.getEmail();
+        String email = user.getEmail().replace(".", "");
         DatabaseReference myRef = database.getReference(email);
         myRef.child("UserProfile").child(key).setValue(value);
     }
@@ -34,7 +34,7 @@ public class Database
     public void UploadProfilePicture(Uri profilePicture)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getEmail() + "/ProfilePicture.png";
+        String path = user.getEmail().replace(".", "") + "/ProfilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);

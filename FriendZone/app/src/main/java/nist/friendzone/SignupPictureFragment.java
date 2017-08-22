@@ -48,7 +48,10 @@ public class SignupPictureFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.nextButton:
                 Bundle bundle = getArguments();
-                bundle.putString("ProfilePicture", selectedImage.toString());
+                if (selectedImage != null)
+                {
+                    bundle.putString("ProfilePicture", selectedImage.toString());
+                }
 
                 Fragment fragment = new SignupContactFragment();
                 fragment.setArguments(bundle);

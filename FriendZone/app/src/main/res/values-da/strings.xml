@@ -32,4 +32,5 @@
     <string name="confirmPasswordEditTextError">Det er nødvendigt at gentage koden</string>
     <string name="passwordDoesNotMatch">Koderne matcher ikke</string>
     <string name="browseButton">Find billede</string>
+    <string name="findPartnerButton">Find partner</string>
 </resources>

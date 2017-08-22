@@ -32,6 +32,9 @@ public class OurSiteFragment extends Fragment
     private TextView myNameTextView;
     private TextView myAgeTextView;
     private ImageView myAvatarView;
+    private TextView partnerNameTextView;
+    private TextView partnerAgeTextView;
+    private ImageView partnerAvatarView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -41,23 +44,45 @@ public class OurSiteFragment extends Fragment
         myNameTextView = (TextView) view.findViewById(R.id.myNameTextView);
         myAgeTextView = (TextView) view.findViewById(R.id.myAgeTextView);
         myAvatarView = (ImageView) view.findViewById(R.id.myAvatarView);
+        partnerNameTextView = (TextView) view.findViewById(R.id.partnerNameTextView);
+        partnerAgeTextView = (TextView) view.findViewById(R.id.partnerAgeTextView);
+        partnerAvatarView = (ImageView) view.findViewById(R.id.partnerAvatarView);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        SetUserInformation(user.getEmail());
+        SetUserInformation(user.getEmail().replace(".", ""));
 
         return view;
     }
 
     private void SetUserInformation(String email)
     {
+        final String[] partnerEmail = new String[1];
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(email);
-        myRef.child("UserProfile").addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                myNameTextView.setText(dataSnapshot.child("DisplayName").getValue().toString());
-                String birthday = dataSnapshot.child("Birthday").getValue().toString();
+                myNameTextView.setText(dataSnapshot.child("UserProfile").child("DisplayName").getValue().toString());
+                String birthday = dataSnapshot.child("UserProfile").child("Birthday").getValue().toString();
                 int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthday.split("/")[2]);
                 myAgeTextView.setText(age + " år");
+                partnerEmail[0] =  dataSnapshot.child("Partner").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        partnerEmail[0] = "mille94@live.dk";
+        DatabaseReference partnerRef = FirebaseDatabase.getInstance().getReference(partnerEmail[0].replace(".", ""));
+        partnerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                partnerNameTextView.setText(dataSnapshot.child("UserProfile").child("DisplayName").getValue().toString());
+                String birthday = dataSnapshot.child("UserProfile").child("Birthday").getValue().toString();
+                int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthday.split("/")[2]);
+                partnerAgeTextView.setText(age + " år");
             }
 
             @Override
@@ -67,11 +92,18 @@ public class OurSiteFragment extends Fragment
         });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getUid() + "/ProfilePicture.png";
+        String path = user.getEmail().replace(".", "") + "/ProfilePicture.png";
         StorageReference storageReference = storage.getReference(path);
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())
                 .load(storageReference)
                 .into(myAvatarView);
+
+        String partnerPath = partnerEmail[0].replace(".", "") + "/ProfilePicture.png";
+        StorageReference partnerStorageReference = storage.getReference(partnerPath);
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(partnerStorageReference)
+                .into(partnerAvatarView);
     }
 }

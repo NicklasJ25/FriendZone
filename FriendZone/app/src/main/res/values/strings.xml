@@ -40,4 +40,5 @@
     <string name="confirmPasswordEditTextError">Password confirmation is required</string>
     <string name="passwordDoesNotMatch">Passwords doesn\'t match</string>
     <string name="browseButton">Browse picture</string>
+    <string name="findPartnerButton">Find partner</string>
 </resources>
