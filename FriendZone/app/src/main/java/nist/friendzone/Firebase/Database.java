@@ -61,18 +61,20 @@ public class Database
         });
     }
 
-    public void MakePartners(String myEmail, String partnerEmail)
+    public void MakePartners(final String myEmail, final String partnerEmail)
     {
         try
         {
             final DatabaseReference databaseReference = database.getReference();
-            final String newDestination = myEmail + "\\" + partnerEmail;
+            final String partnerSection = myEmail + "\\" + partnerEmail;
             databaseReference.child(myEmail).addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    databaseReference.child(newDestination).setValue(dataSnapshot.getValue());
+                    databaseReference.child(myEmail).child("Partner").removeValue();
+                    databaseReference.child(partnerSection).child(myEmail).setValue(dataSnapshot.getValue());
+                    databaseReference.child(myEmail).setValue(partnerSection);
                 }
 
                 @Override
@@ -87,7 +89,8 @@ public class Database
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    databaseReference.child(newDestination).setValue(dataSnapshot.getValue());
+                    databaseReference.child(partnerSection).child(partnerEmail).setValue(dataSnapshot.getValue());
+                    databaseReference.child(partnerEmail).setValue(partnerSection);
                 }
 
                 @Override
@@ -96,9 +99,7 @@ public class Database
                     Log.e(TAG, "Second email failed to move to partner section");
                 }
             });
-
-            databaseReference.child(myEmail).setValue(newDestination);
-            databaseReference.child(partnerEmail).setValue(newDestination);
+            MyPreferences.setPartnerSection(partnerSection);
         }
         catch (Exception ex)
         {

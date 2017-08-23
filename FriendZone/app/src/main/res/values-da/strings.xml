@@ -33,7 +33,7 @@
     <string name="passwordDoesNotMatch">Koderne matcher ikke</string>
     <string name="browseButton">Find billede</string>
     <string name="findPartnerButton">Find partner</string>
-    <string name="FindPartnerDialogTextView">Er % din partner?</string>
+    <string name="FindPartnerDialogTextView">Er %s din partner?</string>
     <string name="No">Nej</string>
     <string name="Yes">Ja</string>
 </resources>

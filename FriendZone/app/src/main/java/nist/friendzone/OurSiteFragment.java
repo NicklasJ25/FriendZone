@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -48,19 +49,20 @@ public class OurSiteFragment extends Fragment
         partnerAgeTextView = (TextView) view.findViewById(R.id.partnerAgeTextView);
         partnerAvatarView = (ImageView) view.findViewById(R.id.partnerAvatarView);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        SetUserInformation(user.getEmail().replace(".", ""));
+        String partnerSection = MyPreferences.getPartnerSection();
+        SetUserInformation(partnerSection);
 
         return view;
     }
 
-    private void SetUserInformation(String email)
+    private void SetUserInformation(final String partnerSection)
     {
-        final String[] partnerEmail = new String[1];
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(email);
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(partnerSection);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.
+
                 myNameTextView.setText(dataSnapshot.child("UserProfile").child("DisplayName").getValue().toString());
                 String birthday = dataSnapshot.child("UserProfile").child("Birthday").getValue().toString();
                 int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthday.split("/")[2]);

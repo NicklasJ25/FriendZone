@@ -41,7 +41,7 @@
     <string name="passwordDoesNotMatch">Passwords doesn\'t match</string>
     <string name="browseButton">Browse picture</string>
     <string name="findPartnerButton">Find partner</string>
-    <string name="FindPartnerDialogTextView">Is % your partner?</string>
+    <string name="FindPartnerDialogTextView">Is %s your partner?</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
 </resources>

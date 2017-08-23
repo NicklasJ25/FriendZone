@@ -11,11 +11,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
@@ -41,28 +37,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (user == null) {
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
-                }
-                else
-                {
-                    DatabaseReference databaseReference = database.getReference(user.getEmail().replace(".", ""));
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
-                        {
-                            if (!(dataSnapshot.getValue() instanceof String))
-                            {
-                                Intent intent = new Intent(getBaseContext(), FindPartnerActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError)
-                        {
-
-                        }
-                    });
                 }
             }
         };

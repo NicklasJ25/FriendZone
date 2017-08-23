@@ -2,10 +2,7 @@ package nist.friendzone;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.MessageFormat;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -46,12 +43,12 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot)
             {
-                if (dataSnapshot.getValue() instanceof String)
+                if (!dataSnapshot.hasChildren())
                 {
                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(intent);
                 }
-                else if (dataSnapshot.child("Partner") != null)
+                else if (dataSnapshot.child("Partner").getValue() != null)
                 {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
@@ -69,8 +66,9 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
                         }
                     };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-                    builder.setMessage(String.format(getResources().getString(R.string.FindPartnerDialogTextView), user.getEmail())).setPositiveButton(getResources().getString(R.string.Yes), dialogClickListener)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPartnerActivity.this);
+                    String dialogString = String.format(getResources().getString(R.string.FindPartnerDialogTextView), dataSnapshot.child("Partner").getValue());
+                    builder.setMessage(dialogString).setPositiveButton(getResources().getString(R.string.Yes), dialogClickListener)
                             .setNegativeButton(getResources().getString(R.string.No), dialogClickListener).show();
 
                 }
@@ -89,7 +87,7 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
-        String partnerEmail = emailEditText.getText().toString();
+        String partnerEmail = emailEditText.getText().toString().replace(".", "");
 
         DatabaseReference partnerReference = database.getReference(partnerEmail);
         partnerReference.child("Partner").setValue(user.getEmail());
