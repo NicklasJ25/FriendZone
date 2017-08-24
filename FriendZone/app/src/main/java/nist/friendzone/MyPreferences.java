@@ -7,18 +7,26 @@ public class MyPreferences
 {
     private static String PARTNER_SECTION_FIREBASE = "PARTNER_SECTION_FIREBASE";
 
-    public static void setPartnerSection(String partnerSection)
+    public static void setPartnerSection(Context context, String partnerSection)
     {
-        PreferenceManager.getDefaultSharedPreferences(null)
+        PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(PARTNER_SECTION_FIREBASE, partnerSection)
                 .apply();
     }
 
-    public static String getPartnerSection()
+    public static String getPartnerSection(Context context)
     {
-        String partnerSection = PreferenceManager.getDefaultSharedPreferences(null)
+        String partnerSection = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PARTNER_SECTION_FIREBASE, "");
         return partnerSection;
+    }
+
+    public static void ClearPrefrences(Context context)
+    {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .clear()
+                .apply();
     }
 }

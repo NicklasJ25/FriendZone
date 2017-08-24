@@ -99,7 +99,6 @@ public class Database
                     Log.e(TAG, "Second email failed to move to partner section");
                 }
             });
-            MyPreferences.setPartnerSection(partnerSection);
         }
         catch (Exception ex)
         {

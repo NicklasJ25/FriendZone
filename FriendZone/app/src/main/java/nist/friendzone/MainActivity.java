@@ -11,13 +11,17 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelectedItemId(R.id.newsFeedNavigation);
 
+        database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -38,8 +43,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
                 }
+                else if (MyPreferences.getPartnerSection(getBaseContext()).equals(""))
+                {
+                    final DatabaseReference databaseReference = database.getReference(user.getEmail().replace(".", ""));
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError)
+                        {
+
+                        }
+                    });
+                }
             }
         };
+
+//        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        String date = dateFormat.format(new Date());
+//        String partnerSection = MyPreferences.getPartnerSection(this);
+//        database.getReference().child("Newsfeed").child(date).child(partnerSection).child("ProfilePicture1").setValue("https://firebasestorage.googleapis.com/v0/b/friendzone-5ecba.appspot.com/o/mille94%40livedk%2FProfilePicture.png?alt=media&token=7d7e31c2-0df7-4562-bf17-557e00f8adff");
+//        database.getReference().child("Newsfeed").child(date).child(partnerSection).child("ProfilePicture2").setValue("https://firebasestorage.googleapis.com/v0/b/friendzone-5ecba.appspot.com/o/nicklasj25%40hotmailcom%2FProfilePicture.png?alt=media&token=7b9bb8ee-2aa8-4c14-a8a4-ea9cab3c32df");
+//        database.getReference().child("Newsfeed").child(date).child(partnerSection).child("Names").setValue("Camilla & Nicklas");
+//        database.getReference().child("Newsfeed").child(date).child(partnerSection).child("Ages").setValue("23 & 24");
+//        database.getReference().child("Newsfeed").child(date).child(partnerSection).child("Description").setValue("Nogen der kunne tænke sig at lave noget mad sammen? :D");
     }
 
     @Override

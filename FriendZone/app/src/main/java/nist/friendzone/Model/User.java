@@ -1,4 +1,4 @@
-package nist.friendzone.dummy;
+package nist.friendzone.Model;
 
 public class User
 {

@@ -1,11 +1,7 @@
-package nist.friendzone.dummy;
-
-import android.net.Uri;
+package nist.friendzone.Model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserPairs
 {

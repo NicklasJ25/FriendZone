@@ -12,7 +12,7 @@
         android:id="@+id/myAvatarView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/oursite_icon"
         avatarview:border_color="@android:color/white"
@@ -20,7 +20,8 @@
         avatarview:layout_constraintLeft_toLeftOf="parent"
         avatarview:layout_constraintTop_toTopOf="parent"
         avatarview:shadow_color="@android:color/black"
-        avatarview:shadow_width="5dp"/>
+        avatarview:shadow_width="5dp"
+        />
 
     <com.liangfeizc.avatarview.AvatarView
         android:src="@drawable/oursite_icon"
@@ -33,8 +34,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
         android:id="@+id/partnerAvatarView"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:layout_marginRight="50dp"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -79,14 +81,12 @@
                 android:id="@+id/partnerNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Name"/>
 
             <TextView
                 android:id="@+id/partnerAgeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Age"/>
         </LinearLayout>
 

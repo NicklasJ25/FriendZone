@@ -44,4 +44,5 @@
     <string name="FindPartnerDialogTextView">Is %s your partner?</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="ageTextView">%d years</string>
 </resources>

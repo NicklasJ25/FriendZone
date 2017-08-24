@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +20,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -49,7 +46,7 @@ public class OurSiteFragment extends Fragment
         partnerAgeTextView = (TextView) view.findViewById(R.id.partnerAgeTextView);
         partnerAvatarView = (ImageView) view.findViewById(R.id.partnerAvatarView);
 
-        String partnerSection = MyPreferences.getPartnerSection();
+        String partnerSection = MyPreferences.getPartnerSection(getContext());
         SetUserInformation(partnerSection);
 
         return view;
@@ -57,17 +54,19 @@ public class OurSiteFragment extends Fragment
 
     private void SetUserInformation(final String partnerSection)
     {
+        final String[] emails = partnerSection.split("\\\\");
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(partnerSection);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.
-
-                myNameTextView.setText(dataSnapshot.child("UserProfile").child("DisplayName").getValue().toString());
-                String birthday = dataSnapshot.child("UserProfile").child("Birthday").getValue().toString();
-                int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthday.split("/")[2]);
-                myAgeTextView.setText(age + " år");
-                partnerEmail[0] =  dataSnapshot.child("Partner").getValue().toString();
+                myNameTextView.setText(dataSnapshot.child(emails[0]).child("UserProfile").child("DisplayName").getValue().toString());
+                partnerNameTextView.setText(dataSnapshot.child(emails[1]).child("UserProfile").child("DisplayName").getValue().toString());
+                String myBirthday = dataSnapshot.child(emails[0]).child("UserProfile").child("Birthday").getValue().toString();
+                int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myBirthday.split("/")[2]);
+                myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
+                String partnerBirthday = dataSnapshot.child(emails[1]).child("UserProfile").child("Birthday").getValue().toString();
+                int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerBirthday.split("/")[2]);
+                partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
             }
 
             @Override
@@ -76,32 +75,14 @@ public class OurSiteFragment extends Fragment
             }
         });
 
-        partnerEmail[0] = "mille94@live.dk";
-        DatabaseReference partnerRef = FirebaseDatabase.getInstance().getReference(partnerEmail[0].replace(".", ""));
-        partnerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                partnerNameTextView.setText(dataSnapshot.child("UserProfile").child("DisplayName").getValue().toString());
-                String birthday = dataSnapshot.child("UserProfile").child("Birthday").getValue().toString();
-                int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthday.split("/")[2]);
-                partnerAgeTextView.setText(age + " år");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getEmail().replace(".", "") + "/ProfilePicture.png";
-        StorageReference storageReference = storage.getReference(path);
+        String myPath = emails[0] + "/ProfilePicture.png";
+        StorageReference myStorageReference = storage.getReference(myPath);
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())
-                .load(storageReference)
+                .load(myStorageReference)
                 .into(myAvatarView);
 
-        String partnerPath = partnerEmail[0].replace(".", "") + "/ProfilePicture.png";
+        String partnerPath = emails[1] + "/ProfilePicture.png";
         StorageReference partnerStorageReference = storage.getReference(partnerPath);
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())

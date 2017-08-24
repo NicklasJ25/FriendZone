@@ -1,61 +1,86 @@
 package nist.friendzone;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
- import nist.friendzone.dummy.UserPairs.UserPair;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import nist.friendzone.Model.Couple;
+
 public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecyclerViewAdapter.ViewHolder>
 {
-    private final List<UserPair> userPairs;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    public MyNewsRecyclerViewAdapter(List<UserPair> userPairs)
+    private Context context;
+    private final List<Couple> couples;
+
+    public MyNewsRecyclerViewAdapter(Context context, List<Couple> couples)
     {
-        this.userPairs = userPairs;
+        this.context = context;
+        this.couples = couples;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.news_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        holder.mItem = userPairs.get(position);
-        holder.nameTextView.setText(userPairs.get(position).names);
-        holder.ageTextView.setText(userPairs.get(position).ages);
-        holder.descriptionTextView.setText(userPairs.get(position).descriptions);
+        holder.mItem = couples.get(position);
+        StorageReference myStorageReference = storage.getReferenceFromUrl(couples.get(position).part1Picture);
+        Glide.with(context)
+                .using(new FirebaseImageLoader())
+                .load(myStorageReference)
+                .into(holder.part1AvatarView);
+
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(couples.get(position).part2Picture);
+        Glide.with(context)
+                .using(new FirebaseImageLoader())
+                .load(partnerStorageReference)
+                .into(holder.part2AvatarView);
+        holder.namesTextView.setText(couples.get(position).names);
+        holder.agesTextView.setText(couples.get(position).ages);
+        holder.descriptionTextView.setText(couples.get(position).description);
     }
 
     @Override
     public int getItemCount()
     {
-        return userPairs.size();
+        return couples.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public final View view;
-        public final TextView nameTextView;
-        public final TextView ageTextView;
+        public final ImageView part1AvatarView;
+        public final ImageView part2AvatarView;
+        public final TextView namesTextView;
+        public final TextView agesTextView;
         public final TextView descriptionTextView;
-        public UserPair mItem;
+        public Couple mItem;
 
         public ViewHolder(View view)
         {
             super(view);
             this.view = view;
-            nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-            ageTextView = (TextView) view.findViewById(R.id.ageTextView);
+            part1AvatarView = (ImageView) view.findViewById(R.id.part1AvatarView);
+            part2AvatarView = (ImageView) view.findViewById(R.id.part2AvatarView);
+            namesTextView = (TextView) view.findViewById(R.id.namesTextView);
+            agesTextView = (TextView) view.findViewById(R.id.agesTextView);
             descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextView);
         }
     }

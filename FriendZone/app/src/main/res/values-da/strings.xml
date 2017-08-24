@@ -36,4 +36,5 @@
     <string name="FindPartnerDialogTextView">Er %s din partner?</string>
     <string name="No">Nej</string>
     <string name="Yes">Ja</string>
+    <string name="ageTextView">%d år</string>
 </resources>
