@@ -2,9 +2,7 @@ package nist.friendzone.Firebase;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -22,8 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import nist.friendzone.FindPartnerActivity;
+import io.realm.Realm;
 import nist.friendzone.MyPreferences;
+import nist.friendzone.Realm.User;
 import nist.friendzone.R;
 
 import static android.content.ContentValues.TAG;
@@ -31,30 +30,42 @@ import static android.content.ContentValues.TAG;
 public class EmailPassword
 {
     private FragmentActivity context;
-
     private FirebaseAuth firebaseAuth;
+    private Realm realm;
 
     public EmailPassword(FragmentActivity context)
     {
         this.context = context;
         firebaseAuth = FirebaseAuth.getInstance();
+        realm = Realm.getDefaultInstance();
     }
 
-    public void CreateUser(String email, String password, final String firstname, final String lastname, final String birthday, final String phone)
+    public void CreateUser(final User user, String password)
     {
         showProgress(true);
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
+        firebaseAuth.createUserWithEmailAndPassword(user.email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
         {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())
+                {
                     Database database = new Database();
-                    database.UpdateUser("DisplayName", firstname + " " + lastname);
-                    database.UpdateUser("Birthday", birthday);
-                    database.UpdateUser("Phone", phone);
+                    database.UpdateUser("UserProfile", user);
+
+                    realm.beginTransaction();
+                    realm.copyToRealm(user);
+                    realm.commitTransaction();
+
+                    if (user.profilePicture != null)
+                    {
+                        Uri profilePictureUri = Uri.parse(user.profilePicture);
+                        database.UploadProfilePicture(profilePictureUri);
+                    }
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
-                } else {
+                }
+                else
+                {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                 }
@@ -73,34 +84,60 @@ public class EmailPassword
             {
                 if (task.isSuccessful())
                 {
+                    final FirebaseUser user = firebaseAuth.getCurrentUser();
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ""));
+                    reference.addListenerForSingleValueEvent(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            if (dataSnapshot.hasChildren())
+                            {
+                                User user = dataSnapshot.child("UserProfile").getValue(User.class);
+                                realm.beginTransaction();
+                                realm.copyToRealm(user);
+                                realm.commitTransaction();
+                            }
+                            else
+                            {
+                                MyPreferences.setPartnerSection(context, dataSnapshot.getValue().toString());
+                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString()).child(user.getEmail().replace(".", ""));
+                                reference1.addListenerForSingleValueEvent(new ValueEventListener()
+                                {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot)
+                                    {
+                                        User user = dataSnapshot.child("UserProfile").getValue(User.class);
+                                        realm.beginTransaction();
+                                        realm.copyToRealm(user);
+                                        realm.commitTransaction();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError)
+                                    {
+
+                                    }
+                                });
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError)
+                        {
+
+                        }
+                    });
+
+
+
+
+
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success");
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (MyPreferences.getPartnerSection(context).equals(""))
-                    {
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ""));
-                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
-                        {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot)
-                            {
-                                if (dataSnapshot.hasChildren())
-                                {
-                                    Intent intent = new Intent(context, FindPartnerActivity.class);
-                                    context.startActivity(intent);
-                                } else
-                                {
-                                    MyPreferences.setPartnerSection(context, dataSnapshot.getValue().toString());
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError)
-                            {
-
-                            }
-                        });
-                    }
                 }
                 else
                 {
@@ -112,34 +149,20 @@ public class EmailPassword
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show)
     {
         final ProgressBar loginProgressBar = (ProgressBar) context.findViewById(R.id.loginProgressBar);
+        int shortAnimTime = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
+        loginProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        loginProgressBar.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter()
         {
-            int shortAnimTime = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            loginProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginProgressBar.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter()
+            @Override
+            public void onAnimationEnd(Animator animation)
             {
-                @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    loginProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        }
-        else
-        {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            loginProgressBar.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+                loginProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 }

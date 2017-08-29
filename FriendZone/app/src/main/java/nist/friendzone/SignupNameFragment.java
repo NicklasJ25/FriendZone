@@ -33,8 +33,8 @@ public class SignupNameFragment extends Fragment implements View.OnClickListener
         if (validateForm())
         {
             Bundle bundle = getArguments();
-            bundle.putString("Firstname", firstnameEditText.getText().toString());
-            bundle.putString("Lastname", lastnameEditText.getText().toString());
+            bundle.putString("firstname", firstnameEditText.getText().toString());
+            bundle.putString("lastname", lastnameEditText.getText().toString());
 
             Fragment fragment = new SignupBirthdayFragment();
             fragment.setArguments(bundle);

@@ -1,7 +1,6 @@
 package nist.friendzone.Realm;
 
 import io.realm.Realm;
-import nist.friendzone.Model.User;
 
 public class RealmDatabase
 {
@@ -19,10 +18,10 @@ public class RealmDatabase
         return true;
     }
 
-    public static void CreateUser(String email, String firstname, String lastname, String birthday, String picturePath)
+    public static void CreateUser(String email, String firstname, String lastname, String birthday, String phone, String picturePath)
     {
         realm.beginTransaction();
-        User user = new User(email, firstname, lastname, birthday, picturePath);
+        User user = new User(email, firstname, lastname, birthday, phone, picturePath);
         realm.copyToRealm(user);
         realm.commitTransaction();
     }

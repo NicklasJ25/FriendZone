@@ -59,8 +59,8 @@ public class AddNewsfeedFragment extends Fragment implements View.OnClickListene
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 String date = dateFormat.format(new Date());
                 DatabaseReference newsfeed = database.getReference("Newsfeed").child(date);
-                newsfeed.child(partnerSection).child("part1Picture").setValue(dataSnapshot.child(emails[0]).child("UserProfile").child("ProfilePicture").getValue());
-                newsfeed.child(partnerSection).child("part2Picture").setValue(dataSnapshot.child(emails[1]).child("UserProfile").child("ProfilePicture").getValue());
+                newsfeed.child(partnerSection).child("part1Picture").setValue(dataSnapshot.child(emails[0]).child("UserProfile").child("profilePicture").getValue());
+                newsfeed.child(partnerSection).child("part2Picture").setValue(dataSnapshot.child(emails[1]).child("UserProfile").child("profilePicture").getValue());
                 newsfeed.child(partnerSection).child("names").setValue("Camilla & Nicklas");
                 newsfeed.child(partnerSection).child("ages").setValue("23 & 24");
                 newsfeed.child(partnerSection).child("description").setValue(description);

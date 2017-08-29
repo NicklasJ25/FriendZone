@@ -1,29 +1,30 @@
-package nist.friendzone.Model;
+package nist.friendzone.Realm;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class User extends RealmObject
 {
-
     @PrimaryKey
     public String email;
     public String firstname;
     public String lastname;
     public String birthday;
-    public String picturePath;
+    public String phone;
+    public String profilePicture;
 
     public User()
     {
 
     }
 
-    public User(String email, String firstname, String lastname, String birthday, String picturePath)
+    public User(String email, String firstname, String lastname, String birthday, String phone, String profilePicture)
     {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthday = birthday;
-        this.picturePath = picturePath;
+        this.phone = phone;
+        this.profilePicture = profilePicture;
     }
 }

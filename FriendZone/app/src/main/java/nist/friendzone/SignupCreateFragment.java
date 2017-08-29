@@ -1,6 +1,5 @@
 package nist.friendzone;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import io.realm.Realm;
-import nist.friendzone.Firebase.Database;
 import nist.friendzone.Firebase.EmailPassword;
-import nist.friendzone.Model.User;
+import nist.friendzone.Realm.User;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
 {
@@ -35,32 +33,18 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
         String accountType = getArguments().getString("AccountType");
         if (accountType.equals("EmailPassword"))
         {
-            String firstname = getArguments().getString("Firstname");
-            String lastname = getArguments().getString("Lastname");
+            String firstname = getArguments().getString("firstname");
+            String lastname = getArguments().getString("lastname");
             String birthday = getArguments().getString("BirthDay");
-            String profilePictureString = getArguments().getString("ProfilePicture");
-            Uri profilePicture = null;
-            if (profilePictureString != null)
-            {
-                profilePicture = Uri.parse(profilePictureString);
-            }
-            String email = getArguments().getString("Email");
+            String profilePicture = getArguments().getString("profilePicture");
+            String email = getArguments().getString("email");
             String phone = getArguments().getString("Phone");
             String password = getArguments().getString("Password");
 
+            User user = new User(email, firstname, lastname, birthday, phone, profilePicture);
+
             EmailPassword emailPassword = new EmailPassword(getActivity());
-            emailPassword.CreateUser(email, password, firstname, lastname, birthday, phone);
-
-            realm.beginTransaction();
-            User user = realm.createObject(User.class);
-            user.email = email;
-            user.firstname = firstname;
-            user.lastname = lastname;
-            user.birthday = birthday;
-            realm.commitTransaction();
-
-            Database database = new Database();
-            database.UploadProfilePicture(profilePicture);
+            emailPassword.CreateUser(user, password);
         }
     }
 }

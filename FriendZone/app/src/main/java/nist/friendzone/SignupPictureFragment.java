@@ -50,7 +50,7 @@ public class SignupPictureFragment extends Fragment implements View.OnClickListe
                 Bundle bundle = getArguments();
                 if (selectedImage != null)
                 {
-                    bundle.putString("ProfilePicture", selectedImage.toString());
+                    bundle.putString("profilePicture", selectedImage.toString());
                 }
 
                 Fragment fragment = new SignupContactFragment();

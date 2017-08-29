@@ -16,7 +16,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import io.realm.Realm;
-import nist.friendzone.Model.User;
+import nist.friendzone.Realm.User;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,13 +35,13 @@ public class Database
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail().replace(".", "");
-        database.getReference().child(email).child("UserProfile").child(key).setValue(value);
+        database.getReference().child(email).child(key).setValue(value);
     }
 
     public void UploadProfilePicture(Uri profilePicture)
     {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getEmail().replace(".", "") + "/ProfilePicture.png";
+        String path = user.getEmail().replace(".", "") + "/profilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
@@ -50,11 +50,11 @@ public class Database
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                UpdateUser("ProfilePicture", downloadUrl.toString());
+                UpdateUser("profilePicture", downloadUrl.toString());
 
                 realm.beginTransaction();
                 User updateUser = realm.where(User.class).equalTo("email", user.getEmail()).findFirst();
-                updateUser.picturePath = downloadUrl.toString();
+                updateUser.profilePicture = downloadUrl.toString();
                 realm.copyToRealmOrUpdate(updateUser);
                 realm.commitTransaction();
             }

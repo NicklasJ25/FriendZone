@@ -35,7 +35,7 @@ public class SignupContactFragment extends Fragment implements View.OnClickListe
         if (validateForm())
         {
             Bundle bundle = getArguments();
-            bundle.putString("Email", emailEditText.getText().toString());
+            bundle.putString("email", emailEditText.getText().toString());
             bundle.putString("Phone", phoneEditText.getText().toString());
 
             Fragment fragment = new SignupPasswordFragment();

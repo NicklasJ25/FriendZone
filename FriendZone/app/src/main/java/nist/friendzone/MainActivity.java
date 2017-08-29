@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import io.realm.Realm;
-import nist.friendzone.Model.User;
+import nist.friendzone.Realm.User;
 import nist.friendzone.Realm.RealmDatabase;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
                 else if (!RealmDatabase.UserExists(user.getEmail()))
                 {
-                    DatabaseReference databaseReference = database.getReference(MyPreferences.getPartnerSection(getBaseContext()));
+                    String partnerSection = MyPreferences.getPartnerSection(getBaseContext());
+                    DatabaseReference databaseReference = database.getReference(partnerSection);
                     databaseReference.child(user.getEmail().replace(".", "")).child("UserProfile").addListenerForSingleValueEvent(new ValueEventListener()
                     {
                         @Override

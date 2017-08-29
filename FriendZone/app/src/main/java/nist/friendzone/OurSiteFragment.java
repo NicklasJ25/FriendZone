@@ -21,7 +21,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
-import nist.friendzone.Model.User;
+import nist.friendzone.Realm.User;
 import nist.friendzone.Realm.RealmDatabase;
 
 import static android.content.ContentValues.TAG;
@@ -70,10 +70,10 @@ public class OurSiteFragment extends Fragment
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //myNameTextView.setText(dataSnapshot.child(emails[0]).child("UserProfile").child("DisplayName").getValue().toString());
                 partnerNameTextView.setText(dataSnapshot.child(emails[1]).child("UserProfile").child("DisplayName").getValue().toString());
-                //String myBirthday = dataSnapshot.child(emails[0]).child("UserProfile").child("Birthday").getValue().toString();
+                //String myBirthday = dataSnapshot.child(emails[0]).child("UserProfile").child("birthday").getValue().toString();
                 //int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myBirthday.split("/")[2]);
                 //myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
-                String partnerBirthday = dataSnapshot.child(emails[1]).child("UserProfile").child("Birthday").getValue().toString();
+                String partnerBirthday = dataSnapshot.child(emails[1]).child("UserProfile").child("birthday").getValue().toString();
                 int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerBirthday.split("/")[2]);
                 partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
             }
@@ -84,14 +84,14 @@ public class OurSiteFragment extends Fragment
             }
         });
 
-        String myPath = emails[0] + "/ProfilePicture.png";
+        String myPath = emails[0] + "/profilePicture.png";
         StorageReference myStorageReference = storage.getReference(myPath);
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(myAvatarView);
 
-        String partnerPath = emails[1] + "/ProfilePicture.png";
+        String partnerPath = emails[1] + "/profilePicture.png";
         StorageReference partnerStorageReference = storage.getReference(partnerPath);
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())
