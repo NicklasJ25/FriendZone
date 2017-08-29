@@ -21,6 +21,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
+import nist.friendzone.Model.User;
+import nist.friendzone.Realm.RealmDatabase;
+
 import static android.content.ContentValues.TAG;
 
 public class OurSiteFragment extends Fragment
@@ -55,15 +58,21 @@ public class OurSiteFragment extends Fragment
     private void SetUserInformation(final String partnerSection)
     {
         final String[] emails = partnerSection.split("\\\\");
+        User user = RealmDatabase.GetUser(emails[0]);
+        myNameTextView.setText(user.firstname + " " + user.lastname);
+        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(user.birthday.split("/")[2]);
+        myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
+
+
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(partnerSection);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                myNameTextView.setText(dataSnapshot.child(emails[0]).child("UserProfile").child("DisplayName").getValue().toString());
+                //myNameTextView.setText(dataSnapshot.child(emails[0]).child("UserProfile").child("DisplayName").getValue().toString());
                 partnerNameTextView.setText(dataSnapshot.child(emails[1]).child("UserProfile").child("DisplayName").getValue().toString());
-                String myBirthday = dataSnapshot.child(emails[0]).child("UserProfile").child("Birthday").getValue().toString();
-                int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myBirthday.split("/")[2]);
-                myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
+                //String myBirthday = dataSnapshot.child(emails[0]).child("UserProfile").child("Birthday").getValue().toString();
+                //int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myBirthday.split("/")[2]);
+                //myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
                 String partnerBirthday = dataSnapshot.child(emails[1]).child("UserProfile").child("Birthday").getValue().toString();
                 int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerBirthday.split("/")[2]);
                 partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));

@@ -1,10 +1,8 @@
 package nist.friendzone.Firebase;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,14 +15,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import nist.friendzone.MyPreferences;
+import io.realm.Realm;
+import nist.friendzone.Model.User;
 
 import static android.content.ContentValues.TAG;
 
 public class Database
 {
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database;
+    private Realm realm = Realm.getDefaultInstance();
 
     public Database()
     {
@@ -40,23 +40,23 @@ public class Database
 
     public void UploadProfilePicture(Uri profilePicture)
     {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String path = user.getEmail().replace(".", "") + "/ProfilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 UpdateUser("ProfilePicture", downloadUrl.toString());
+
+                realm.beginTransaction();
+                User updateUser = realm.where(User.class).equalTo("email", user.getEmail()).findFirst();
+                updateUser.picturePath = downloadUrl.toString();
+                realm.copyToRealmOrUpdate(updateUser);
+                realm.commitTransaction();
             }
         });
     }

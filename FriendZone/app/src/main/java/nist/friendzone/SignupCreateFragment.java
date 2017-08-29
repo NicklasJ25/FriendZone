@@ -8,10 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import io.realm.Realm;
+import nist.friendzone.Firebase.Database;
 import nist.friendzone.Firebase.EmailPassword;
+import nist.friendzone.Model.User;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
 {
+    Realm realm = Realm.getDefaultInstance();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -44,9 +49,18 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             String password = getArguments().getString("Password");
 
             EmailPassword emailPassword = new EmailPassword(getActivity());
-            emailPassword.CreateUser(email, password, firstname, lastname, birthday, profilePicture, phone);
+            emailPassword.CreateUser(email, password, firstname, lastname, birthday, phone);
+
+            realm.beginTransaction();
+            User user = realm.createObject(User.class);
+            user.email = email;
+            user.firstname = firstname;
+            user.lastname = lastname;
+            user.birthday = birthday;
+            realm.commitTransaction();
+
+            Database database = new Database();
+            database.UploadProfilePicture(profilePicture);
         }
     }
-    
-//
 }
