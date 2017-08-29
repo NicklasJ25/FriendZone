@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.realm.Realm;
 import nist.friendzone.Model.User;
 import nist.friendzone.Realm.RealmDatabase;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Realm.init(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 else if (!RealmDatabase.UserExists(user.getEmail()))
                 {
                     DatabaseReference databaseReference = database.getReference(MyPreferences.getPartnerSection(getBaseContext()));
-                    databaseReference.child(user.getEmail().replace(".", "")).addListenerForSingleValueEvent(new ValueEventListener()
+                    databaseReference.child(user.getEmail().replace(".", "")).child("UserProfile").addListenerForSingleValueEvent(new ValueEventListener()
                     {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
