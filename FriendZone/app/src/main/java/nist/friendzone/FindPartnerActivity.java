@@ -36,7 +36,7 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
         Button findPartnerButton = (Button) findViewById(R.id.findPartnerButton);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference myReference = database.getReference(user.getEmail().replace(".", ""));
+        final DatabaseReference myReference = database.getReference(user.getEmail().replace(".", ","));
 
         myReference.addValueEventListener(new ValueEventListener()
         {
@@ -45,6 +45,7 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
             {
                 if (!dataSnapshot.hasChildren())
                 {
+                    MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(intent);
                 }
@@ -56,7 +57,7 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     Database database = new Database();
-                                    database.MakePartners(user.getEmail().replace(".", ""), dataSnapshot.child("Partner").getValue().toString().replace(".", ""));
+                                    database.MakePartners(user.getEmail().replace(".", ","), dataSnapshot.child("Partner").getValue().toString().replace(".", ","));
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -87,7 +88,8 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
-        String partnerEmail = emailEditText.getText().toString().replace(".", "");
+        //TODO Sørg for at der ikke kan oprettes alle mulige anmodninger.
+        String partnerEmail = emailEditText.getText().toString().replace(".", ",").toLowerCase();
 
         DatabaseReference partnerReference = database.getReference(partnerEmail);
         partnerReference.child("Partner").setValue(user.getEmail());

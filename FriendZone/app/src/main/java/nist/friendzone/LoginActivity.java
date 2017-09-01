@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", "")).child("UserProfile");
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ",")).child("UserProfile");
                     reference.addListenerForSingleValueEvent(new ValueEventListener()
                     {
                         @Override
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity
                             else
                             {
                                 MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
-                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString()).child(user.getEmail().replace(".", "")).child("UserProfile");
+                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString()).child(user.getEmail().replace(".", ",")).child("UserProfile");
                                 reference1.addListenerForSingleValueEvent(new ValueEventListener()
                                 {
                                     @Override

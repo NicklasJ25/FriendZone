@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase database;
     private Realm realm;
 
     @Override
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelectedItemId(R.id.newsFeedNavigation);
 
-        database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener()
         {
@@ -89,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.signOutMenu:
+                MyPreferences.ClearPrefrences(this);
                 realm.beginTransaction();
                 realm.deleteAll();
                 realm.commitTransaction();

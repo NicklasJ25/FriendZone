@@ -16,6 +16,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import io.realm.Realm;
+import nist.friendzone.MyPreferences;
 import nist.friendzone.Realm.User;
 
 import static android.content.ContentValues.TAG;
@@ -34,7 +35,7 @@ public class Database
     public void UpdateUser(String key, Object value)
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = user.getEmail().replace(".", "");
+        String email = user.getEmail().replace(".", ",");
         DatabaseReference reference = database.getReference().child(email).child(key);
         reference.setValue(value);
     }
@@ -42,7 +43,7 @@ public class Database
     public void UploadProfilePicture(Uri profilePicture)
     {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getEmail().replace(".", "") + "/profilePicture.png";
+        String path = user.getEmail().replace(".", ",") + "/profilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
