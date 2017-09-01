@@ -35,7 +35,8 @@ public class Database
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail().replace(".", "");
-        database.getReference().child(email).child(key).setValue(value);
+        DatabaseReference reference = database.getReference().child(email).child(key);
+        reference.setValue(value);
     }
 
     public void UploadProfilePicture(Uri profilePicture)
@@ -50,7 +51,7 @@ public class Database
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                UpdateUser("profilePicture", downloadUrl.toString());
+                UpdateUser("UserProfile/profilePicture", downloadUrl.toString());
 
                 realm.beginTransaction();
                 User updateUser = realm.where(User.class).equalTo("email", user.getEmail()).findFirst();

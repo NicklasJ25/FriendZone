@@ -13,17 +13,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import io.realm.Realm;
-import nist.friendzone.MyPreferences;
-import nist.friendzone.Realm.User;
 import nist.friendzone.R;
+import nist.friendzone.Realm.User;
 
 import static android.content.ContentValues.TAG;
 
@@ -49,12 +42,16 @@ public class EmailPassword
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful())
                 {
-                    Database database = new Database();
-                    database.UpdateUser("UserProfile", user);
-
                     realm.beginTransaction();
                     realm.copyToRealm(user);
                     realm.commitTransaction();
+
+                    Database database = new Database();
+                    database.UpdateUser("UserProfile/email", user.email);
+                    database.UpdateUser("UserProfile/firstname", user.firstname);
+                    database.UpdateUser("UserProfile/lastname", user.lastname);
+                    database.UpdateUser("UserProfile/phone", user.phone);
+                    database.UpdateUser("UserProfile/birthday", user.birthday);
 
                     if (user.profilePicture != null)
                     {
@@ -84,58 +81,6 @@ public class EmailPassword
             {
                 if (task.isSuccessful())
                 {
-                    final FirebaseUser user = firebaseAuth.getCurrentUser();
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ""));
-                    reference.addListenerForSingleValueEvent(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
-                        {
-                            if (dataSnapshot.hasChildren())
-                            {
-                                User user = dataSnapshot.child("UserProfile").getValue(User.class);
-                                realm.beginTransaction();
-                                realm.copyToRealm(user);
-                                realm.commitTransaction();
-                            }
-                            else
-                            {
-                                MyPreferences.setPartnerSection(context, dataSnapshot.getValue().toString());
-                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString()).child(user.getEmail().replace(".", ""));
-                                reference1.addListenerForSingleValueEvent(new ValueEventListener()
-                                {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot)
-                                    {
-                                        User user = dataSnapshot.child("UserProfile").getValue(User.class);
-                                        realm.beginTransaction();
-                                        realm.copyToRealm(user);
-                                        realm.commitTransaction();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError)
-                                    {
-
-                                    }
-                                });
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError)
-                        {
-
-                        }
-                    });
-
-
-
-
-
-
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success");
                 }

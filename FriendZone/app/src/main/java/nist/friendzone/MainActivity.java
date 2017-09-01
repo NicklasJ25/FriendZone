@@ -11,21 +11,16 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import io.realm.Realm;
-import nist.friendzone.Realm.User;
-import nist.friendzone.Realm.RealmDatabase;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Realm.init(this);
+        realm = Realm.getDefaultInstance();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -50,25 +45,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
                 }
-                else if (!RealmDatabase.UserExists(user.getEmail()))
+                else if (MyPreferences.getPartnerSection(getBaseContext()).equals(""))
                 {
-                    String partnerSection = MyPreferences.getPartnerSection(getBaseContext());
-                    DatabaseReference databaseReference = database.getReference(partnerSection);
-                    databaseReference.child(user.getEmail().replace(".", "")).child("UserProfile").addListenerForSingleValueEvent(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
-                        {
-                            User user = dataSnapshot.getValue(User.class);
-                            RealmDatabase.CreateUser(user);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError)
-                        {
-
-                        }
-                    });
+                    Intent intent = new Intent(getBaseContext(), FindPartnerActivity.class);
+                    startActivity(intent);
                 }
             }
         };
@@ -109,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.signOutMenu:
+                realm.beginTransaction();
+                realm.deleteAll();
+                realm.commitTransaction();
                 FirebaseAuth.getInstance().signOut();
                 return true;
             default:

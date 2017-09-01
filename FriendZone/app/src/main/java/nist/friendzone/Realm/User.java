@@ -28,3 +28,4 @@ public class User extends RealmObject
         this.profilePicture = profilePicture;
     }
 }
+

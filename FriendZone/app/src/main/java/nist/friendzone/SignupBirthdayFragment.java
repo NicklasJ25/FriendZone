@@ -33,7 +33,7 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
     public void onClick(View v)
     {
         int day = birthdayDatePicker.getDayOfMonth();
-        int month = birthdayDatePicker.getMonth();
+        int month = birthdayDatePicker.getMonth() + 1;
         int year = birthdayDatePicker.getYear();
         String birthday = day + "/" + month + "/" + year;
 
