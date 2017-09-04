@@ -7,9 +7,9 @@
         android:title="@string/newsFeedNavigation"/>
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/createPostNavigation"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard"/>
+        android:title="@string/createPostNavigation"/>
 
     <item
         android:id="@+id/oursiteNavigation"

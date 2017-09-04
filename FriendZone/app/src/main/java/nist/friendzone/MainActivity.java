@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.navigation_dashboard:
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new AddNewsfeedFragment())
+                        .replace(R.id.content, new CreatePostFragment())
                         .commit();
                 return true;
             case R.id.oursiteNavigation:

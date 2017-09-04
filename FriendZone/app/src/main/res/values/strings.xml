@@ -12,7 +12,7 @@
     <string name="errorFieldRequired">This field is required</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="newsFeedNavigation">Newsfeed</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="createPostNavigation">Create post</string>
     <string name="oursiteNavigation">Our site</string>
     <string name="facebook_app_id" translatable="false">1784677361557369</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1784677361557369</string>

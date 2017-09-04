@@ -37,4 +37,5 @@
     <string name="No">Nej</string>
     <string name="Yes">Ja</string>
     <string name="ageTextView">%d år</string>
+    <string name="createPostNavigation">Opret opslag</string>
 </resources>
