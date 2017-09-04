@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ",")).child("UserProfile");
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ","));
                     reference.addListenerForSingleValueEvent(new ValueEventListener()
                     {
                         @Override
@@ -48,12 +48,12 @@ public class LoginActivity extends AppCompatActivity
                             if (dataSnapshot.hasChildren())
                             {
                                 User user1 = new User(
-                                        dataSnapshot.child("email").toString(),
-                                        dataSnapshot.child("firstname").toString(),
-                                        dataSnapshot.child("lastname").toString(),
-                                        dataSnapshot.child("birthday").toString(),
-                                        dataSnapshot.child("phone").toString(),
-                                        dataSnapshot.child("profilepicture").toString()
+                                        dataSnapshot.child("UserProfile").child("email").getValue().toString(),
+                                        dataSnapshot.child("UserProfile").child("firstname").getValue().toString(),
+                                        dataSnapshot.child("UserProfile").child("lastname").getValue().toString(),
+                                        dataSnapshot.child("UserProfile").child("birthday").getValue().toString(),
+                                        dataSnapshot.child("UserProfile").child("phone").getValue().toString(),
+                                        dataSnapshot.child("UserProfile").child("profilePicture").getValue().toString()
                                 );
                                 RealmDatabase.CreateUser(user1);
                             }
@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity
                                     public void onDataChange(DataSnapshot dataSnapshot)
                                     {
                                         User user1 = new User(
-                                                dataSnapshot.child("email").toString(),
-                                                dataSnapshot.child("firstname").toString(),
-                                                dataSnapshot.child("lastname").toString(),
-                                                dataSnapshot.child("birthday").toString(),
-                                                dataSnapshot.child("phone").toString(),
-                                                dataSnapshot.child("profilepicture").toString()
+                                                dataSnapshot.child("email").getValue().toString(),
+                                                dataSnapshot.child("firstname").getValue().toString(),
+                                                dataSnapshot.child("lastname").getValue().toString(),
+                                                dataSnapshot.child("birthday").getValue().toString(),
+                                                dataSnapshot.child("phone").getValue().toString(),
+                                                dataSnapshot.child("profilePicture").getValue().toString()
                                         );
                                         RealmDatabase.CreateUser(user1);
                                     }

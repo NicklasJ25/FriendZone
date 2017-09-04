@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,7 @@ public class OurSiteFragment extends Fragment
     private void SetUserInformation(final String partnerSection)
     {
         final String[] emails = partnerSection.split("\\\\");
-        User user = RealmDatabase.GetUser(emails[0].replace(",", "."));
+        User user = RealmDatabase.GetUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         myNameTextView.setText(user.firstname + " " + user.lastname);
         int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(user.birthday.split("/")[2]);
         myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
