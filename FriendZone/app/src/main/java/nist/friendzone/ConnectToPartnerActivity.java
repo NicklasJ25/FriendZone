@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,12 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import nist.friendzone.Firebase.Database;
 
-public class FindPartnerActivity extends AppCompatActivity implements View.OnClickListener
+public class ConnectToPartnerActivity extends AppCompatActivity implements View.OnClickListener
 {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseUser user;
 
     private EditText emailEditText;
+    private TextView partnerTextView;
+    private Button deletePartnerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +36,8 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_connect_to_partner);
 
         emailEditText = (EditText) findViewById(R.id.emailEditText);
+        partnerTextView = (TextView) findViewById(R.id.partnerTextView);
+        deletePartnerButton = (Button) findViewById(R.id.deletePartnerButton);
         Button findPartnerButton = (Button) findViewById(R.id.findPartnerButton);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -67,7 +72,7 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
                         }
                     };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPartnerActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ConnectToPartnerActivity.this);
                     String dialogString = String.format(getResources().getString(R.string.FindPartnerDialogTextView), dataSnapshot.child("Partner").getValue());
                     builder.setMessage(dialogString).setPositiveButton(getResources().getString(R.string.Yes), dialogClickListener)
                             .setNegativeButton(getResources().getString(R.string.No), dialogClickListener).show();
@@ -82,16 +87,34 @@ public class FindPartnerActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        deletePartnerButton.setOnClickListener(this);
         findPartnerButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v)
     {
-        //TODO Sørg for at der ikke kan oprettes alle mulige anmodninger.
         String partnerEmail = emailEditText.getText().toString().replace(".", ",").toLowerCase();
-
         DatabaseReference partnerReference = database.getReference(partnerEmail);
-        partnerReference.child("Partner").setValue(user.getEmail());
+        switch (v.getId())
+        {
+            case R.id.deletePartnerButton:
+                emailEditText.setVisibility(View.VISIBLE);
+                partnerTextView.setVisibility(View.GONE);
+                deletePartnerButton.setVisibility(View.GONE);
+
+                partnerReference.child("Partner").removeValue();
+                break;
+            case R.id.findPartnerButton:
+                partnerTextView.setText(partnerEmail);
+
+                emailEditText.setVisibility(View.GONE);
+                partnerTextView.setVisibility(View.VISIBLE);
+                deletePartnerButton.setVisibility(View.VISIBLE);
+
+
+                partnerReference.child("Partner").setValue(user.getEmail());
+                break;
+        }
     }
 }

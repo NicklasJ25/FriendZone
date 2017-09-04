@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import io.realm.Realm;
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
                 else if (MyPreferences.getPartnerSection(getBaseContext()).equals(""))
                 {
-                    Intent intent = new Intent(getBaseContext(), FindPartnerActivity.class);
+                    Intent intent = new Intent(getBaseContext(), ConnectToPartnerActivity.class);
                     startActivity(intent);
                 }
             }
