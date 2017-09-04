@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,19 +58,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId())
         {
             case R.id.newsFeedNavigation:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new NewsFeedFragment())
-                        .commit();
+                Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("NewsFeedFragment");
+                if (fragment1 == null || !fragment1.isVisible())
+                {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content, new NewsFeedFragment())
+                            .commit();
+                }
                 return true;
             case R.id.navigation_dashboard:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new AddNewsfeedFragment())
-                        .commit();
+                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("AddNewsfeedFragment");
+                if (fragment2 == null || !fragment2.isVisible())
+                {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content, new AddNewsfeedFragment())
+                            .commit();
+                }
                 return true;
             case R.id.oursiteNavigation:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new OurSiteFragment())
-                        .commit();
+                Fragment fragment3 = getSupportFragmentManager().findFragmentByTag("OurSiteFragment");
+                if (fragment3 == null || !fragment3.isVisible())
+                {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content, new OurSiteFragment())
+                            .commit();
+                }
                 return true;
         }
         return false;
