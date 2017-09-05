@@ -18,7 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AddNewsfeedFragment extends Fragment implements View.OnClickListener
+public class CreatePostFragment extends Fragment implements View.OnClickListener
 {
     FirebaseDatabase database;
 
@@ -27,7 +27,7 @@ public class AddNewsfeedFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_add_newsfeed, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_post, container, false);
 
         descriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
         Button publishButton = (Button) view.findViewById(R.id.publishButton);

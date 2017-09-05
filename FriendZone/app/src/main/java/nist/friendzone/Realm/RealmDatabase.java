@@ -1,6 +1,8 @@
 package nist.friendzone.Realm;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 public class RealmDatabase
 {

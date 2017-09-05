@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
                 return true;
             case R.id.navigation_dashboard:
+<<<<<<< HEAD
                 Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("AddNewsfeedFragment");
                 if (fragment2 == null || !fragment2.isVisible())
                 {
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             .replace(R.id.content, new AddNewsfeedFragment())
                             .commit();
                 }
+=======
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content, new CreatePostFragment())
+                        .commit();
+>>>>>>> 82bd73eccf7c2c5acb7aa42716256bccca05024b
                 return true;
             case R.id.oursiteNavigation:
                 Fragment fragment3 = getSupportFragmentManager().findFragmentByTag("OurSiteFragment");
