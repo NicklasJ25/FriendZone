@@ -60,9 +60,9 @@ public class OurSiteFragment extends Fragment
 
         String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
         User partnerUser = RealmDatabase.GetUser(partnerEmail);
-        myNameTextView.setText(partnerUser.firstname + " " + partnerUser.lastname);
+        partnerNameTextView.setText(partnerUser.firstname + " " + partnerUser.lastname);
         int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
-        myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
+        partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
 
 //        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(partnerSection);
 //        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -86,16 +86,14 @@ public class OurSiteFragment extends Fragment
 //            }
 //        });
 
-        String myPath = myEmail.replace(".", ",") + "/profilePicture.png";
-        StorageReference myStorageReference = storage.getReference(myPath);
-        Glide.with(this /* context */)
+        StorageReference myStorageReference = storage.getReferenceFromUrl(myUser.profilePicture);
+        Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(myAvatarView);
 
-        String partnerPath = partnerEmail.replace(".", ",") + "/profilePicture.png";
-        StorageReference partnerStorageReference = storage.getReference(partnerPath);
-        Glide.with(this /* context */)
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(partnerUser.profilePicture);
+        Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)
                 .into(partnerAvatarView);
