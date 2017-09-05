@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import nist.friendzone.Firebase.Database;
+import nist.friendzone.Realm.RealmDatabase;
+import nist.friendzone.Realm.User;
 
 public class ConnectToPartnerActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -51,6 +53,35 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
                 if (!dataSnapshot.hasChildren())
                 {
                     MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
+                    reference1.addListenerForSingleValueEvent(new ValueEventListener()
+                        {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                for (DataSnapshot email : dataSnapshot.getChildren())
+                                {
+                                    if (!email.getKey().equals(user.getEmail()))
+                                    {
+                                        User user1 = new User(
+                                                email.child("UserProfile").child("email").getValue().toString(),
+                                                email.child("UserProfile").child("firstname").getValue().toString(),
+                                                email.child("UserProfile").child("lastname").getValue().toString(),
+                                                email.child("UserProfile").child("birthday").getValue().toString(),
+                                                email.child("UserProfile").child("phone").getValue().toString(),
+                                                email.child("UserProfile").child("profilePicture").getValue().toString()
+                                        );
+                                        RealmDatabase.CreateUser(user1);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError)
+                            {
+
+                            }
+                        });
                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(intent);
                 }

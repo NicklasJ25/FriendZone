@@ -16,7 +16,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import io.realm.Realm;
-import nist.friendzone.MyPreferences;
 import nist.friendzone.Realm.User;
 
 import static android.content.ContentValues.TAG;
@@ -69,12 +68,12 @@ public class Database
         {
             final DatabaseReference databaseReference = database.getReference();
             final String partnerSection = myEmail + "\\" + partnerEmail;
+            databaseReference.child(myEmail).child("Partner").removeValue();
             databaseReference.child(myEmail).addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    databaseReference.child(myEmail).child("Partner").removeValue();
                     databaseReference.child(partnerSection).child(myEmail).setValue(dataSnapshot.getValue());
                     databaseReference.child(myEmail).setValue(partnerSection);
                 }

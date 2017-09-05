@@ -72,5 +72,9 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
 
             }
         });
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content, new NewsFeedFragment())
+                .commit();
     }
 }

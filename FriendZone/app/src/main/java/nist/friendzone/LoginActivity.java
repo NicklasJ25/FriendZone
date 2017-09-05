@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import io.realm.Realm;
 import nist.friendzone.Realm.RealmDatabase;
 import nist.friendzone.Realm.User;
 
@@ -60,21 +59,24 @@ public class LoginActivity extends AppCompatActivity
                             else
                             {
                                 MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
-                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString()).child(user.getEmail().replace(".", ",")).child("UserProfile");
+                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
                                 reference1.addListenerForSingleValueEvent(new ValueEventListener()
                                 {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot)
                                     {
-                                        User user1 = new User(
-                                                dataSnapshot.child("email").getValue().toString(),
-                                                dataSnapshot.child("firstname").getValue().toString(),
-                                                dataSnapshot.child("lastname").getValue().toString(),
-                                                dataSnapshot.child("birthday").getValue().toString(),
-                                                dataSnapshot.child("phone").getValue().toString(),
-                                                dataSnapshot.child("profilePicture").getValue().toString()
-                                        );
-                                        RealmDatabase.CreateUser(user1);
+                                        for (DataSnapshot email : dataSnapshot.getChildren())
+                                        {
+                                            User user1 = new User(
+                                                    email.child("UserProfile").child("email").getValue().toString(),
+                                                    email.child("UserProfile").child("firstname").getValue().toString(),
+                                                    email.child("UserProfile").child("lastname").getValue().toString(),
+                                                    email.child("UserProfile").child("birthday").getValue().toString(),
+                                                    email.child("UserProfile").child("phone").getValue().toString(),
+                                                    email.child("UserProfile").child("profilePicture").getValue().toString()
+                                            );
+                                            RealmDatabase.CreateUser(user1);
+                                        }
                                     }
 
                                     @Override

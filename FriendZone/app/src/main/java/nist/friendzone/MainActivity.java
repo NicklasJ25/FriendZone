@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
+        //TODO Skal ikke kunne vælge den samme fane to gange
         switch (item.getItemId())
         {
             case R.id.newsFeedNavigation:
@@ -66,20 +67,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             .commit();
                 }
                 return true;
-            case R.id.navigation_dashboard:
-<<<<<<< HEAD
-                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("AddNewsfeedFragment");
+            case R.id.createPostNavigation:
+                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("CreatePostFragment");
                 if (fragment2 == null || !fragment2.isVisible())
                 {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new AddNewsfeedFragment())
+                            .replace(R.id.content, new CreatePostFragment())
                             .commit();
                 }
-=======
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content, new CreatePostFragment())
-                        .commit();
->>>>>>> 82bd73eccf7c2c5acb7aa42716256bccca05024b
                 return true;
             case R.id.oursiteNavigation:
                 Fragment fragment3 = getSupportFragmentManager().findFragmentByTag("OurSiteFragment");

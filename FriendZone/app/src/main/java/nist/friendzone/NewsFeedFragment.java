@@ -46,7 +46,7 @@ public class NewsFeedFragment extends Fragment
     {
         database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("Newsfeed");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        databaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
