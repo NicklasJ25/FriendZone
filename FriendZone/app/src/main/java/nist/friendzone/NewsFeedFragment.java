@@ -3,6 +3,7 @@ package nist.friendzone;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,6 +36,9 @@ public class NewsFeedFragment extends Fragment
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                    new LinearLayoutManager(getContext()).getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
             getNewsfeeds();
         }
         return view;
