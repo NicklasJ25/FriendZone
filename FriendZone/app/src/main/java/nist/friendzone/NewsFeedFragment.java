@@ -25,7 +25,6 @@ public class NewsFeedFragment extends Fragment
     FirebaseDatabase database;
     RecyclerView recyclerView;
 
-    List<Couple> couples = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -51,11 +50,12 @@ public class NewsFeedFragment extends Fragment
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                List<Couple> couples = new ArrayList<>();
                 for (DataSnapshot dates : dataSnapshot.getChildren())
                 {
                     for (DataSnapshot couple : dates.getChildren())
                     {
-                        couples.add(couple.getValue(Couple.class));
+                        couples.add(0, couple.getValue(Couple.class));
                     }
                 }
                 recyclerView.setAdapter(new MyNewsRecyclerViewAdapter(getContext(), couples));

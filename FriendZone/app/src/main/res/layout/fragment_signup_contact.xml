@@ -5,8 +5,6 @@
                                              android:layout_height="match_parent"
                                              tools:context="nist.friendzone.SignupContactFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/signupContactTextView"
         android:layout_width="wrap_content"

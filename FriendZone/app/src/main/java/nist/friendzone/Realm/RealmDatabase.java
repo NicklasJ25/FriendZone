@@ -42,4 +42,12 @@ public class RealmDatabase
         User user = realm.where(User.class).equalTo("email", email).findFirst();
         return user;
     }
+
+    public static void ClearDatabase()
+    {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+    }
 }

@@ -5,8 +5,6 @@
                                              android:layout_height="match_parent"
                                              tools:context="nist.friendzone.SignupPictureFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <Button
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"

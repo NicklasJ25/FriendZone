@@ -17,11 +17,9 @@
     <string name="facebook_app_id" translatable="false">1784677361557369</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1784677361557369</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="signOutMenu">Sign out</string>
     <string name="postalcodeEditText">Postalcode</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="firstnameEditText">First name</string>
     <string name="lastnameEditText">Last name</string>
@@ -45,4 +43,6 @@
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="ageTextView">%d years</string>
+    <string name="createPostTextView">Enter a message and create a post</string>
+    <string name="createPostButton">Create Post</string>
 </resources>

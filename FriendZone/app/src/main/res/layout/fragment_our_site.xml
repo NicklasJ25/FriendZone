@@ -6,8 +6,6 @@
                                              xmlns:avatarview="http://schemas.android.com/apk/res-auto"
                                              tools:context="nist.friendzone.OurSiteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <com.liangfeizc.avatarview.AvatarView
         android:id="@+id/myAvatarView"
         android:layout_width="100dp"

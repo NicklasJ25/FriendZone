@@ -14,20 +14,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import io.realm.Realm;
+import nist.friendzone.Realm.RealmDatabase;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth firebaseAuth;
-    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        realm = Realm.getDefaultInstance();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
-        //TODO Skal ikke kunne vælge den samme fane to gange
         switch (item.getItemId())
         {
             case R.id.newsFeedNavigation:
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (fragment1 == null || !fragment1.isVisible())
                 {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new NewsFeedFragment())
+                            .replace(R.id.content, new NewsFeedFragment(), "NewsFeedFragment")
                             .commit();
                 }
                 return true;
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (fragment2 == null || !fragment2.isVisible())
                 {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new CreatePostFragment())
+                            .replace(R.id.content, new CreatePostFragment(), "CreatePostFragment")
                             .commit();
                 }
                 return true;
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (fragment3 == null || !fragment3.isVisible())
                 {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new OurSiteFragment())
+                            .replace(R.id.content, new OurSiteFragment(), "OurSiteFragment")
                             .commit();
                 }
                 return true;
@@ -101,9 +98,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.signOutMenu:
                 MyPreferences.ClearPrefrences(this);
-                realm.beginTransaction();
-                realm.deleteAll();
-                realm.commitTransaction();
+                RealmDatabase.ClearDatabase();
                 FirebaseAuth.getInstance().signOut();
                 return true;
             default:

@@ -38,4 +38,6 @@
     <string name="Yes">Ja</string>
     <string name="ageTextView">%d år</string>
     <string name="createPostNavigation">Opret opslag</string>
+    <string name="createPostTextView">Skriv en besked og opret et opslag</string>
+    <string name="createPostButton">Opret opslag</string>
 </resources>
