@@ -25,11 +25,10 @@ public class NewsFeedFragment extends Fragment
     FirebaseDatabase database;
     RecyclerView recyclerView;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
         if (view instanceof RecyclerView)
         {
