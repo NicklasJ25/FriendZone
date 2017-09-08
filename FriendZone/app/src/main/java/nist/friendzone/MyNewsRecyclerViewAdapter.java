@@ -55,6 +55,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         holder.namesTextView.setText(couples.get(position).names);
         holder.agesTextView.setText(couples.get(position).ages);
         holder.descriptionTextView.setText(couples.get(position).description);
+        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + couples.get(position).time);
     }
 
     @Override
@@ -71,17 +72,19 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         public final TextView namesTextView;
         public final TextView agesTextView;
         public final TextView descriptionTextView;
+        public final TextView timeTextView;
         public Couple mItem;
 
         public ViewHolder(View view)
         {
             super(view);
             this.view = view;
-            part1AvatarView = (ImageView) view.findViewById(R.id.part1AvatarView);
-            part2AvatarView = (ImageView) view.findViewById(R.id.part2AvatarView);
-            namesTextView = (TextView) view.findViewById(R.id.namesTextView);
-            agesTextView = (TextView) view.findViewById(R.id.agesTextView);
-            descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextView);
+            part1AvatarView = view.findViewById(R.id.part1AvatarView);
+            part2AvatarView = view.findViewById(R.id.part2AvatarView);
+            namesTextView = view.findViewById(R.id.namesTextView);
+            agesTextView = view.findViewById(R.id.agesTextView);
+            descriptionTextView = view.findViewById(R.id.descriptionTextView);
+            timeTextView = view.findViewById(R.id.timeTextView);
         }
     }
 }

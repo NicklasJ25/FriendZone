@@ -10,11 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,8 +32,8 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
     {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
 
-        descriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
-        Button publishButton = (Button) view.findViewById(R.id.createPostButton);
+        descriptionEditText = view.findViewById(R.id.descriptionEditText);
+        Button publishButton = view.findViewById(R.id.createPostButton);
 
         publishButton.setOnClickListener(this);
 
@@ -59,11 +56,13 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
         String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
         User partnerUser = RealmDatabase.GetUser(partnerEmail);
 
+        DateFormat firebaseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String firebaseDate = firebaseDateFormat.format(new Date());
         String date = dateFormat.format(new Date());
         String time = timeFormat.format(new Date());
-        DatabaseReference newsfeed = database.getReference("Newsfeed").child(date).child(time + partnerSection);
+        DatabaseReference newsfeed = database.getReference("Newsfeed").child(firebaseDate).child(time + partnerSection);
         newsfeed.child("partnerSection").setValue(partnerSection);
         newsfeed.child("part1Picture").setValue(myUser.profilePicture);
         newsfeed.child("part2Picture").setValue(partnerUser.profilePicture);
@@ -72,8 +71,9 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
         int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
         newsfeed.child("ages").setValue(myAge + " & " + partnerAge);
         newsfeed.child("description").setValue(description);
+        newsfeed.child("time").setValue(date + " " + time);
 
-        BottomNavigationView navigation = (BottomNavigationView)getActivity().findViewById(R.id.navigation);
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.newsFeedNavigation);
     }
 }

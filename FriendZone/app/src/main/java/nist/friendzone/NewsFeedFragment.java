@@ -1,9 +1,8 @@
 package nist.friendzone;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,47 +20,63 @@ import java.util.List;
 
 import nist.friendzone.Model.Couple;
 
-public class NewsFeedFragment extends Fragment
+public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
     FirebaseDatabase database;
+    SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
+    MyNewsRecyclerViewAdapter adapter;
+    List<Couple> couples = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
-        if (view instanceof RecyclerView)
+        swipeRefreshLayout = view.findViewById(R.id.newsfeedSwipeRefreshLayout);
+        recyclerView = view.findViewById(R.id.newsfeedRecyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new EndlessScrollListener(linearLayoutManager)
         {
-            Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                    new LinearLayoutManager(getContext()).getOrientation());
-            recyclerView.addItemDecoration(dividerItemDecoration);
-            getNewsfeeds();
-        }
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view)
+            {
+                getNewsfeedsAtPage(page);
+            }
+        });
+        adapter = new MyNewsRecyclerViewAdapter(getContext(), couples);
+        recyclerView.setAdapter(adapter);
+        getNewsfeedsAtPage(0);
         return view;
     }
 
-    private void getNewsfeeds()
+    private void getNewsfeedsAtPage(final int page)
     {
         database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("Newsfeed");
-        databaseReference.addValueEventListener(new ValueEventListener()
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                List<Couple> couples = new ArrayList<>();
-                for (DataSnapshot dates : dataSnapshot.getChildren())
+                int i = 0;
+                for (DataSnapshot dates: dataSnapshot.getChildren())
                 {
-                    for (DataSnapshot couple : dates.getChildren())
+                    if (i == page)
                     {
-                        couples.add(0, couple.getValue(Couple.class));
+                        for (DataSnapshot couple : dates.getChildren())
+                        {
+                            couples.add(couple.getValue(Couple.class));
+                        }
                     }
+                    i++;
                 }
-                recyclerView.setAdapter(new MyNewsRecyclerViewAdapter(getContext(), couples));
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -70,5 +85,12 @@ public class NewsFeedFragment extends Fragment
 
             }
         });
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        couples.clear();
+        getNewsfeedsAtPage(0);
     }
 }

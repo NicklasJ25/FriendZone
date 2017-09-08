@@ -45,4 +45,5 @@
     <string name="ageTextView">%d years</string>
     <string name="createPostTextView">Enter a message and create a post</string>
     <string name="createPostButton">Create Post</string>
+    <string name="postedTimeText">"Posted at "</string>
 </resources>
