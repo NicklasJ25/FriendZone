@@ -39,7 +39,7 @@ public class SignupPasswordFragment extends Fragment implements View.OnClickList
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.frameLayout, fragment)
+                    .replace(R.id.frameLayout, fragment, "SignupCreateFragment")
                     .commit();
         }
     }

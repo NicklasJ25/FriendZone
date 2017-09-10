@@ -1,8 +1,10 @@
 package nist.friendzone.Firebase;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +48,15 @@ public class Database
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
+
+        uploadTask.addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+                Log.d("File Upload", "Fail");
+            }
+        });
 
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

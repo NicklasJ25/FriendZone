@@ -3,6 +3,7 @@ package nist.friendzone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,66 +37,75 @@ public class LoginActivity extends AppCompatActivity
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                final FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getEmail().replace(".", ","));
-                    reference.addListenerForSingleValueEvent(new ValueEventListener()
+                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null)
+                {
+                    Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("SignupCreateFragment");
+                    if (fragment1 == null || !fragment1.isVisible())
                     {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(firebaseUser.getEmail().replace(".", ","));
+                        reference.addListenerForSingleValueEvent(new ValueEventListener()
                         {
-                            if (dataSnapshot.hasChildren())
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot)
                             {
-                                User user1 = new User(
-                                        dataSnapshot.child("UserProfile").child("email").getValue().toString(),
-                                        dataSnapshot.child("UserProfile").child("firstname").getValue().toString(),
-                                        dataSnapshot.child("UserProfile").child("lastname").getValue().toString(),
-                                        dataSnapshot.child("UserProfile").child("birthday").getValue().toString(),
-                                        dataSnapshot.child("UserProfile").child("phone").getValue().toString(),
-                                        dataSnapshot.child("UserProfile").child("profilePicture").getValue().toString()
-                                );
-                                RealmDatabase.CreateUser(user1);
-                            }
-                            else
-                            {
-                                MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
-                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
-                                reference1.addListenerForSingleValueEvent(new ValueEventListener()
+                                if (dataSnapshot.hasChildren())
                                 {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot)
+                                    User user1 = new User(
+                                            dataSnapshot.child("UserProfile").child("email").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("firstname").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("lastname").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("birthday").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("phone").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("profilePicture").getValue().toString()
+                                    );
+                                    RealmDatabase.CreateUser(user1);
+                                } else
+                                {
+                                    MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
+                                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
+                                    reference1.addListenerForSingleValueEvent(new ValueEventListener()
                                     {
-                                        for (DataSnapshot email : dataSnapshot.getChildren())
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot)
                                         {
-                                            User user1 = new User(
-                                                    email.child("UserProfile").child("email").getValue().toString(),
-                                                    email.child("UserProfile").child("firstname").getValue().toString(),
-                                                    email.child("UserProfile").child("lastname").getValue().toString(),
-                                                    email.child("UserProfile").child("birthday").getValue().toString(),
-                                                    email.child("UserProfile").child("phone").getValue().toString(),
-                                                    email.child("UserProfile").child("profilePicture").getValue().toString()
-                                            );
-                                            RealmDatabase.CreateUser(user1);
+                                            for (DataSnapshot email : dataSnapshot.getChildren())
+                                            {
+                                                User user1 = new User(
+                                                        email.child("UserProfile").child("email").getValue().toString(),
+                                                        email.child("UserProfile").child("firstname").getValue().toString(),
+                                                        email.child("UserProfile").child("lastname").getValue().toString(),
+                                                        email.child("UserProfile").child("birthday").getValue().toString(),
+                                                        email.child("UserProfile").child("phone").getValue().toString(),
+                                                        email.child("UserProfile").child("profilePicture").getValue().toString()
+                                                );
+                                                RealmDatabase.CreateUser(user1);
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError)
-                                    {
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError)
+                                        {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
+                                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                startActivity(intent);
                             }
-                            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                            startActivity(intent);
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError)
-                        {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError)
+                            {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         };

@@ -37,10 +37,10 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_to_partner);
 
-        emailEditText = (EditText) findViewById(R.id.emailEditText);
-        partnerTextView = (TextView) findViewById(R.id.partnerTextView);
-        deletePartnerButton = (Button) findViewById(R.id.deletePartnerButton);
-        Button findPartnerButton = (Button) findViewById(R.id.findPartnerButton);
+        emailEditText = findViewById(R.id.emailEditText);
+        partnerTextView = findViewById(R.id.partnerTextView);
+        deletePartnerButton = findViewById(R.id.deletePartnerButton);
+        Button findPartnerButton = findViewById(R.id.findPartnerButton);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference myReference = database.getReference(user.getEmail().replace(".", ","));
@@ -61,7 +61,7 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
                             {
                                 for (DataSnapshot email : dataSnapshot.getChildren())
                                 {
-                                    if (!email.getKey().equals(user.getEmail()))
+                                    if (!email.getKey().equals(user.getEmail().replace(".", ",")))
                                     {
                                         User user1 = new User(
                                                 email.child("UserProfile").child("email").getValue().toString(),
