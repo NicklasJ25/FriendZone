@@ -1,5 +1,7 @@
 package nist.friendzone.Model;
 
+import java.util.List;
+
 public class Couple
 {
     public String part1Picture;

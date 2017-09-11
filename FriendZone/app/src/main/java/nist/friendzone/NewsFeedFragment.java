@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nist.friendzone.Model.Couple;
+import nist.friendzone.Model.Dates;
+import nist.friendzone.Model.Newsfeed;
 
 public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
@@ -63,18 +65,27 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                int i = 0;
-                for (DataSnapshot dates: dataSnapshot.getChildren())
+                Newsfeed newsfeed = dataSnapshot.getValue(Newsfeed.class);
+
+                Dates date = newsfeed.dates.get(newsfeed.dates.size() - page);
+
+                for (Couple couple : date.couples)
                 {
-                    if (i == page)
-                    {
-                        for (DataSnapshot couple : dates.getChildren())
-                        {
-                            couples.add(couple.getValue(Couple.class));
-                        }
-                    }
-                    i++;
+                    couples.add(couple);
                 }
+
+//                int i = 0;
+//                for (DataSnapshot dates: dataSnapshot.getChildren())
+//                {
+//                    if (i == page)
+//                    {
+//                        for (DataSnapshot couple : dates.getChildren())
+//                        {
+//                            couples.add(couple.getValue(Couple.class));
+//                        }
+//                    }
+//                    i++;
+//                }
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
