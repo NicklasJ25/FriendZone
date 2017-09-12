@@ -19,14 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nist.friendzone.Model.Couple;
-import nist.friendzone.Model.Dates;
-import nist.friendzone.Model.Newsfeed;
 
 public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
     FirebaseDatabase database;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
+    EndlessScrollListener endlessScrollListener;
     MyNewsRecyclerViewAdapter adapter;
     List<Couple> couples = new ArrayList<>();
 
@@ -42,14 +41,15 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new EndlessScrollListener(linearLayoutManager)
+        endlessScrollListener = new EndlessScrollListener(linearLayoutManager)
         {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view)
             {
                 getNewsfeedsAtPage(page);
             }
-        });
+        };
+        recyclerView.addOnScrollListener(endlessScrollListener);
         adapter = new MyNewsRecyclerViewAdapter(getContext(), couples);
         recyclerView.setAdapter(adapter);
         getNewsfeedsAtPage(0);
@@ -65,27 +65,19 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                Newsfeed newsfeed = dataSnapshot.getValue(Newsfeed.class);
-
-                Dates date = newsfeed.dates.get(newsfeed.dates.size() - page);
-
-                for (Couple couple : date.couples)
+                int childCount = (int) dataSnapshot.getChildrenCount();
+                int i = 1;
+                for (DataSnapshot dates: dataSnapshot.getChildren())
                 {
-                    couples.add(couple);
+                    if (i == childCount - page)
+                    {
+                        for (DataSnapshot couple : dates.getChildren())
+                        {
+                            couples.add(couple.getValue(Couple.class));
+                        }
+                    }
+                    i++;
                 }
-
-//                int i = 0;
-//                for (DataSnapshot dates: dataSnapshot.getChildren())
-//                {
-//                    if (i == page)
-//                    {
-//                        for (DataSnapshot couple : dates.getChildren())
-//                        {
-//                            couples.add(couple.getValue(Couple.class));
-//                        }
-//                    }
-//                    i++;
-//                }
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -102,6 +94,7 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onRefresh()
     {
         couples.clear();
+        endlessScrollListener.resetState();
         getNewsfeedsAtPage(0);
     }
 }

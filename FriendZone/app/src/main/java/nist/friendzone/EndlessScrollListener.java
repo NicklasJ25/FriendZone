@@ -1,9 +1,7 @@
 package nist.friendzone;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
@@ -42,18 +40,8 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     // but first we check if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
-        int lastVisibleItemPosition = 0;
+        int lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
         int totalItemCount = mLayoutManager.getItemCount();
-
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
-            // get maximum element within the list
-            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-        } else if (mLayoutManager instanceof GridLayoutManager) {
-            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        } else if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        }
 
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state

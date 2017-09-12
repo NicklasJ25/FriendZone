@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -56,6 +58,15 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         holder.agesTextView.setText(couples.get(position).ages);
         holder.descriptionTextView.setText(couples.get(position).description);
         holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + couples.get(position).time);
+
+        holder.commentsImageButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(context, "Denne funktion er ikke implementeret endnu", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -73,6 +84,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         public final TextView agesTextView;
         public final TextView descriptionTextView;
         public final TextView timeTextView;
+        public final ImageButton commentsImageButton;
         public Couple mItem;
 
         public ViewHolder(View view)
@@ -85,6 +97,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
             agesTextView = view.findViewById(R.id.agesTextView);
             descriptionTextView = view.findViewById(R.id.descriptionTextView);
             timeTextView = view.findViewById(R.id.timeTextView);
+            commentsImageButton = view.findViewById(R.id.commentsImageButton);
         }
     }
 }

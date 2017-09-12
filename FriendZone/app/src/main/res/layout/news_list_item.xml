@@ -19,7 +19,7 @@
             android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="0dp"
             android:text="Time"
             android:textSize="10sp"
@@ -30,32 +30,26 @@
             android:id="@+id/part1AvatarView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/oursite_icon"
-            app:border_color="@android:color/white"
-            app:border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeTextView"
-            app:layout_constraintVertical_bias="0.5"
-            app:shadow_color="@android:color/black"
-            app:shadow_width="1dp"/>
-
-        <com.liangfeizc.avatarview.AvatarView
-            android:id="@+id/part2AvatarView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
             android:src="@drawable/oursite_icon"
             app:border_color="@android:color/white"
             app:border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeTextView"
+            app:shadow_color="@android:color/black"
+            app:shadow_width="1dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="8dp"/>
+
+        <com.liangfeizc.avatarview.AvatarView
+            android:id="@+id/part2AvatarView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/oursite_icon"
+            app:border_color="@android:color/white"
+            app:border_width="1dp"
             app:layout_constraintLeft_toRightOf="@+id/part1AvatarView"
             app:layout_constraintTop_toBottomOf="@+id/timeTextView"
             app:shadow_color="@android:color/black"
@@ -65,12 +59,10 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="0dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/part2AvatarView"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timeTextView">
@@ -92,10 +84,24 @@
             <TextView
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Description"/>
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/commentsImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:srcCompat="@android:drawable/ic_menu_add"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
