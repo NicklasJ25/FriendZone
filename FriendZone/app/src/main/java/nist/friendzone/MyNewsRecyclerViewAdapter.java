@@ -78,16 +78,16 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public final View view;
-        public final ImageView part1AvatarView;
-        public final ImageView part2AvatarView;
-        public final TextView namesTextView;
-        public final TextView agesTextView;
-        public final TextView descriptionTextView;
-        public final TextView timeTextView;
-        public final ImageButton commentsImageButton;
-        public Couple mItem;
+        private final ImageView part1AvatarView;
+        private final ImageView part2AvatarView;
+        private final TextView namesTextView;
+        private final TextView agesTextView;
+        private final TextView descriptionTextView;
+        private final TextView timeTextView;
+        private final ImageButton commentsImageButton;
+        private Couple mItem;
 
-        public ViewHolder(View view)
+        private ViewHolder(View view)
         {
             super(view);
             this.view = view;
