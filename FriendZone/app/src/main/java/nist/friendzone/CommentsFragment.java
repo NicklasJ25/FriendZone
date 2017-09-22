@@ -1,121 +1,147 @@
 package nist.friendzone;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CommentsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CommentsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CommentsFragment extends Fragment
+import java.util.ArrayList;
+import java.util.List;
+
+import nist.friendzone.Model.Comment;
+
+public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    FirebaseDatabase database;
+    SwipeRefreshLayout swipeRefreshLayout;
+    RecyclerView recyclerView;
+    EndlessScrollListener endlessScrollListener;
+    RecyclerAdapterComment adapter;
+    List<Comment> comments = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ImageView part1AvatarView;
+    private ImageView part2AvatarView;
+    private TextView namesTextView;
+    private TextView agesTextView;
+    private TextView descriptionTextView;
+    private TextView timeTextView;
 
-    private OnFragmentInteractionListener mListener;
-
-    public CommentsFragment()
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        // Required empty public constructor
+        View view = inflater.inflate(R.layout.fragment_comments, container, false);
+
+        part1AvatarView = view.findViewById(R.id.part1AvatarView);
+        part2AvatarView = view.findViewById(R.id.part2AvatarView);
+        namesTextView = view.findViewById(R.id.namesTextView);
+        agesTextView = view.findViewById(R.id.agesTextView);
+        descriptionTextView = view.findViewById(R.id.descriptionTextView);
+        timeTextView = view.findViewById(R.id.timeTextView);
+
+        setNewsfeed();
+
+        swipeRefreshLayout = view.findViewById(R.id.commentsSwipeRefreshLayout);
+        recyclerView = view.findViewById(R.id.commentsRecyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        endlessScrollListener = new EndlessScrollListener(linearLayoutManager)
+        {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view)
+            {
+                getCommentsAtPage(page);
+            }
+        };
+        recyclerView.addOnScrollListener(endlessScrollListener);
+        adapter = new RecyclerAdapterComment(getContext(), comments);
+        recyclerView.setAdapter(adapter);
+        getCommentsAtPage(0);
+        return view;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CommentsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CommentsFragment newInstance(String param1, String param2)
+    //TODO: Tilføj kommentarer
+
+    private void setNewsfeed()
     {
-        CommentsFragment fragment = new CommentsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        StorageReference myStorageReference = storage.getReferenceFromUrl(getArguments().getString("Part1Picture"));
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(myStorageReference)
+                .into(part1AvatarView);
+
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(getArguments().getString("Part2Picture"));
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(partnerStorageReference)
+                .into(part2AvatarView);
+        namesTextView.setText(getArguments().getString("Names"));
+        agesTextView.setText(getArguments().getString("Ages"));
+        descriptionTextView.setText(getArguments().getString("Description"));
+        timeTextView.setText(getResources().getString(R.string.postedTimeText) + getArguments().getString("Time"));
+    }
+
+    private void getCommentsAtPage(final int page)
+    {
+        String FirebaseRef = getArguments().getString("FirebaseRef");
+
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseRef + "Comments");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                //TODO: Hent kommentarer ned, 100 af gangen
+                int childCount = (int) dataSnapshot.getChildrenCount();
+                int i = 1;
+                for (DataSnapshot dates: dataSnapshot.getChildren())
+                {
+                    if (i == childCount - page)
+                    {
+                        for (DataSnapshot couple : dates.getChildren())
+                        {
+                            //comments.add(couple.getValue(Newsfeed.class));
+                        }
+                    }
+                    i++;
+                }
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        });
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onRefresh()
     {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comments, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri)
-    {
-        if (mListener != null)
-        {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context)
-    {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener)
-        {
-            mListener = (OnFragmentInteractionListener) context;
-        } else
-        {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach()
-    {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener
-    {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        comments.clear();
+        endlessScrollListener.resetState();
+        getCommentsAtPage(0);
     }
 }

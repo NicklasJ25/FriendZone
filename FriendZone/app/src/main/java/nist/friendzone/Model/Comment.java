@@ -1,8 +1,6 @@
 package nist.friendzone.Model;
 
-import java.util.List;
-
-public class Couple
+public class Comment
 {
     public String part1Picture;
     public String part2Picture;
@@ -11,12 +9,12 @@ public class Couple
     public String description;
     public String time;
 
-    public Couple()
+    public Comment()
     {
 
     }
 
-    public Couple(String part1Picture, String part2Picture, String names, String ages, String description, String time)
+    public Comment(String part1Picture, String part2Picture, String names, String ages, String description, String time)
     {
         this.part1Picture = part1Picture;
         this.part2Picture = part2Picture;
