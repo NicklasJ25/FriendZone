@@ -68,7 +68,7 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
                 Bundle bundle = new Bundle();
                 bundle.putString("FirebaseRef", newsfeeds.get(position).firebaseRef);
                 bundle.putString("Part1Picture", newsfeeds.get(position).part1Picture);
-                bundle.putString("part1Picture", newsfeeds.get(position).part2Picture);
+                bundle.putString("Part2Picture", newsfeeds.get(position).part2Picture);
                 bundle.putString("Names", newsfeeds.get(position).names);
                 bundle.putString("Ages", newsfeeds.get(position).ages);
                 bundle.putString("Description", newsfeeds.get(position).description);

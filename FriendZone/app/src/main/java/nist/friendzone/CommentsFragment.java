@@ -1,6 +1,7 @@
 package nist.friendzone;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,12 +26,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import nist.friendzone.Model.Comment;
+import nist.friendzone.Realm.RealmDatabase;
+import nist.friendzone.Realm.User;
 
-public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
 {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseDatabase database;
@@ -42,6 +53,8 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
     private TextView agesTextView;
     private TextView descriptionTextView;
     private TextView timeTextView;
+    private EditText commentEditText;
+    private ImageButton commentImageButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -54,6 +67,8 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
         agesTextView = view.findViewById(R.id.agesTextView);
         descriptionTextView = view.findViewById(R.id.descriptionTextView);
         timeTextView = view.findViewById(R.id.timeTextView);
+        commentEditText = view.findViewById(R.id.commentEditText);
+        commentImageButton = view.findViewById(R.id.commentImageButton);
 
         setNewsfeed();
 
@@ -76,10 +91,51 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
         adapter = new RecyclerAdapterComment(getContext(), comments);
         recyclerView.setAdapter(adapter);
         getCommentsAtPage(0);
+
+        commentImageButton.setOnClickListener(this);
         return view;
     }
 
     //TODO: Tilføj kommentarer
+    @Override
+    public void onClick(View view)
+    {
+        if (!commentEditText.getText().equals(""))
+        {
+            final String partnerSection = MyPreferences.getPartnerSection(getContext());
+            String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            User myUser = RealmDatabase.GetUser(myEmail);
+            String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
+            User partnerUser = RealmDatabase.GetUser(partnerEmail);
+
+            String FirebaseRef = getArguments().getString("FirebaseRef");
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            String date = dateFormat.format(new Date());
+            String time = timeFormat.format(new Date());
+
+            int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.birthday.split("/")[2]);
+            int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
+
+            Comment comment = new Comment(
+                    myUser.profilePicture,
+                    partnerUser.profilePicture,
+                    myUser.firstname + " & " + partnerUser.firstname,
+                    myAge + " & " + partnerAge,
+                    commentEditText.getText().toString(),
+                    date + " " + time
+            );
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = database.getReference(FirebaseRef + "/Comments").child(time + partnerSection);
+            databaseReference.setValue(comment);
+
+            commentEditText.setText("");
+        }
+        else
+        {
+            Toast.makeText(getContext(), "Husk at skrive en besked", Toast.LENGTH_LONG).show();
+        }
+    }
 
     private void setNewsfeed()
     {
@@ -105,25 +161,17 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
         String FirebaseRef = getArguments().getString("FirebaseRef");
 
         database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference(FirebaseRef + "Comments");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        DatabaseReference databaseReference = database.getReference(FirebaseRef + "/Comments");
+        databaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                comments.clear();
                 //TODO: Hent kommentarer ned, 100 af gangen
-                int childCount = (int) dataSnapshot.getChildrenCount();
-                int i = 1;
-                for (DataSnapshot dates: dataSnapshot.getChildren())
+                for (DataSnapshot comment: dataSnapshot.getChildren())
                 {
-                    if (i == childCount - page)
-                    {
-                        for (DataSnapshot couple : dates.getChildren())
-                        {
-                            //comments.add(couple.getValue(Newsfeed.class));
-                        }
-                    }
-                    i++;
+                    comments.add(comment.getValue(Comment.class));
                 }
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
