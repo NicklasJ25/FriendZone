@@ -1,9 +1,7 @@
 package nist.friendzone;
 
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,11 +35,10 @@ import nist.friendzone.Model.Comment;
 import nist.friendzone.Realm.RealmDatabase;
 import nist.friendzone.Realm.User;
 
-public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
+public class CommentsFragment extends Fragment implements View.OnClickListener
 {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseDatabase database;
-    SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     EndlessScrollListener endlessScrollListener;
     RecyclerAdapterComment adapter;
@@ -54,7 +51,6 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
     private TextView descriptionTextView;
     private TextView timeTextView;
     private EditText commentEditText;
-    private ImageButton commentImageButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -68,15 +64,12 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
         descriptionTextView = view.findViewById(R.id.descriptionTextView);
         timeTextView = view.findViewById(R.id.timeTextView);
         commentEditText = view.findViewById(R.id.commentEditText);
-        commentImageButton = view.findViewById(R.id.commentImageButton);
+        ImageButton commentImageButton = view.findViewById(R.id.commentImageButton);
 
         setNewsfeed();
 
-        swipeRefreshLayout = view.findViewById(R.id.commentsSwipeRefreshLayout);
         recyclerView = view.findViewById(R.id.commentsRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         endlessScrollListener = new EndlessScrollListener(linearLayoutManager)
@@ -96,11 +89,10 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
         return view;
     }
 
-    //TODO: Tilføj kommentarer
     @Override
     public void onClick(View view)
     {
-        if (!commentEditText.getText().equals(""))
+        if (!commentEditText.getText().toString().equals(""))
         {
             final String partnerSection = MyPreferences.getPartnerSection(getContext());
             String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -174,7 +166,6 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
                     comments.add(comment.getValue(Comment.class));
                 }
                 adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -183,13 +174,5 @@ public class CommentsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             }
         });
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        comments.clear();
-        endlessScrollListener.resetState();
-        getCommentsAtPage(0);
     }
 }

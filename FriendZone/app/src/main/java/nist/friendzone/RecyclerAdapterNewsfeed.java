@@ -78,7 +78,8 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
                 fragment.setArguments(bundle);
                 ((MainActivity) context).getSupportFragmentManager().beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.content, fragment)
+                        .hide(((MainActivity) context).getSupportFragmentManager().findFragmentByTag("NewsFeedFragment"))
+                        .add(R.id.content, fragment)
                         .commit();
             }
         });

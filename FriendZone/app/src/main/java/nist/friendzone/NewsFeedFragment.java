@@ -36,10 +36,8 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         swipeRefreshLayout = view.findViewById(R.id.newsfeedSwipeRefreshLayout);
         recyclerView = view.findViewById(R.id.newsfeedRecyclerView);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
         recyclerView.setLayoutManager(linearLayoutManager);
         endlessScrollListener = new EndlessScrollListener(linearLayoutManager)
         {
@@ -53,6 +51,8 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         adapter = new RecyclerAdapterNewsfeed(getContext(), newsfeeds);
         recyclerView.setAdapter(adapter);
         getNewsfeedsAtPage(0);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
         return view;
     }
 
@@ -71,12 +71,14 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                 {
                     if (i == childCount - page)
                     {
+                        List<Newsfeed> test = new ArrayList<>();
                         for (DataSnapshot newsfeed : date.getChildren())
                         {
                             Newsfeed newNewsfeed = newsfeed.getValue(Newsfeed.class);
                             newNewsfeed.firebaseRef = "Newsfeed/" + date.getKey() + "/" + newsfeed.getKey();
-                            newsfeeds.add(newNewsfeed);
+                            test.add(0, newNewsfeed);
                         }
+                        newsfeeds.addAll(test);
                     }
                     i++;
                 }

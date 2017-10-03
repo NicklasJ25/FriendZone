@@ -1,0 +1,7 @@
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.dll.config
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.dll
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.pdb
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.csprojResolveAssemblyReference.cache
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.csproj.CoreCompileInputs.cache
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.dll
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.pdb
