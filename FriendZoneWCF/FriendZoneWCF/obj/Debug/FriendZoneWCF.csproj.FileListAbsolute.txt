@@ -12,3 +12,5 @@ C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\o
 C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.csproj.CoreCompileInputs.cache
 C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.dll
 C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Debug\FriendZoneWCF.pdb
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\EntityFramework.dll
+C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\EntityFramework.xml
