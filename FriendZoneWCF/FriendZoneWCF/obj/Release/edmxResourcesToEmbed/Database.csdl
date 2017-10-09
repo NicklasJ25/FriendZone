@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FriendZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Couples">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HerMail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="HisMail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.Her_mail" FromRole="Couples" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.His_mail" FromRole="Couples" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Email" />
+    </Key>
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Birthday" Type="DateTime" Nullable="false" />
+    <Property Name="ProfilePicture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Couples" Relationship="Self.Her_mail" FromRole="User" ToRole="Couples" />
+    <NavigationProperty Name="Couples1" Relationship="Self.His_mail" FromRole="User" ToRole="Couples" />
+  </EntityType>
+  <Association Name="Her_mail">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Couples" Type="Self.Couples" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Couples">
+        <PropertyRef Name="HerMail" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="His_mail">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Couples" Type="Self.Couples" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Couples">
+        <PropertyRef Name="HisMail" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FriendZoneEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Couples" EntityType="Self.Couples" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="Her_mail" Association="Self.Her_mail">
+      <End Role="User" EntitySet="User" />
+      <End Role="Couples" EntitySet="Couples" />
+    </AssociationSet>
+    <AssociationSet Name="His_mail" Association="Self.His_mail">
+      <End Role="User" EntitySet="User" />
+      <End Role="Couples" EntitySet="Couples" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
