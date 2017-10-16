@@ -1,9 +1,0 @@
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.dll.config
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.dll
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\FriendZoneWCF.pdb
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Release\FriendZoneWCF.csprojResolveAssemblyReference.cache
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Release\FriendZoneWCF.csproj.CoreCompileInputs.cache
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Release\FriendZoneWCF.dll
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\obj\Release\FriendZoneWCF.pdb
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\EntityFramework.dll
-C:\Users\NIST\Documents\GitReposetories\FriendZone\FriendZoneWCF\FriendZoneWCF\bin\EntityFramework.xml
