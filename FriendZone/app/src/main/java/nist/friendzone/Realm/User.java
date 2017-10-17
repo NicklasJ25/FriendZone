@@ -22,7 +22,7 @@ public class User extends RealmObject
 
     }
 
-    public User(String Email, String Firstname, String Lastname, String Birthday, String Phone, String Streetname, String Postalcode, String ProfilePicture, String Partner)
+    public User(String Email, String Firstname, String Lastname, String Birthday, String Phone, String Streetname, String Postalcode, String ProfilePicture, String Password)
     {
         this.Email = Email;
         this.Firstname = Firstname;
@@ -32,7 +32,7 @@ public class User extends RealmObject
         this.Streetname = Streetname;
         this.Postalcode = Postalcode;
         this.ProfilePicture = ProfilePicture;
-        this.Partner = Partner;
+        this.Password = Password;
     }
 }
 

@@ -19,9 +19,6 @@ import nist.friendzone.Realm.User;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseAuth firebaseAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -32,97 +29,6 @@ public class LoginActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, new LoginFragment())
                 .commit();
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if (firebaseUser != null)
-                {
-                    Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("SignupCreateFragment");
-                    if (fragment1 == null || !fragment1.isVisible())
-                    {
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(firebaseUser.getEmail().replace(".", ","));
-                        reference.addListenerForSingleValueEvent(new ValueEventListener()
-                        {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot)
-                            {
-                                if (dataSnapshot.hasChildren())
-                                {
-                                    User user1 = new User(
-                                            dataSnapshot.child("UserProfile").child("Email").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("Firstname").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("Lastname").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("Birthday").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("Phone").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("ProfilePicture").getValue().toString()
-                                    );
-                                    RealmDatabase.CreateUser(user1);
-                                } else
-                                {
-                                    MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
-                                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
-                                    reference1.addListenerForSingleValueEvent(new ValueEventListener()
-                                    {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot)
-                                        {
-                                            for (DataSnapshot email : dataSnapshot.getChildren())
-                                            {
-                                                User user1 = new User(
-                                                        email.child("UserProfile").child("Email").getValue().toString(),
-                                                        email.child("UserProfile").child("Firstname").getValue().toString(),
-                                                        email.child("UserProfile").child("Lastname").getValue().toString(),
-                                                        email.child("UserProfile").child("Birthday").getValue().toString(),
-                                                        email.child("UserProfile").child("Phone").getValue().toString(),
-                                                        email.child("UserProfile").child("ProfilePicture").getValue().toString()
-                                                );
-                                                RealmDatabase.CreateUser(user1);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError)
-                                        {
-
-                                        }
-                                    });
-                                }
-                                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError)
-                            {
-
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-        };
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authStateListener != null) {
-            firebaseAuth.removeAuthStateListener(authStateListener);
-        }
     }
 }
 

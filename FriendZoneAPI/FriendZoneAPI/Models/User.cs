@@ -28,6 +28,7 @@ namespace FriendZoneAPI.Models
         public string Postalcode { get; set; }
         public string ProfilePicture { get; set; }
         public string Partner { get; set; }
+        public string Password { get; set; }
     
         public virtual ICollection<User> User1 { get; set; }
         public virtual User User2 { get; set; }
