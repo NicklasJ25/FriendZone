@@ -6,26 +6,33 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject
 {
     @PrimaryKey
-    public String email;
-    public String firstname;
-    public String lastname;
-    public String birthday;
-    public String phone;
-    public String profilePicture;
+    public String Email;
+    public String Firstname;
+    public String Lastname;
+    public String Birthday;
+    public String Phone;
+    public String Streetname;
+    public String Postalcode;
+    public String ProfilePicture;
+    public String Password;
+    public String Partner;
 
     public User()
     {
 
     }
 
-    public User(String email, String firstname, String lastname, String birthday, String phone, String profilePicture)
+    public User(String Email, String Firstname, String Lastname, String Birthday, String Phone, String Streetname, String Postalcode, String ProfilePicture, String Partner)
     {
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.phone = phone;
-        this.profilePicture = profilePicture;
+        this.Email = Email;
+        this.Firstname = Firstname;
+        this.Lastname = Lastname;
+        this.Birthday = Birthday;
+        this.Phone = Phone;
+        this.Streetname = Streetname;
+        this.Postalcode = Postalcode;
+        this.ProfilePicture = ProfilePicture;
+        this.Partner = Partner;
     }
 }
 

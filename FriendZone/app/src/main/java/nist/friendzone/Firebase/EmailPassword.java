@@ -36,7 +36,7 @@ public class EmailPassword
     public void CreateUser(final User user, String password)
     {
         showProgress(true);
-        firebaseAuth.createUserWithEmailAndPassword(user.email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
+        firebaseAuth.createUserWithEmailAndPassword(user.Email, password).addOnCompleteListener(context, new OnCompleteListener<AuthResult>()
         {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -47,15 +47,15 @@ public class EmailPassword
                     realm.commitTransaction();
 
                     Database database = new Database();
-                    database.UpdateUser("UserProfile/email", user.email);
-                    database.UpdateUser("UserProfile/firstname", user.firstname);
-                    database.UpdateUser("UserProfile/lastname", user.lastname);
-                    database.UpdateUser("UserProfile/phone", user.phone);
-                    database.UpdateUser("UserProfile/birthday", user.birthday);
+                    database.UpdateUser("UserProfile/Email", user.Email);
+                    database.UpdateUser("UserProfile/Firstname", user.Firstname);
+                    database.UpdateUser("UserProfile/Lastname", user.Lastname);
+                    database.UpdateUser("UserProfile/Phone", user.Phone);
+                    database.UpdateUser("UserProfile/Birthday", user.Birthday);
 
-                    if (user.profilePicture != null)
+                    if (user.ProfilePicture != null)
                     {
-                        Uri profilePictureUri = Uri.parse(user.profilePicture);
+                        Uri profilePictureUri = Uri.parse(user.ProfilePicture);
                         database.UploadProfilePicture(profilePictureUri);
                     }
                     // Sign in success, update UI with the signed-in user's information

@@ -9,7 +9,7 @@ public class RealmDatabase
     public static boolean UserExists(String email)
     {
         Realm realm = Realm.getDefaultInstance();
-        User user = realm.where(User.class).equalTo("email", email).findFirst();
+        User user = realm.where(User.class).equalTo("Email", email).findFirst();
 
         if (user == null)
         {
@@ -39,7 +39,7 @@ public class RealmDatabase
     public static User GetUser(String email)
     {
         Realm realm = Realm.getDefaultInstance();
-        User user = realm.where(User.class).equalTo("email", email).findFirst();
+        User user = realm.where(User.class).equalTo("Email", email).findFirst();
         return user;
     }
 

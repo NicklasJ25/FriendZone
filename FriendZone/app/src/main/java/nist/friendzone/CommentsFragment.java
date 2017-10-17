@@ -106,13 +106,13 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
             String date = dateFormat.format(new Date());
             String time = timeFormat.format(new Date());
 
-            int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.birthday.split("/")[2]);
-            int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
+            int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.Birthday.split("/")[2]);
+            int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.Birthday.split("/")[2]);
 
             Comment comment = new Comment(
-                    myUser.profilePicture,
-                    partnerUser.profilePicture,
-                    myUser.firstname + " & " + partnerUser.firstname,
+                    myUser.ProfilePicture,
+                    partnerUser.ProfilePicture,
+                    myUser.Firstname + " & " + partnerUser.Firstname,
                     myAge + " & " + partnerAge,
                     commentEditText.getText().toString(),
                     date + " " + time

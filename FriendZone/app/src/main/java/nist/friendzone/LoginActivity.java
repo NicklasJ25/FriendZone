@@ -52,12 +52,12 @@ public class LoginActivity extends AppCompatActivity
                                 if (dataSnapshot.hasChildren())
                                 {
                                     User user1 = new User(
-                                            dataSnapshot.child("UserProfile").child("email").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("firstname").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("lastname").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("birthday").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("phone").getValue().toString(),
-                                            dataSnapshot.child("UserProfile").child("profilePicture").getValue().toString()
+                                            dataSnapshot.child("UserProfile").child("Email").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("Firstname").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("Lastname").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("Birthday").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("Phone").getValue().toString(),
+                                            dataSnapshot.child("UserProfile").child("ProfilePicture").getValue().toString()
                                     );
                                     RealmDatabase.CreateUser(user1);
                                 } else
@@ -72,12 +72,12 @@ public class LoginActivity extends AppCompatActivity
                                             for (DataSnapshot email : dataSnapshot.getChildren())
                                             {
                                                 User user1 = new User(
-                                                        email.child("UserProfile").child("email").getValue().toString(),
-                                                        email.child("UserProfile").child("firstname").getValue().toString(),
-                                                        email.child("UserProfile").child("lastname").getValue().toString(),
-                                                        email.child("UserProfile").child("birthday").getValue().toString(),
-                                                        email.child("UserProfile").child("phone").getValue().toString(),
-                                                        email.child("UserProfile").child("profilePicture").getValue().toString()
+                                                        email.child("UserProfile").child("Email").getValue().toString(),
+                                                        email.child("UserProfile").child("Firstname").getValue().toString(),
+                                                        email.child("UserProfile").child("Lastname").getValue().toString(),
+                                                        email.child("UserProfile").child("Birthday").getValue().toString(),
+                                                        email.child("UserProfile").child("Phone").getValue().toString(),
+                                                        email.child("UserProfile").child("ProfilePicture").getValue().toString()
                                                 );
                                                 RealmDatabase.CreateUser(user1);
                                             }

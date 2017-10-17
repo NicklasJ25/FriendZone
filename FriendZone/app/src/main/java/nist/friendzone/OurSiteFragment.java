@@ -52,23 +52,23 @@ public class OurSiteFragment extends Fragment
     {
         String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         User myUser = RealmDatabase.GetUser(myEmail);
-        myNameTextView.setText(myUser.firstname + " " + myUser.lastname);
-        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.birthday.split("/")[2]);
+        myNameTextView.setText(myUser.Firstname + " " + myUser.Lastname);
+        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.Birthday.split("/")[2]);
         myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
 
         String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
         User partnerUser = RealmDatabase.GetUser(partnerEmail);
-        partnerNameTextView.setText(partnerUser.firstname + " " + partnerUser.lastname);
-        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
+        partnerNameTextView.setText(partnerUser.Firstname + " " + partnerUser.Lastname);
+        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.Birthday.split("/")[2]);
         partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
 
-        StorageReference myStorageReference = storage.getReferenceFromUrl(myUser.profilePicture);
+        StorageReference myStorageReference = storage.getReferenceFromUrl(myUser.ProfilePicture);
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(myAvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(partnerUser.profilePicture);
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(partnerUser.ProfilePicture);
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)

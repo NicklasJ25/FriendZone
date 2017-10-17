@@ -34,7 +34,7 @@ public class SignupNameFragment extends Fragment implements View.OnClickListener
         {
             Bundle bundle = getArguments();
             bundle.putString("firstname", firstnameEditText.getText().toString().trim());
-            bundle.putString("lastname", lastnameEditText.getText().toString());
+            bundle.putString("Lastname", lastnameEditText.getText().toString());
 
             Fragment fragment = new SignupBirthdayFragment();
             fragment.setArguments(bundle);

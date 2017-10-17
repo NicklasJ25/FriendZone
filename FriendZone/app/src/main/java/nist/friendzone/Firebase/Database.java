@@ -44,7 +44,7 @@ public class Database
     public void UploadProfilePicture(Uri profilePicture)
     {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String path = user.getEmail().replace(".", ",") + "/profilePicture.png";
+        String path = user.getEmail().replace(".", ",") + "/ProfilePicture.png";
 
         StorageReference storageReference = storage.getReference(path);
         UploadTask uploadTask = storageReference.putFile(profilePicture);
@@ -62,11 +62,11 @@ public class Database
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                UpdateUser("UserProfile/profilePicture", downloadUrl.toString());
+                UpdateUser("UserProfile/ProfilePicture", downloadUrl.toString());
 
                 realm.beginTransaction();
-                User updateUser = realm.where(User.class).equalTo("email", user.getEmail()).findFirst();
-                updateUser.profilePicture = downloadUrl.toString();
+                User updateUser = realm.where(User.class).equalTo("Email", user.getEmail()).findFirst();
+                updateUser.ProfilePicture = downloadUrl.toString();
                 realm.copyToRealmOrUpdate(updateUser);
                 realm.commitTransaction();
             }
@@ -92,7 +92,7 @@ public class Database
                 @Override
                 public void onCancelled(DatabaseError databaseError)
                 {
-                    Log.e(TAG, "First email failed to move to partner section");
+                    Log.e(TAG, "First Email failed to move to partner section");
                 }
             });
 
@@ -108,7 +108,7 @@ public class Database
                 @Override
                 public void onCancelled(DatabaseError databaseError)
                 {
-                    Log.e(TAG, "Second email failed to move to partner section");
+                    Log.e(TAG, "Second Email failed to move to partner section");
                 }
             });
         }

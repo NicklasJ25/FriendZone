@@ -64,11 +64,11 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
         String time = timeFormat.format(new Date());
         DatabaseReference newsfeed = database.getReference("Newsfeed").child(firebaseDate).child(time + partnerSection);
         newsfeed.child("partnerSection").setValue(partnerSection);
-        newsfeed.child("part1Picture").setValue(myUser.profilePicture);
-        newsfeed.child("part2Picture").setValue(partnerUser.profilePicture);
-        newsfeed.child("names").setValue(myUser.firstname + " & " + partnerUser.firstname);
-        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.birthday.split("/")[2]);
-        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.birthday.split("/")[2]);
+        newsfeed.child("part1Picture").setValue(myUser.ProfilePicture);
+        newsfeed.child("part2Picture").setValue(partnerUser.ProfilePicture);
+        newsfeed.child("names").setValue(myUser.Firstname + " & " + partnerUser.Firstname);
+        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.Birthday.split("/")[2]);
+        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.Birthday.split("/")[2]);
         newsfeed.child("ages").setValue(myAge + " & " + partnerAge);
         newsfeed.child("description").setValue(description);
         newsfeed.child("time").setValue(date + " " + time);

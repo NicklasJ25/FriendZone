@@ -64,12 +64,12 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
                                     if (!email.getKey().equals(user.getEmail().replace(".", ",")))
                                     {
                                         User user1 = new User(
-                                                email.child("UserProfile").child("email").getValue().toString(),
-                                                email.child("UserProfile").child("firstname").getValue().toString(),
-                                                email.child("UserProfile").child("lastname").getValue().toString(),
-                                                email.child("UserProfile").child("birthday").getValue().toString(),
-                                                email.child("UserProfile").child("phone").getValue().toString(),
-                                                email.child("UserProfile").child("profilePicture").getValue().toString()
+                                                email.child("UserProfile").child("Email").getValue().toString(),
+                                                email.child("UserProfile").child("Firstname").getValue().toString(),
+                                                email.child("UserProfile").child("Lastname").getValue().toString(),
+                                                email.child("UserProfile").child("Birthday").getValue().toString(),
+                                                email.child("UserProfile").child("Phone").getValue().toString(),
+                                                email.child("UserProfile").child("ProfilePicture").getValue().toString()
                                         );
                                         RealmDatabase.CreateUser(user1);
                                     }

@@ -33,11 +33,11 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
         String accountType = getArguments().getString("AccountType");
         if (accountType.equals("EmailPassword"))
         {
-            String firstname = getArguments().getString("firstname");
-            String lastname = getArguments().getString("lastname");
+            String firstname = getArguments().getString("Firstname");
+            String lastname = getArguments().getString("Lastname");
             String birthday = getArguments().getString("BirthDay");
-            String profilePicture = getArguments().getString("profilePicture");
-            String email = getArguments().getString("email");
+            String profilePicture = getArguments().getString("ProfilePicture");
+            String email = getArguments().getString("Email");
             String phone = getArguments().getString("Phone");
             String password = getArguments().getString("Password");
 
