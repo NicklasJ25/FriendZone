@@ -13,6 +13,7 @@
     <Property Name="Postalcode" Type="varchar" MaxLength="4" Nullable="false" />
     <Property Name="ProfilePicture" Type="varchar" MaxLength="45" />
     <Property Name="Partner" Type="varchar" MaxLength="45" />
+    <Property Name="Password" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>
   <Association Name="Partner">
     <End Role="User" Type="Self.User" Multiplicity="0..1">

@@ -10,11 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.facebook.login.Login;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import io.realm.Realm;
 import nist.friendzone.Realm.RealmDatabase;
+import nist.friendzone.Realm.User;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
@@ -31,23 +31,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelectedItemId(R.id.newsFeedNavigation);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener()
+        String email = MyPreferences.getLoggedInEmail(this);
+        if (email == null)
         {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(intent);
-                }
-                else if (MyPreferences.getPartnerSection(getBaseContext()).equals(""))
-                {
-                    Intent intent = new Intent(getBaseContext(), ConnectToPartnerActivity.class);
-                    startActivity(intent);
-                }
-            }
-        };
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+        User user = RealmDatabase.GetUser(email);
+        if (user.Partner == null)
+        {
+            Intent intent = new Intent(this, ConnectToPartnerActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -99,24 +95,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.signOutMenu:
                 MyPreferences.ClearPrefrences(this);
                 RealmDatabase.ClearDatabase();
-                FirebaseAuth.getInstance().signOut();
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authStateListener != null) {
-            firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
 }

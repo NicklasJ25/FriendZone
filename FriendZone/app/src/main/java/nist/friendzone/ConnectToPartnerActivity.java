@@ -52,7 +52,7 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
             {
                 if (!dataSnapshot.hasChildren())
                 {
-                    MyPreferences.setPartnerSection(getBaseContext(), dataSnapshot.getValue().toString());
+                    MyPreferences.setLoggedInEmail(getBaseContext(), dataSnapshot.getValue().toString());
                     DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference(dataSnapshot.getValue().toString());
                     reference1.addListenerForSingleValueEvent(new ValueEventListener()
                         {

@@ -16,6 +16,7 @@ public class User extends RealmObject
     public String ProfilePicture;
     public String Password;
     public String Partner;
+    public User User2;
 
     public User()
     {

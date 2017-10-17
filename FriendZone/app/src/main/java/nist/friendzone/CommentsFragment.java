@@ -94,7 +94,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
     {
         if (!commentEditText.getText().toString().equals(""))
         {
-            final String partnerSection = MyPreferences.getPartnerSection(getContext());
+            final String partnerSection = MyPreferences.getLoggedInEmail(getContext());
             String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             User myUser = RealmDatabase.GetUser(myEmail);
             String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");

@@ -15,6 +15,7 @@
     <Property Name="Partner" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="User1" Relationship="Self.Partner" FromRole="User" ToRole="User1" />
     <NavigationProperty Name="User2" Relationship="Self.Partner" FromRole="User1" ToRole="User" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="Partner">
     <End Role="User" Type="Self.User" Multiplicity="0..1">

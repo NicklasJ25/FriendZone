@@ -42,7 +42,7 @@ public class OurSiteFragment extends Fragment
         partnerAgeTextView = view.findViewById(R.id.partnerAgeTextView);
         partnerAvatarView = view.findViewById(R.id.partnerAvatarView);
 
-        String partnerSection = MyPreferences.getPartnerSection(getContext());
+        String partnerSection = MyPreferences.getLoggedInEmail(getContext());
         SetUserInformation(partnerSection);
 
         return view;

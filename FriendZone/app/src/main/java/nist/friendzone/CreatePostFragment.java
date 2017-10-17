@@ -49,7 +49,7 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
 
     private void createNewsfeed(final String description)
     {
-        final String partnerSection = MyPreferences.getPartnerSection(getContext());
+        final String partnerSection = MyPreferences.getLoggedInEmail(getContext());
         database = FirebaseDatabase.getInstance();
         String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         User myUser = RealmDatabase.GetUser(myEmail);

@@ -5,21 +5,21 @@ import android.preference.PreferenceManager;
 
 public class MyPreferences
 {
-    private static String PARTNER_SECTION_FIREBASE = "PARTNER_SECTION_FIREBASE";
+    private static String LOGGED_IN_EMAIL = "LOGGED_IN_EMAIL";
 
-    public static void setPartnerSection(Context context, String partnerSection)
+    public static void setLoggedInEmail(Context context, String loggedInEmail)
     {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(PARTNER_SECTION_FIREBASE, partnerSection)
+                .putString(LOGGED_IN_EMAIL, loggedInEmail)
                 .apply();
     }
 
-    public static String getPartnerSection(Context context)
+    public static String getLoggedInEmail(Context context)
     {
-        String partnerSection = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PARTNER_SECTION_FIREBASE, "");
-        return partnerSection;
+        String loggedInEmail = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(LOGGED_IN_EMAIL, null);
+        return loggedInEmail;
     }
 
     public static void ClearPrefrences(Context context)
