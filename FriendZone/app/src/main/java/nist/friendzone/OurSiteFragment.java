@@ -16,8 +16,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
-import nist.friendzone.Realm.RealmDatabase;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.RealmDatabase;
+import nist.friendzone.Model.User;
 
 public class OurSiteFragment extends Fragment
 {

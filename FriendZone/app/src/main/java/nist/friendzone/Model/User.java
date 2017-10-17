@@ -1,4 +1,4 @@
-package nist.friendzone.Realm;
+package nist.friendzone.Model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

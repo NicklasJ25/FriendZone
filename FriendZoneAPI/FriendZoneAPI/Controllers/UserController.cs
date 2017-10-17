@@ -30,10 +30,37 @@ namespace FriendZoneAPI.Controllers
             return user;
         }
 
+        // GET api/user/partner
+        public User Get(string partner, string test)
+        {
+            User user = database.Users.Include(u => u.User2).SingleOrDefault(u => u.Email.Equals(email));
+            user.User1 = null;
+            user.User2.User1 = null;
+            user.User2.User2 = null;
+            return user;
+        }
+
         // POST api/user
         public void Post([FromBody]User user)
         {
             database.Users.Add(user);
+            database.SaveChanges();
+        }
+
+        // PUT api/user/email
+        public void Put(string email, [FromBody]User newUser)
+        {
+            User oldUser = database.Users.Find(email);
+            oldUser.Email = newUser.Email;
+            oldUser.Firstname = newUser.Firstname;
+            oldUser.Lastname = newUser.Lastname;
+            oldUser.Birthday = newUser.Birthday;
+            oldUser.Phone = newUser.Phone;
+            oldUser.Streetname = newUser.Streetname;
+            oldUser.Postalcode = newUser.Postalcode;
+            oldUser.ProfilePicture = newUser.ProfilePicture;
+            oldUser.Password = newUser.Password;
+            oldUser.Partner = newUser.Partner;
             database.SaveChanges();
         }
 

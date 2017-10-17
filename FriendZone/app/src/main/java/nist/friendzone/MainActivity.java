@@ -10,17 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.facebook.login.Login;
-import com.google.firebase.auth.FirebaseAuth;
-
-import nist.friendzone.Realm.RealmDatabase;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.RealmDatabase;
+import nist.friendzone.Model.User;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseAuth firebaseAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -39,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         User user = RealmDatabase.GetUser(email);
-        if (user.Partner == null)
+        if (user.User2 == null || user.User2.Partner == null)
         {
             Intent intent = new Intent(this, ConnectToPartnerActivity.class);
             startActivity(intent);

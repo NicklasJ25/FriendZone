@@ -19,9 +19,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.realm.Realm;
-import nist.friendzone.Firebase.EmailPassword;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.User;
 
 public class SignupCreateFragment extends Fragment implements View.OnClickListener
 {

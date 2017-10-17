@@ -17,15 +17,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.facebook.login.Login;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import nist.friendzone.Firebase.EmailPassword;
-import nist.friendzone.Realm.RealmDatabase;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.RealmDatabase;
+import nist.friendzone.Model.User;
 
 
 /**

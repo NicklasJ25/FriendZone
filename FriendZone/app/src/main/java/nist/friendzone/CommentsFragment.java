@@ -32,8 +32,8 @@ import java.util.Date;
 import java.util.List;
 
 import nist.friendzone.Model.Comment;
-import nist.friendzone.Realm.RealmDatabase;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.RealmDatabase;
+import nist.friendzone.Model.User;
 
 public class CommentsFragment extends Fragment implements View.OnClickListener
 {

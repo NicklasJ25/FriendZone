@@ -18,7 +18,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import io.realm.Realm;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.User;
 
 import static android.content.ContentValues.TAG;
 

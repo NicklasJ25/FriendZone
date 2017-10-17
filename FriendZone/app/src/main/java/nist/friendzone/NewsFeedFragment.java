@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import nist.friendzone.Model.Newsfeed;
+import nist.friendzone.Model.Post;
 
 public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
@@ -27,7 +27,7 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     RecyclerView recyclerView;
     EndlessScrollListener endlessScrollListener;
     RecyclerAdapterNewsfeed adapter;
-    List<Newsfeed> newsfeeds = new ArrayList<>();
+    List<Post> posts = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -48,7 +48,7 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         };
         recyclerView.addOnScrollListener(endlessScrollListener);
-        adapter = new RecyclerAdapterNewsfeed(getContext(), newsfeeds);
+        adapter = new RecyclerAdapterNewsfeed(getContext(), posts);
         recyclerView.setAdapter(adapter);
         getNewsfeedsAtPage(0);
 
@@ -59,7 +59,7 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void getNewsfeedsAtPage(final int page)
     {
         database = FirebaseDatabase.getInstance();
-        final DatabaseReference databaseReference = database.getReference("Newsfeed");
+        final DatabaseReference databaseReference = database.getReference("Post");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
@@ -71,14 +71,14 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                 {
                     if (i == childCount - page)
                     {
-                        List<Newsfeed> test = new ArrayList<>();
+                        List<Post> test = new ArrayList<>();
                         for (DataSnapshot newsfeed : date.getChildren())
                         {
-                            Newsfeed newNewsfeed = newsfeed.getValue(Newsfeed.class);
-                            newNewsfeed.firebaseRef = "Newsfeed/" + date.getKey() + "/" + newsfeed.getKey();
-                            test.add(0, newNewsfeed);
+                            Post newPost = newsfeed.getValue(Post.class);
+                            newPost.firebaseRef = "Post/" + date.getKey() + "/" + newsfeed.getKey();
+                            test.add(0, newPost);
                         }
-                        newsfeeds.addAll(test);
+                        posts.addAll(test);
                     }
                     i++;
                 }
@@ -97,7 +97,7 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onRefresh()
     {
-        newsfeeds.clear();
+        posts.clear();
         endlessScrollListener.resetState();
         getNewsfeedsAtPage(0);
     }

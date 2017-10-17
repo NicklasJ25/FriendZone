@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import io.realm.Realm;
 import nist.friendzone.R;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.User;
 
 import static android.content.ContentValues.TAG;
 

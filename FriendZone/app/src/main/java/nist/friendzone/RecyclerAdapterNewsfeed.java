@@ -18,19 +18,19 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-import nist.friendzone.Model.Newsfeed;
+import nist.friendzone.Model.Post;
 
 public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapterNewsfeed.ViewHolder>
 {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    private final List<Newsfeed> newsfeeds;
+    private final List<Post> posts;
     private Context context;
 
-    public RecyclerAdapterNewsfeed(Context context, List<Newsfeed> newsfeeds)
+    public RecyclerAdapterNewsfeed(Context context, List<Post> posts)
     {
         this.context = context;
-        this.newsfeeds = newsfeeds;
+        this.posts = posts;
     }
 
     @Override
@@ -43,22 +43,22 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position)
     {
-        holder.mItem = newsfeeds.get(position);
-        StorageReference myStorageReference = storage.getReferenceFromUrl(newsfeeds.get(position).part1Picture);
+        holder.mItem = posts.get(position);
+        StorageReference myStorageReference = storage.getReferenceFromUrl(posts.get(position).part1Picture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(holder.part1AvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(newsfeeds.get(position).part2Picture);
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(posts.get(position).part2Picture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)
                 .into(holder.part2AvatarView);
-        holder.namesTextView.setText(newsfeeds.get(position).names);
-        holder.agesTextView.setText(newsfeeds.get(position).ages);
-        holder.descriptionTextView.setText(newsfeeds.get(position).description);
-        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + newsfeeds.get(position).time);
+        holder.namesTextView.setText(posts.get(position).names);
+        holder.agesTextView.setText(posts.get(position).ages);
+        holder.descriptionTextView.setText(posts.get(position).description);
+        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + posts.get(position).time);
 
         holder.commentsImageButton.setOnClickListener(new View.OnClickListener()
         {
@@ -66,13 +66,13 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
             public void onClick(View view)
             {
                 Bundle bundle = new Bundle();
-                bundle.putString("FirebaseRef", newsfeeds.get(position).firebaseRef);
-                bundle.putString("Part1Picture", newsfeeds.get(position).part1Picture);
-                bundle.putString("Part2Picture", newsfeeds.get(position).part2Picture);
-                bundle.putString("Names", newsfeeds.get(position).names);
-                bundle.putString("Ages", newsfeeds.get(position).ages);
-                bundle.putString("Description", newsfeeds.get(position).description);
-                bundle.putString("Time", newsfeeds.get(position).time);
+                bundle.putString("FirebaseRef", posts.get(position).firebaseRef);
+                bundle.putString("Part1Picture", posts.get(position).part1Picture);
+                bundle.putString("Part2Picture", posts.get(position).part2Picture);
+                bundle.putString("Names", posts.get(position).names);
+                bundle.putString("Ages", posts.get(position).ages);
+                bundle.putString("Description", posts.get(position).description);
+                bundle.putString("Time", posts.get(position).time);
 
                 Fragment fragment = new CommentsFragment();
                 fragment.setArguments(bundle);
@@ -88,7 +88,7 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
     @Override
     public int getItemCount()
     {
-        return newsfeeds.size();
+        return posts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -101,7 +101,7 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
         private final TextView descriptionTextView;
         private final TextView timeTextView;
         private final ImageButton commentsImageButton;
-        private Newsfeed mItem;
+        private Post mItem;
 
         private ViewHolder(View view)
         {

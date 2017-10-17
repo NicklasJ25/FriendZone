@@ -3,27 +3,38 @@ package nist.friendzone;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import nist.friendzone.Realm.RealmDatabase;
-import nist.friendzone.Realm.User;
+import nist.friendzone.Model.Post;
+import nist.friendzone.Model.RealmDatabase;
+import nist.friendzone.Model.User;
 
 public class CreatePostFragment extends Fragment implements View.OnClickListener
 {
-    FirebaseDatabase database;
+    private String TAG = "CreatePostFragment";
 
     EditText descriptionEditText;
 
@@ -43,35 +54,40 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        String description = descriptionEditText.getText().toString();
-        createNewsfeed(description);
-    }
+        final Post post = new Post();
+        post.Email = MyPreferences.getLoggedInEmail(getContext());
+        post.Description = descriptionEditText.getText().toString();
+        post.Time = new Date();
 
-    private void createNewsfeed(final String description)
-    {
-        final String partnerSection = MyPreferences.getLoggedInEmail(getContext());
-        database = FirebaseDatabase.getInstance();
-        String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        User myUser = RealmDatabase.GetUser(myEmail);
-        String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
-        User partnerUser = RealmDatabase.GetUser(partnerEmail);
+        String url = MyApplication.baseUrl + "post";
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        DateFormat firebaseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        String firebaseDate = firebaseDateFormat.format(new Date());
-        String date = dateFormat.format(new Date());
-        String time = timeFormat.format(new Date());
-        DatabaseReference newsfeed = database.getReference("Newsfeed").child(firebaseDate).child(time + partnerSection);
-        newsfeed.child("partnerSection").setValue(partnerSection);
-        newsfeed.child("part1Picture").setValue(myUser.ProfilePicture);
-        newsfeed.child("part2Picture").setValue(partnerUser.ProfilePicture);
-        newsfeed.child("names").setValue(myUser.Firstname + " & " + partnerUser.Firstname);
-        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.Birthday.split("/")[2]);
-        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.Birthday.split("/")[2]);
-        newsfeed.child("ages").setValue(myAge + " & " + partnerAge);
-        newsfeed.child("description").setValue(description);
-        newsfeed.child("time").setValue(date + " " + time);
+        StringRequest req = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, error.toString());
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String>  params = new HashMap<>();
+                Gson gson = new Gson();
+                params.put("post", gson.toJson(post));
+                return params;
+            }
+        };
+
+        requestQueue.add(req);
 
         BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.newsFeedNavigation);
