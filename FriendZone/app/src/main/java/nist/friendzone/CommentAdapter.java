@@ -16,15 +16,16 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 import nist.friendzone.Model.Comment;
+import nist.friendzone.Model.User;
 
-public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapterComment.ViewHolder>
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>
 {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private Context context;
     private final List<Comment> comments;
 
-    public RecyclerAdapterComment(Context context, List<Comment> comments)
+    public CommentAdapter(Context context, List<Comment> comments)
     {
         this.context = context;
         this.comments = comments;
@@ -40,22 +41,26 @@ public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        holder.mItem = comments.get(position);
-        StorageReference myStorageReference = storage.getReferenceFromUrl(comments.get(position).part1Picture);
+        Comment comment = comments.get(position);
+        holder.mItem = comment;
+        StorageReference myStorageReference = storage.getReferenceFromUrl(comment.User.ProfilePicture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(holder.part1AvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(comments.get(position).part2Picture);
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(comment.User.User2.ProfilePicture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)
                 .into(holder.part2AvatarView);
-        holder.namesTextView.setText(comments.get(position).names);
-        holder.agesTextView.setText(comments.get(position).ages);
-        holder.descriptionTextView.setText(comments.get(position).description);
-        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + comments.get(position).time);
+
+        String names = comment.User.Firstname + " & " + comment.User.User2.Firstname;
+        holder.namesTextView.setText(names);
+        String ages = User.GetAge(comment.User.Birthday) + " & " + User.GetAge(comment.User.User2.Birthday);
+        holder.agesTextView.setText(ages);
+        holder.descriptionTextView.setText(comment.Description);
+        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + comment.Time);
     }
 
     @Override

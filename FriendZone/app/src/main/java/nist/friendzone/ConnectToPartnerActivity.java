@@ -44,6 +44,7 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
         deletePartnerButton = findViewById(R.id.deletePartnerButton);
         Button findPartnerButton = findViewById(R.id.findPartnerButton);
 
+        //TODO: Event Listener
         /*
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override

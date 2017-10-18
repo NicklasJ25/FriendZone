@@ -2,25 +2,24 @@ package nist.friendzone.Model;
 
 public class Comment
 {
-    public String part1Picture;
-    public String part2Picture;
-    public String names;
-    public String ages;
-    public String description;
-    public String time;
+    public int ID;
+    public int PostID;
+    public String Email;
+    public String Description;
+    public String Time;
+    public Post Post;
+    public User User;
 
     public Comment()
     {
 
     }
 
-    public Comment(String part1Picture, String part2Picture, String names, String ages, String description, String time)
+    public Comment(int PostID, String Email, String Description, String Time)
     {
-        this.part1Picture = part1Picture;
-        this.part2Picture = part2Picture;
-        this.names = names;
-        this.ages = ages;
-        this.description = description;
-        this.time = time;
+        this.PostID = PostID;
+        this.Email = Email;
+        this.Description = Description;
+        this.Time = Time;
     }
 }

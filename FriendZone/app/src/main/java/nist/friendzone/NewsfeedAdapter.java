@@ -16,21 +16,19 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import nist.friendzone.Model.Post;
 import nist.friendzone.Model.User;
 
-public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapterNewsfeed.ViewHolder>
+public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHolder>
 {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private final List<Post> posts;
     private Context context;
 
-    public RecyclerAdapterNewsfeed(Context context, List<Post> posts)
+    public NewsfeedAdapter(Context context, List<Post> posts)
     {
         this.context = context;
         this.posts = posts;

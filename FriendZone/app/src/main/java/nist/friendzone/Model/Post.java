@@ -1,7 +1,6 @@
 package nist.friendzone.Model;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Post
 {

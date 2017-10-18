@@ -57,7 +57,7 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
         final Post post = new Post();
         post.Email = MyPreferences.getLoggedInEmail(getContext());
         post.Description = descriptionEditText.getText().toString();
-        post.Time = new Date();
+        post.Time = Calendar.getInstance();
 
         String url = MyApplication.baseUrl + "post";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

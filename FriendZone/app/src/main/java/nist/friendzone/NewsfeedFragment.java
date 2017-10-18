@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -34,7 +33,7 @@ public class NewsfeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     EndlessScrollListener endlessScrollListener;
-    RecyclerAdapterNewsfeed adapter;
+    NewsfeedAdapter adapter;
     List<Post> posts = new ArrayList<>();
 
     private int postsPrPage = 100;
@@ -58,7 +57,7 @@ public class NewsfeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         };
         recyclerView.addOnScrollListener(endlessScrollListener);
-        adapter = new RecyclerAdapterNewsfeed(getContext(), posts);
+        adapter = new NewsfeedAdapter(getContext(), posts);
         recyclerView.setAdapter(adapter);
         getNewsfeedsAtPage(0);
 

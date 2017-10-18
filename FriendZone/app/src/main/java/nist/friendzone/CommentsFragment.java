@@ -41,7 +41,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
     FirebaseDatabase database;
     RecyclerView recyclerView;
     EndlessScrollListener endlessScrollListener;
-    RecyclerAdapterComment adapter;
+    CommentAdapter adapter;
     List<Comment> comments = new ArrayList<>();
 
     private ImageView part1AvatarView;
@@ -81,7 +81,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
             }
         };
         recyclerView.addOnScrollListener(endlessScrollListener);
-        adapter = new RecyclerAdapterComment(getContext(), comments);
+        adapter = new CommentAdapter(getContext(), comments);
         recyclerView.setAdapter(adapter);
         getCommentsAtPage(0);
 
