@@ -5,29 +5,39 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nist.friendzone.Model.Post;
 
-public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public class NewsfeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 {
-    FirebaseDatabase database;
+    private String TAG = "NewsfeedFragment";
+
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     EndlessScrollListener endlessScrollListener;
     RecyclerAdapterNewsfeed adapter;
     List<Post> posts = new ArrayList<>();
+
+    private int postsPrPage = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -58,40 +68,37 @@ public class NewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private void getNewsfeedsAtPage(final int page)
     {
-        database = FirebaseDatabase.getInstance();
-        final DatabaseReference databaseReference = database.getReference("Post");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
-        {
+        int start = page * postsPrPage;
+        int count = start + postsPrPage;
+        String url = MyApplication.baseUrl + "post?Start=" + start + "&Count=" + count;
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        JsonArrayRequest req = new JsonArrayRequest(url, new Response.Listener<JSONArray> () {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                int childCount = (int) dataSnapshot.getChildrenCount();
-                int i = 1;
-                for (DataSnapshot date: dataSnapshot.getChildren())
-                {
-                    if (i == childCount - page)
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++)
                     {
-                        List<Post> test = new ArrayList<>();
-                        for (DataSnapshot newsfeed : date.getChildren())
-                        {
-                            Post newPost = newsfeed.getValue(Post.class);
-                            newPost.firebaseRef = "Post/" + date.getKey() + "/" + newsfeed.getKey();
-                            test.add(0, newPost);
-                        }
-                        posts.addAll(test);
+                        JSONObject object = response.getJSONObject(i);
+                        Gson gson = new Gson();
+                        Post post = gson.fromJson(object.toString(), Post.class);
+                        posts.add(0, post);
                     }
-                    i++;
+                    adapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
             }
-
+        }, new Response.ErrorListener() {
             @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
             }
         });
+
+        // add JsonArrayRequest to the RequestQueue
+        requestQueue.add(req);
     }
 
     @Override

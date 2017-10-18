@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId())
         {
             case R.id.newsFeedNavigation:
-                Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("NewsFeedFragment");
+                Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("NewsfeedFragment");
                 if (fragment1 == null || !fragment1.isVisible())
                 {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new NewsFeedFragment(), "NewsFeedFragment")
+                            .replace(R.id.content, new NewsfeedFragment(), "NewsfeedFragment")
                             .commit();
                 }
                 return true;

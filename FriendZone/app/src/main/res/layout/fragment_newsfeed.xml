@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:context="nist.friendzone.NewsFeedFragment"
+            tools:context="nist.friendzone.NewsfeedFragment"
             tools:listitem="@layout/news_list_item"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>

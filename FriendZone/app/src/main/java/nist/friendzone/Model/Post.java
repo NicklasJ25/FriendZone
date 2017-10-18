@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Post
 {
+    public int ID;
     public String Email;
     public String Description;
     public Date Time;
-    public User User1;
-    public User User2;
+    public User User;
 
     public Post()
     {
