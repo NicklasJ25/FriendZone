@@ -16,9 +16,12 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import nist.friendzone.Model.Post;
+import nist.friendzone.Model.User;
 
 public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapterNewsfeed.ViewHolder>
 {
@@ -43,22 +46,26 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position)
     {
-        holder.mItem = posts.get(position);
-        StorageReference myStorageReference = storage.getReferenceFromUrl(posts.get(position).part1Picture);
+        final Post post = posts.get(position);
+        holder.mItem = post;
+        StorageReference myStorageReference = storage.getReferenceFromUrl(post.User.ProfilePicture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(holder.part1AvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(posts.get(position).part2Picture);
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(post.User.User2.ProfilePicture);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)
                 .into(holder.part2AvatarView);
-        holder.namesTextView.setText(posts.get(position).names);
-        holder.agesTextView.setText(posts.get(position).ages);
-        holder.descriptionTextView.setText(posts.get(position).description);
-        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + posts.get(position).time);
+
+        String names = post.User.Firstname + " & " + post.User.User2.Firstname;
+        holder.namesTextView.setText(names);
+        String ages = User.GetAge(post.User.Birthday) + " & " + User.GetAge(post.User.User2.Birthday);
+        holder.agesTextView.setText(ages);
+        holder.descriptionTextView.setText(post.Description);
+        holder.timeTextView.setText(context.getResources().getString(R.string.postedTimeText) + post.Time);
 
         holder.commentsImageButton.setOnClickListener(new View.OnClickListener()
         {
@@ -66,13 +73,7 @@ public class RecyclerAdapterNewsfeed extends RecyclerView.Adapter<RecyclerAdapte
             public void onClick(View view)
             {
                 Bundle bundle = new Bundle();
-                bundle.putString("FirebaseRef", posts.get(position).firebaseRef);
-                bundle.putString("Part1Picture", posts.get(position).part1Picture);
-                bundle.putString("Part2Picture", posts.get(position).part2Picture);
-                bundle.putString("Names", posts.get(position).names);
-                bundle.putString("Ages", posts.get(position).ages);
-                bundle.putString("Description", posts.get(position).description);
-                bundle.putString("Time", posts.get(position).time);
+                bundle.putInt("FirebaseRef", post.ID);
 
                 Fragment fragment = new CommentsFragment();
                 fragment.setArguments(bundle);

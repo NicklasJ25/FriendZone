@@ -1,5 +1,7 @@
 package nist.friendzone.Model;
 
+import java.util.Calendar;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,7 +11,7 @@ public class User extends RealmObject
     public String Email;
     public String Firstname;
     public String Lastname;
-    public String Birthday;
+    public Calendar Birthday;
     public String Phone;
     public String Streetname;
     public String Postalcode;
@@ -23,7 +25,7 @@ public class User extends RealmObject
 
     }
 
-    public User(String Email, String Firstname, String Lastname, String Birthday, String Phone, String Streetname, String Postalcode, String ProfilePicture, String Password)
+    public User(String Email, String Firstname, String Lastname, Calendar Birthday, String Phone, String Streetname, String Postalcode, String ProfilePicture, String Password)
     {
         this.Email = Email;
         this.Firstname = Firstname;
@@ -34,6 +36,17 @@ public class User extends RealmObject
         this.Postalcode = Postalcode;
         this.ProfilePicture = ProfilePicture;
         this.Password = Password;
+    }
+
+    public static int GetAge(Calendar birthday)
+    {
+        Calendar now = Calendar.getInstance();
+        int age = now.get(Calendar.YEAR) - birthday.get(Calendar.YEAR);
+        if (birthday.get(Calendar.MONTH) > now.get(Calendar.MONTH) || (birthday.get(Calendar.MONTH) == now.get(Calendar.MONTH) && birthday.get(Calendar.DATE) > now.get(Calendar.DATE)))
+        {
+            age--;
+        }
+        return age;
     }
 }
 
