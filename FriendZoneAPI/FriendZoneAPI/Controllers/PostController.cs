@@ -21,10 +21,19 @@ namespace FriendZoneAPI.Controllers
         public Post Get(int id)
         {
             Post post = database.Posts.Include(p => p.User).SingleOrDefault(p => p.ID.Equals(id));
-            post.User.User1 = null;
-            post.User.User2 = null;
-            post.User.Posts = null;
             return post;
+        }
+
+        // GET api/post
+        public List<Post> Get(int start, int count)
+        {
+            List<Post> posts = database.Posts.OrderByDescending(p => p.ID).ToList();
+            posts.RemoveRange(0, start);
+            if (count < posts.Count)
+            {
+                posts.RemoveRange(count, posts.Count);
+            }
+            return posts;
         }
 
         // POST api/post
