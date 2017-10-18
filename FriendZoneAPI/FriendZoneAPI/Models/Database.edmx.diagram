@@ -7,6 +7,8 @@
       <Diagram DiagramId="4473e65410ac4895a25287d7a3326380" Name="Diagram1">
         <EntityTypeShape EntityType="FriendZoneModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="FriendZoneModel.Partner" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FriendZoneModel.Post" Width="1.5" PointX="3" PointY="1.5" />
+        <AssociationConnector Association="FriendZoneModel.User1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

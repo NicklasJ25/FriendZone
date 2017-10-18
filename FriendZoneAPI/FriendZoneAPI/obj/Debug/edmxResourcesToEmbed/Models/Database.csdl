@@ -16,6 +16,7 @@
     <NavigationProperty Name="User1" Relationship="Self.Partner" FromRole="User" ToRole="User1" />
     <NavigationProperty Name="User2" Relationship="Self.Partner" FromRole="User1" ToRole="User" />
     <Property Name="Password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Posts" Relationship="FriendZoneModel.User1" FromRole="User" ToRole="Post" />
   </EntityType>
   <Association Name="Partner">
     <End Role="User" Type="Self.User" Multiplicity="0..1">
@@ -37,5 +38,34 @@
       <End Role="User" EntitySet="Users" />
       <End Role="User1" EntitySet="Users" />
     </AssociationSet>
+    <EntitySet Name="Posts" EntityType="FriendZoneModel.Post" />
+    <AssociationSet Name="User1" Association="FriendZoneModel.User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="FriendZoneModel.User1" FromRole="Post" ToRole="User" />
+  </EntityType>
+  <Association Name="User1">
+    <End Type="FriendZoneModel.User" Role="User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="FriendZoneModel.Post" Role="Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="Email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

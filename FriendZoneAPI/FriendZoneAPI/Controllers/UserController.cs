@@ -1,10 +1,7 @@
 ﻿using FriendZoneAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace FriendZoneAPI.Controllers
@@ -22,16 +19,6 @@ namespace FriendZoneAPI.Controllers
 
         // GET api/user/email
         public User Get(string email)
-        {
-            User user = database.Users.Include(u => u.User2).SingleOrDefault(u => u.Email.Equals(email));
-            user.User1 = null;
-            user.User2.User1 = null;
-            user.User2.User2 = null;
-            return user;
-        }
-
-        // GET api/user/partner
-        public User Get(string partner, string test)
         {
             User user = database.Users.Include(u => u.User2).SingleOrDefault(u => u.Email.Equals(email));
             user.User1 = null;
@@ -65,7 +52,7 @@ namespace FriendZoneAPI.Controllers
         }
 
         // DELETE api/user/email
-        public void Delete(User email)
+        public void Delete(string email)
         {
             database.Users.Remove(database.Users.SingleOrDefault(u => u.Email.Equals(email)));
             database.SaveChanges();

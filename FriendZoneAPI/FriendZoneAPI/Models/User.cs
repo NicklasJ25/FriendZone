@@ -17,6 +17,7 @@ namespace FriendZoneAPI.Models
         public User()
         {
             this.User1 = new HashSet<User>();
+            this.Posts = new HashSet<Post>();
         }
     
         public string Email { get; set; }
@@ -32,5 +33,6 @@ namespace FriendZoneAPI.Models
     
         public virtual ICollection<User> User1 { get; set; }
         public virtual User User2 { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }
