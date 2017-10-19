@@ -1,27 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="FriendZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="PostID" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.CommentUser" FromRole="Comment" ToRole="User" />
+    <NavigationProperty Name="Post" Relationship="Self.Post1" FromRole="Comment" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Comment" Relationship="Self.Post1" FromRole="Post" ToRole="Comment" />
+    <NavigationProperty Name="User" Relationship="Self.PostUser" FromRole="Post" ToRole="User" />
+  </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Email" />
     </Key>
-    <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Firstname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Lastname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Birthday" Type="DateTime" Nullable="false" />
-    <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="Streetname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Postalcode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="ProfilePicture" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Postalcode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProfilePicture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <Property Name="Partner" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="User1" Relationship="Self.Partner" FromRole="User" ToRole="User1" />
-    <NavigationProperty Name="User2" Relationship="Self.Partner" FromRole="User1" ToRole="User" />
-    <Property Name="Password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Posts" Relationship="FriendZoneModel.User1" FromRole="User" ToRole="Post" />
+    <Property Name="Password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Comment" Relationship="Self.CommentUser" FromRole="User" ToRole="Comment" />
+    <NavigationProperty Name="Post" Relationship="Self.PostUser" FromRole="User" ToRole="Post" />
+    <NavigationProperty Name="User1" Relationship="Self.User1" FromRole="User" ToRole="User1" />
+    <NavigationProperty Name="User2" Relationship="Self.User1" FromRole="User1" ToRole="User" />
   </EntityType>
-  <Association Name="Partner">
-    <End Role="User" Type="Self.User" Multiplicity="0..1">
+  <Association Name="CommentUser">
+    <End Role="User" Type="Self.User" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="Email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Post1">
+    <End Role="Post" Type="Self.Post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PostUser">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="Email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
     <End Role="User1" Type="Self.User" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
@@ -33,39 +97,24 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="FriendZoneEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Users" EntityType="Self.User" />
-    <AssociationSet Name="Partner" Association="Self.Partner">
-      <End Role="User" EntitySet="Users" />
-      <End Role="User1" EntitySet="Users" />
+    <EntitySet Name="Comment" EntityType="Self.Comment" />
+    <EntitySet Name="Post" EntityType="Self.Post" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="CommentUser" Association="Self.CommentUser">
+      <End Role="User" EntitySet="User" />
+      <End Role="Comment" EntitySet="Comment" />
     </AssociationSet>
-    <EntitySet Name="Posts" EntityType="FriendZoneModel.Post" />
-    <AssociationSet Name="User1" Association="FriendZoneModel.User1">
-      <End Role="User" EntitySet="Users" />
-      <End Role="Post" EntitySet="Posts" />
+    <AssociationSet Name="Post1" Association="Self.Post1">
+      <End Role="Post" EntitySet="Post" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+    <AssociationSet Name="PostUser" Association="Self.PostUser">
+      <End Role="User" EntitySet="User" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+    <AssociationSet Name="User1" Association="Self.User1">
+      <End Role="User" EntitySet="User" />
+      <End Role="User1" EntitySet="User" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="Post">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" />
-    <Property Name="Email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Time" Type="DateTime" Nullable="false" />
-    <NavigationProperty Name="User" Relationship="FriendZoneModel.User1" FromRole="Post" ToRole="User" />
-  </EntityType>
-  <Association Name="User1">
-    <End Type="FriendZoneModel.User" Role="User" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="FriendZoneModel.Post" Role="Post" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Email" />
-      </Principal>
-      <Dependent Role="Post">
-        <PropertyRef Name="Email" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

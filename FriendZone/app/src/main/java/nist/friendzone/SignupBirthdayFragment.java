@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class SignupBirthdayFragment extends Fragment implements View.OnClickListener
 {
@@ -35,11 +36,10 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
         int day = birthdayDatePicker.getDayOfMonth();
         int month = birthdayDatePicker.getMonth() + 1;
         int year = birthdayDatePicker.getYear();
-        Calendar birthday = Calendar.getInstance();
-        birthday.set(year, month, day);
+        Date birthday = new Date(year, month, day);
 
         Bundle bundle = getArguments();
-        bundle.putLong("Birthday", birthday.getTimeInMillis());
+        bundle.putLong("Birthday", birthday.getTime());
 
         Fragment fragment = new SignupPictureFragment();
         fragment.setArguments(bundle);

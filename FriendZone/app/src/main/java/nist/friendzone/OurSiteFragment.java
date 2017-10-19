@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -42,33 +43,29 @@ public class OurSiteFragment extends Fragment
         partnerAgeTextView = view.findViewById(R.id.partnerAgeTextView);
         partnerAvatarView = view.findViewById(R.id.partnerAvatarView);
 
-        String partnerSection = MyPreferences.getLoggedInEmail(getContext());
-        SetUserInformation(partnerSection);
+        SetUserInformation();
 
         return view;
     }
 
-    private void SetUserInformation(final String partnerSection)
+    private void SetUserInformation()
     {
-        String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        User myUser = RealmDatabase.GetUser(myEmail);
-        myNameTextView.setText(myUser.Firstname + " " + myUser.Lastname);
-        int myAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(myUser.Birthday.split("/")[2]);
-        myAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), myAge));
+        String email = MyPreferences.getLoggedInEmail(getContext());
+        User user = RealmDatabase.GetUser(email);
 
-        String partnerEmail = partnerSection.replace(myEmail.replace(".", ","), "").replace("\\", "").replace(",", ".");
-        User partnerUser = RealmDatabase.GetUser(partnerEmail);
-        partnerNameTextView.setText(partnerUser.Firstname + " " + partnerUser.Lastname);
-        int partnerAge = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(partnerUser.Birthday.split("/")[2]);
-        partnerAgeTextView.setText(String.format(getResources().getString(R.string.ageTextView), partnerAge));
+        myNameTextView.setText(user.Firstname + " " + user.Lastname);
+        myAgeTextView.setText(User.GetAge(user.Birthday));
 
-        StorageReference myStorageReference = storage.getReferenceFromUrl(myUser.ProfilePicture);
+        partnerNameTextView.setText(user.User2.Firstname + " " + user.User2.Lastname);
+        partnerAgeTextView.setText(User.GetAge(user.User2.Birthday));
+
+        StorageReference myStorageReference = storage.getReferenceFromUrl(user.ProfilePicture);
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(myStorageReference)
                 .into(myAvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(partnerUser.ProfilePicture);
+        StorageReference partnerStorageReference = storage.getReferenceFromUrl(user.User2.ProfilePicture);
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(partnerStorageReference)

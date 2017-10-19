@@ -12,19 +12,15 @@ namespace FriendZoneAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Post
+    public partial class Comment
     {
-        public Post()
-        {
-            this.Comment = new HashSet<Comment>();
-        }
-    
         public int ID { get; set; }
+        public int PostID { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
         public System.DateTime Time { get; set; }
     
-        public virtual ICollection<Comment> Comment { get; set; }
         public virtual User User { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

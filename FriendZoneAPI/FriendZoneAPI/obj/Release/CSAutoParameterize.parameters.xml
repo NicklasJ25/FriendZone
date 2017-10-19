@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="FriendZoneEntities-Web.config Connection String" description="FriendZoneEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.Database.csdl|res://*/Models.Database.ssdl|res://*/Models.Database.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;server=localhost;user id=root;password=root;persistsecurityinfo=True;database=FriendZone&quot;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\nist\\Documents\\GITRepositories\\FriendZone\\FriendZoneAPI\\FriendZoneAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='FriendZoneEntities']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nickl\\Documents\\GitRepositories\\FriendZone\\FriendZoneAPI\\FriendZoneAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='FriendZoneEntities']/@connectionString" />
   </parameter>
 </parameters>
