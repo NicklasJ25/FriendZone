@@ -9,6 +9,9 @@
         <AssociationConnector Association="FriendZoneModel.Partner" ManuallyRouted="false" />
         <EntityTypeShape EntityType="FriendZoneModel.Post" Width="1.5" PointX="3" PointY="1.5" />
         <AssociationConnector Association="FriendZoneModel.User1" />
+        <EntityTypeShape EntityType="FriendZoneModel.Comment" Width="1.5" PointX="5.25" PointY="1.375" />
+        <AssociationConnector Association="FriendZoneModel.CommentUser" />
+        <AssociationConnector Association="FriendZoneModel.Post1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

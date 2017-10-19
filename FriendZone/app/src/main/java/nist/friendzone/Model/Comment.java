@@ -1,12 +1,14 @@
 package nist.friendzone.Model;
 
+import java.util.Calendar;
+
 public class Comment
 {
     public int ID;
     public int PostID;
     public String Email;
     public String Description;
-    public String Time;
+    public Calendar Time;
     public Post Post;
     public User User;
 
@@ -15,7 +17,7 @@ public class Comment
 
     }
 
-    public Comment(int PostID, String Email, String Description, String Time)
+    public Comment(int PostID, String Email, String Description, Calendar Time)
     {
         this.PostID = PostID;
         this.Email = Email;

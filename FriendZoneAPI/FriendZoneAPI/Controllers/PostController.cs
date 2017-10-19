@@ -20,7 +20,7 @@ namespace FriendZoneAPI.Controllers
         // GET api/post/id
         public Post Get(int id)
         {
-            Post post = database.Posts.Include(p => p.User).SingleOrDefault(p => p.ID.Equals(id));
+            Post post = database.Posts.Find(id);
             return post;
         }
 
@@ -47,9 +47,7 @@ namespace FriendZoneAPI.Controllers
         public void Put(int id, [FromBody]Post newPost)
         {
             Post oldPost = database.Posts.Find(id);
-            oldPost.Email = newPost.Email;
             oldPost.Description = newPost.Description;
-            oldPost.Time = newPost.Time;
             database.SaveChanges();
         }
 

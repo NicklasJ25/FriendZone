@@ -19,8 +19,8 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
     {
         View view = inflater.inflate(R.layout.fragment_signup_birthday, container, false);
 
-        birthdayDatePicker = (DatePicker) view.findViewById(R.id.birthdayDatePicker);
-        Button nextButton = (Button) view.findViewById(R.id.nextButton);
+        birthdayDatePicker = view.findViewById(R.id.birthdayDatePicker);
+        Button nextButton = view.findViewById(R.id.nextButton);
 
         birthdayDatePicker.setMaxDate(Calendar.getInstance().getTimeInMillis());
 
@@ -35,10 +35,11 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
         int day = birthdayDatePicker.getDayOfMonth();
         int month = birthdayDatePicker.getMonth() + 1;
         int year = birthdayDatePicker.getYear();
-        String birthday = day + "/" + month + "/" + year;
+        Calendar birthday = Calendar.getInstance();
+        birthday.set(year, month, day);
 
         Bundle bundle = getArguments();
-        bundle.putString("BirthDay", birthday);
+        bundle.putLong("Birthday", birthday.getTimeInMillis());
 
         Fragment fragment = new SignupPictureFragment();
         fragment.setArguments(bundle);

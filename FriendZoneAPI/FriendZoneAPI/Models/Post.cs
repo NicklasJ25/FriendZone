@@ -14,11 +14,17 @@ namespace FriendZoneAPI.Models
     
     public partial class Post
     {
+        public Post()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
+    
         public int ID { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
         public System.DateTime Time { get; set; }
     
         public virtual User User { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

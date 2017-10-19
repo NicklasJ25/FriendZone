@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="FriendZoneModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+          <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="Post">
           <Key>
             <PropertyRef Name="ID" />
@@ -29,6 +39,20 @@
           <Property Name="Partner" Type="varchar" MaxLength="45" />
           <Property Name="Password" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
+        <Association Name="CommentUser">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Partner">
           <End Role="User" Type="Self.User" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -40,6 +64,20 @@
             </Principal>
             <Dependent Role="User1">
               <PropertyRef Name="Partner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Post1">
+          <End Role="Post" Type="Self.Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -58,11 +96,20 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FriendZoneModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="friendzone" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="friendzone" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="friendzone" store:Type="Tables" />
+          <AssociationSet Name="CommentUser" Association="Self.CommentUser">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
           <AssociationSet Name="Partner" Association="Self.Partner">
             <End Role="User" EntitySet="User" />
             <End Role="User1" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="Post1" Association="Self.Post1">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="User1" Association="Self.User1">
             <End Role="User" EntitySet="User" />
@@ -90,6 +137,7 @@
           <NavigationProperty Name="User2" Relationship="Self.Partner" FromRole="User1" ToRole="User" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Posts" Relationship="FriendZoneModel.User1" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="Comments" Relationship="FriendZoneModel.CommentUser" FromRole="User" ToRole="Comment" />
         </EntityType>
         <Association Name="Partner">
           <End Role="User" Type="Self.User" Multiplicity="0..1">
@@ -116,6 +164,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
+          <EntitySet Name="Comments" EntityType="FriendZoneModel.Comment" />
+          <AssociationSet Name="CommentUser" Association="FriendZoneModel.CommentUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="Post1" Association="FriendZoneModel.Post1">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Post">
           <Key>
@@ -126,6 +183,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="User" Relationship="FriendZoneModel.User1" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="Comments" Relationship="FriendZoneModel.Post1" FromRole="Post" ToRole="Comment" />
         </EntityType>
         <Association Name="User1">
           <End Type="FriendZoneModel.User" Role="User" Multiplicity="1">
@@ -138,6 +196,46 @@
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="FriendZoneModel.CommentUser" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="Post" Relationship="FriendZoneModel.Post1" FromRole="Comment" ToRole="Post" />
+        </EntityType>
+        <Association Name="CommentUser">
+          <End Type="FriendZoneModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="FriendZoneModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Post1">
+          <End Type="FriendZoneModel.Post" Role="Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="FriendZoneModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,6 +267,17 @@
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="FriendZoneModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

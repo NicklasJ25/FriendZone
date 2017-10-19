@@ -16,6 +16,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,8 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             String email = getArguments().getString("Email");
             String firstname = getArguments().getString("Firstname");
             String lastname = getArguments().getString("Lastname");
-            String birthday = getArguments().getString("BirthDay");
+            Calendar birthday = Calendar.getInstance();
+            birthday.setTimeInMillis(getArguments().getLong("BirthDay"));
             String phone = getArguments().getString("Phone");
             String streetname = null;
             String postalcode = null;

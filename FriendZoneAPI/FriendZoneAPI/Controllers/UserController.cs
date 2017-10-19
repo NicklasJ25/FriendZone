@@ -20,7 +20,7 @@ namespace FriendZoneAPI.Controllers
         // GET api/user/email
         public User Get(string email)
         {
-            User user = database.Users.Include(u => u.User2).SingleOrDefault(u => u.Email.Equals(email));
+            User user = database.Users.Find(email);
             return user;
         }
 

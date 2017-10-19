@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -71,7 +72,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
             public void onClick(View view)
             {
                 Bundle bundle = new Bundle();
-                bundle.putInt("FirebaseRef", post.ID);
+                Gson gson = new Gson();
+                bundle.putString("Post", gson.toJson(post));
 
                 Fragment fragment = new CommentsFragment();
                 fragment.setArguments(bundle);
