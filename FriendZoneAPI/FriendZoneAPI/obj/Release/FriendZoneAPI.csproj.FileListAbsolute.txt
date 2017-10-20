@@ -47,3 +47,4 @@ C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\b
 C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\obj\Release\FriendZoneAPI.csproj.CoreCompileInputs.cache
 C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\obj\Release\FriendZoneAPI.dll
 C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\obj\Release\FriendZoneAPI.pdb
+C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\obj\Release\FriendZoneAPI.csprojResolveAssemblyReference.cache
