@@ -30,10 +30,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            return;
         }
 
         User user = RealmDatabase.GetUser(email);
-        if (user.User2 == null || user.User2.Partner == null)
+        if (user.User2 == null)
+        {
+            Intent intent = new Intent(this, ConnectToPartnerActivity.class);
+            startActivity(intent);
+        }
+        else if (user.User2.Partner == null)
         {
             Intent intent = new Intent(this, ConnectToPartnerActivity.class);
             startActivity(intent);

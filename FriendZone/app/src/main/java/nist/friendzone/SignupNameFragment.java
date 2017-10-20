@@ -18,9 +18,9 @@ public class SignupNameFragment extends Fragment implements View.OnClickListener
     {
         View view = inflater.inflate(R.layout.fragment_signup_name, container, false);
 
-        firstnameEditText = (EditText) view.findViewById(R.id.firstnameEditText);
-        lastnameEditText = (EditText) view.findViewById(R.id.lastnameEditText);
-        Button nextButton = (Button) view.findViewById(R.id.nextButton);
+        firstnameEditText = view.findViewById(R.id.firstnameEditText);
+        lastnameEditText = view.findViewById(R.id.lastnameEditText);
+        Button nextButton = view.findViewById(R.id.nextButton);
 
         nextButton.setOnClickListener(this);
 
@@ -33,7 +33,7 @@ public class SignupNameFragment extends Fragment implements View.OnClickListener
         if (validateForm())
         {
             Bundle bundle = getArguments();
-            bundle.putString("firstname", firstnameEditText.getText().toString().trim());
+            bundle.putString("Firstname", firstnameEditText.getText().toString().trim());
             bundle.putString("Lastname", lastnameEditText.getText().toString());
 
             Fragment fragment = new SignupBirthdayFragment();

@@ -6,7 +6,7 @@ import io.realm.Realm;
 
 public class MyApplication extends Application
 {
-    public static String baseUrl = "http://10.216.10.118/FriendZone/api/";
+    public static String baseUrl = "http://10.216.10.130/FriendZone/api/";
 
     @Override
     public void onCreate()

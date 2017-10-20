@@ -34,12 +34,13 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
     public void onClick(View v)
     {
         int day = birthdayDatePicker.getDayOfMonth();
-        int month = birthdayDatePicker.getMonth() + 1;
+        int month = birthdayDatePicker.getMonth();
         int year = birthdayDatePicker.getYear();
-        Date birthday = new Date(year, month, day);
+        Calendar birthday = Calendar.getInstance();
+        birthday.set(year, month, day);
 
         Bundle bundle = getArguments();
-        bundle.putLong("Birthday", birthday.getTime());
+        bundle.putLong("Birthday", birthday.getTimeInMillis());
 
         Fragment fragment = new SignupPictureFragment();
         fragment.setArguments(bundle);
