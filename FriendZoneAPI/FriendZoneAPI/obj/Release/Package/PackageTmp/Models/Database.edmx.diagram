@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4473e65410ac4895a25287d7a3326380" Name="Diagram1">
-        <EntityTypeShape EntityType="FriendZoneModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="FriendZoneModel.Partner" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="FriendZoneModel.Post" Width="1.5" PointX="3" PointY="1.5" />
-        <AssociationConnector Association="FriendZoneModel.User1" />
-        <EntityTypeShape EntityType="FriendZoneModel.Comment" Width="1.5" PointX="5.25" PointY="1.375" />
-        <AssociationConnector Association="FriendZoneModel.CommentUser" />
-        <AssociationConnector Association="FriendZoneModel.Post1" />
+      <Diagram DiagramId="d9c2bc0cde6c49a899c95006611418b2" Name="Diagram1">
+        <EntityTypeShape EntityType="FriendZoneModel.Comment" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FriendZoneModel.Post" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FriendZoneModel.User" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="FriendZoneModel.CommentUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FriendZoneModel.Post1" ManuallyRouted="false" />
+        <AssociationConnector Association="FriendZoneModel.PostUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FriendZoneModel.User1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -124,7 +124,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
                     post.ID,
                     email,
                     commentEditText.getText().toString(),
-                    Calendar.getInstance()
+                    new Date()
             );
 
             String url = MyApplication.baseUrl + "Comment";

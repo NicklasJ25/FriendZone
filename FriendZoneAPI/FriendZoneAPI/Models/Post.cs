@@ -16,7 +16,7 @@ namespace FriendZoneAPI.Models
     {
         public Post()
         {
-            this.Comments = new HashSet<Comment>();
+            this.Comment = new HashSet<Comment>();
         }
     
         public int ID { get; set; }
@@ -24,7 +24,7 @@ namespace FriendZoneAPI.Models
         public string Description { get; set; }
         public System.DateTime Time { get; set; }
     
+        public virtual ICollection<Comment> Comment { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
