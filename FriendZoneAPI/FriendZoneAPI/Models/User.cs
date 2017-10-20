@@ -16,8 +16,8 @@ namespace FriendZoneAPI.Models
     {
         public User()
         {
-            this.Comment = new HashSet<Comment>();
-            this.Post = new HashSet<Post>();
+            this.Comments = new HashSet<Comment>();
+            this.Posts = new HashSet<Post>();
             this.User1 = new HashSet<User>();
         }
     
@@ -32,8 +32,8 @@ namespace FriendZoneAPI.Models
         public string Partner { get; set; }
         public string Password { get; set; }
     
-        public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Post> Post { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<User> User1 { get; set; }
         public virtual User User2 { get; set; }
     }

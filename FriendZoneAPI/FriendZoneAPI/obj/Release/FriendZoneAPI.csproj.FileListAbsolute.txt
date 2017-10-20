@@ -97,3 +97,4 @@ C:\Users\nickl\Documents\GitRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\
 C:\Users\nickl\Documents\GitRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\nickl\Documents\GitRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\nickl\Documents\GitRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\bin\Microsoft.AI.Web.xml
+C:\Users\nist\Documents\GITRepositories\FriendZone\FriendZoneAPI\FriendZoneAPI\obj\Release\FriendZoneAPI.csprojResolveAssemblyReference.cache

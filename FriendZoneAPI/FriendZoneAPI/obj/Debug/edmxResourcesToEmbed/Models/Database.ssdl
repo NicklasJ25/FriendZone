@@ -7,7 +7,7 @@
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="PostID" Type="int" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="Description" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
     <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="Post">
@@ -16,21 +16,21 @@
     </Key>
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="Description" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Email" />
     </Key>
-    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Firstname" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Lastname" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Birthday" Type="date" Nullable="false" />
-    <Property Name="Phone" Type="varchar" MaxLength="45" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" />
     <Property Name="Streetname" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="Postalcode" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="ProfilePicture" Type="varchar" MaxLength="200" />
+    <Property Name="Postalcode" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="ProfilePicture" Type="varchar" MaxLength="45" />
     <Property Name="Partner" Type="varchar" MaxLength="45" />
     <Property Name="Password" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>
@@ -48,6 +48,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="Partner">
+    <End Role="User" Type="Self.User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="User1" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="User1">
+        <PropertyRef Name="Partner" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="Post1">
     <End Role="Post" Type="Self.Post" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -62,7 +76,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="PostUser">
+  <Association Name="User1">
     <End Role="User" Type="Self.User" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -76,18 +90,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="User1">
-    <End Role="User" Type="Self.User" Multiplicity="0..1" />
-    <End Role="User1" Type="Self.User" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Email" />
-      </Principal>
-      <Dependent Role="User1">
-        <PropertyRef Name="Partner" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="FriendZoneModelStoreContainer">
     <EntitySet Name="Comment" EntityType="Self.Comment" Schema="friendzone" store:Type="Tables" />
     <EntitySet Name="Post" EntityType="Self.Post" Schema="friendzone" store:Type="Tables" />
@@ -96,17 +98,17 @@
       <End Role="User" EntitySet="User" />
       <End Role="Comment" EntitySet="Comment" />
     </AssociationSet>
+    <AssociationSet Name="Partner" Association="Self.Partner">
+      <End Role="User" EntitySet="User" />
+      <End Role="User1" EntitySet="User" />
+    </AssociationSet>
     <AssociationSet Name="Post1" Association="Self.Post1">
       <End Role="Post" EntitySet="Post" />
       <End Role="Comment" EntitySet="Comment" />
     </AssociationSet>
-    <AssociationSet Name="PostUser" Association="Self.PostUser">
-      <End Role="User" EntitySet="User" />
-      <End Role="Post" EntitySet="Post" />
-    </AssociationSet>
     <AssociationSet Name="User1" Association="Self.User1">
       <End Role="User" EntitySet="User" />
-      <End Role="User1" EntitySet="User" />
+      <End Role="Post" EntitySet="Post" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

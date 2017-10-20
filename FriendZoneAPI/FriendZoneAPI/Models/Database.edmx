@@ -12,7 +12,7 @@
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="PostID" Type="int" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
           <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
@@ -21,21 +21,21 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Email" />
           </Key>
-          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Firstname" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Lastname" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Birthday" Type="date" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="45" />
+          <Property Name="Phone" Type="varchar" MaxLength="15" />
           <Property Name="Streetname" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="Postalcode" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="ProfilePicture" Type="varchar" MaxLength="200" />
+          <Property Name="Postalcode" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="ProfilePicture" Type="varchar" MaxLength="45" />
           <Property Name="Partner" Type="varchar" MaxLength="45" />
           <Property Name="Password" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
@@ -53,6 +53,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Partner">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User1" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="User1">
+              <PropertyRef Name="Partner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Post1">
           <End Role="Post" Type="Self.Post" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -67,7 +81,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PostUser">
+        <Association Name="User1">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -81,18 +95,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="User1">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="User1" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Email" />
-            </Principal>
-            <Dependent Role="User1">
-              <PropertyRef Name="Partner" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FriendZoneModelStoreContainer">
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="friendzone" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="friendzone" store:Type="Tables" />
@@ -101,17 +103,17 @@
             <End Role="User" EntitySet="User" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
+          <AssociationSet Name="Partner" Association="Self.Partner">
+            <End Role="User" EntitySet="User" />
+            <End Role="User1" EntitySet="User" />
+          </AssociationSet>
           <AssociationSet Name="Post1" Association="Self.Post1">
             <End Role="Post" EntitySet="Post" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
-          <AssociationSet Name="PostUser" Association="Self.PostUser">
-            <End Role="User" EntitySet="User" />
-            <End Role="Post" EntitySet="Post" />
-          </AssociationSet>
           <AssociationSet Name="User1" Association="Self.User1">
             <End Role="User" EntitySet="User" />
-            <End Role="User1" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -126,7 +128,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="PostID" Type="Int32" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.CommentUser" FromRole="Comment" ToRole="User" />
           <NavigationProperty Name="Post" Relationship="Self.Post1" FromRole="Comment" ToRole="Post" />
@@ -137,29 +139,29 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Comment" Relationship="Self.Post1" FromRole="Post" ToRole="Comment" />
-          <NavigationProperty Name="User" Relationship="Self.PostUser" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="Comments" Relationship="Self.Post1" FromRole="Post" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="Self.User1" FromRole="Post" ToRole="User" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Email" />
           </Key>
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Firstname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Lastname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Birthday" Type="DateTime" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Streetname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Postalcode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProfilePicture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Postalcode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProfilePicture" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Partner" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Comment" Relationship="Self.CommentUser" FromRole="User" ToRole="Comment" />
-          <NavigationProperty Name="Post" Relationship="Self.PostUser" FromRole="User" ToRole="Post" />
-          <NavigationProperty Name="User1" Relationship="Self.User1" FromRole="User" ToRole="User1" />
-          <NavigationProperty Name="User2" Relationship="Self.User1" FromRole="User1" ToRole="User" />
+          <NavigationProperty Name="Comments" Relationship="Self.CommentUser" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Posts" Relationship="Self.User1" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="User1" Relationship="Self.Partner" FromRole="User" ToRole="User1" />
+          <NavigationProperty Name="User2" Relationship="Self.Partner" FromRole="User1" ToRole="User" />
         </EntityType>
         <Association Name="CommentUser">
           <End Role="User" Type="Self.User" Multiplicity="1">
@@ -189,7 +191,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PostUser">
+        <Association Name="User1">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -203,8 +205,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="User1">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+        <Association Name="Partner">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="User1" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -216,24 +220,24 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FriendZoneEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Comment" EntityType="Self.Comment" />
-          <EntitySet Name="Post" EntityType="Self.Post" />
-          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Posts" EntityType="Self.Post" />
+          <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="CommentUser" Association="Self.CommentUser">
-            <End Role="User" EntitySet="User" />
-            <End Role="Comment" EntitySet="Comment" />
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="Post1" Association="Self.Post1">
-            <End Role="Post" EntitySet="Post" />
-            <End Role="Comment" EntitySet="Comment" />
-          </AssociationSet>
-          <AssociationSet Name="PostUser" Association="Self.PostUser">
-            <End Role="User" EntitySet="User" />
-            <End Role="Post" EntitySet="Post" />
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="User1" Association="Self.User1">
-            <End Role="User" EntitySet="User" />
-            <End Role="User1" EntitySet="User" />
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="Partner" Association="Self.Partner">
+            <End Role="User" EntitySet="Users" />
+            <End Role="User1" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -242,7 +246,7 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="FriendZoneModelStoreContainer" CdmEntityContainer="FriendZoneEntities">
-          <EntitySetMapping Name="Comment">
+          <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="FriendZoneModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -253,7 +257,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Post">
+          <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="FriendZoneModel.Post">
               <MappingFragment StoreEntitySet="Post">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -263,7 +267,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="User">
+          <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="FriendZoneModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -293,7 +297,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

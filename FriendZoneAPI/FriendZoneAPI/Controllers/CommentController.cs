@@ -13,21 +13,21 @@ namespace FriendZoneAPI.Controllers
         // GET api/Comment
         public List<Comment> Get()
         {
-            List<Comment> Comments = database.Comments.ToList();
+            List<Comment> Comments = database.Comment.ToList();
             return Comments;
         }
 
         // GET api/Comment/id
         public Comment Get(int id)
         {
-            Comment Comment = database.Comments.Find(id);
+            Comment Comment = database.Comment.Find(id);
             return Comment;
         }
 
         // GET api/Comment/postID/start/count
         public List<Comment> Get(int postID, int start, int count)
         {
-            List<Comment> Comments = database.Comments.Where(c => c.PostID.Equals(postID)).OrderByDescending(p => p.ID).ToList();
+            List<Comment> Comments = database.Comment.Where(c => c.PostID.Equals(postID)).OrderByDescending(p => p.ID).ToList();
             Comments.RemoveRange(0, start);
             if (count < Comments.Count)
             {
@@ -39,14 +39,14 @@ namespace FriendZoneAPI.Controllers
         // Comment api/Comment
         public void Comment([FromBody]Comment Comment)
         {
-            database.Comments.Add(Comment);
+            database.Comment.Add(Comment);
             database.SaveChanges();
         }
 
         // PUT api/Comment/id
         public void Put(int id, [FromBody]Comment newComment)
         {
-            Comment oldComment = database.Comments.Find(id);
+            Comment oldComment = database.Comment.Find(id);
             oldComment.Description = newComment.Description;
             database.SaveChanges();
         }
@@ -54,7 +54,7 @@ namespace FriendZoneAPI.Controllers
         // DELETE api/Comment/id
         public void Delete(int id)
         {
-            database.Comments.Remove(database.Comments.SingleOrDefault(p => p.ID.Equals(id)));
+            database.Comment.Remove(database.Comment.SingleOrDefault(p => p.ID.Equals(id)));
             database.SaveChanges();
         }
     }

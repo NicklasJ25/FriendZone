@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="FriendZoneModelStoreContainer" CdmEntityContainer="FriendZoneEntities">
-    <EntitySetMapping Name="Comment">
+    <EntitySetMapping Name="Comments">
       <EntityTypeMapping TypeName="FriendZoneModel.Comment">
         <MappingFragment StoreEntitySet="Comment">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -12,7 +12,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Post">
+    <EntitySetMapping Name="Posts">
       <EntityTypeMapping TypeName="FriendZoneModel.Post">
         <MappingFragment StoreEntitySet="Post">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -22,7 +22,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="User">
+    <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="FriendZoneModel.User">
         <MappingFragment StoreEntitySet="User">
           <ScalarProperty Name="Email" ColumnName="Email" />
