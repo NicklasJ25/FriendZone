@@ -43,17 +43,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     {
         Comment comment = comments.get(position);
         holder.mItem = comment;
-        StorageReference myStorageReference = storage.getReferenceFromUrl(comment.User.ProfilePicture);
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(myStorageReference)
-                .into(holder.part1AvatarView);
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(comment.User.User2.ProfilePicture);
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(partnerStorageReference)
-                .into(holder.part2AvatarView);
+        if (comment.User.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference myStorageReference = storage.getReferenceFromUrl(comment.User.ProfilePicture);
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(myStorageReference)
+                    .into(holder.part1AvatarView);
+        }
+
+        if (comment.User.User2.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference partnerStorageReference = storage.getReferenceFromUrl(comment.User.User2.ProfilePicture);
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(partnerStorageReference)
+                    .into(holder.part2AvatarView);
+        }
 
         String names = comment.User.Firstname + " & " + comment.User.User2.Firstname;
         holder.namesTextView.setText(names);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,11 +17,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
+import java.util.Date;
+
+import nist.friendzone.Model.GsonDateAdapter;
 import nist.friendzone.Model.RealmDatabase;
 import nist.friendzone.Model.User;
 
@@ -79,22 +85,33 @@ public class LoginFragment extends Fragment implements View.OnClickListener
         String url = MyApplication.baseUrl + "user?Email=" + email;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
                 url,
-                null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        User user = gson.fromJson(response.toString(), User.class);
+                    public void onResponse(String response) {
+                        if (response != null) {
+                            Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
+                            User user = gson.fromJson(response, User.class);
 
-                        if (user.Password.equals(password))
+                            if (user.Password.equals(password)) {
+                                MyPreferences.setLoggedInEmail(getContext(), user.Email);
+                                RealmDatabase.CreateUser(user);
+
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                //TODO: Opret global string
+                                Toast.makeText(getContext(), "Forkert kode", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else
                         {
-                            RealmDatabase.CreateUser(user);
-
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
+                            //TODO: Opret global string
+                            Toast.makeText(getContext(), "Email findes ikke", Toast.LENGTH_LONG).show();
                         }
                     }
                 },

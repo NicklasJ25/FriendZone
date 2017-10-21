@@ -13,21 +13,21 @@ namespace FriendZoneAPI.Controllers
         // GET api/post
         public List<Post> Get()
         {
-            List<Post> posts = database.Post.ToList();
+            List<Post> posts = database.Posts.ToList();
             return posts;
         }
 
         // GET api/post/id
         public Post Get(int id)
         {
-            Post post = database.Post.Find(id);
+            Post post = database.Posts.Find(id);
             return post;
         }
 
         // GET api/post
         public List<Post> Get(int start, int count)
         {
-            List<Post> posts = database.Post.OrderByDescending(p => p.ID).ToList();
+            List<Post> posts = database.Posts.OrderByDescending(p => p.ID).ToList();
             posts.RemoveRange(0, start);
             if (count < posts.Count)
             {
@@ -39,14 +39,14 @@ namespace FriendZoneAPI.Controllers
         // POST api/post
         public void Post([FromBody]Post post)
         {
-            database.Post.Add(post);
+            database.Posts.Add(post);
             database.SaveChanges();
         }
 
         // PUT api/post/id
         public void Put(int id, [FromBody]Post newPost)
         {
-            Post oldPost = database.Post.Find(id);
+            Post oldPost = database.Posts.Find(id);
             oldPost.Description = newPost.Description;
             database.SaveChanges();
         }
@@ -54,7 +54,7 @@ namespace FriendZoneAPI.Controllers
         // DELETE api/post/id
         public void Delete(int id)
         {
-            database.Post.Remove(database.Post.SingleOrDefault(p => p.ID.Equals(id)));
+            database.Posts.Remove(database.Posts.SingleOrDefault(p => p.ID.Equals(id)));
             database.SaveChanges();
         }
     }

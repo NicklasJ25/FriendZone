@@ -1,6 +1,5 @@
 package nist.friendzone.Model;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -46,7 +45,7 @@ public class User extends RealmObject
         long nowLong = now.getTime();
         long difference = nowLong - birthdayLong;
         birthday.setTime(difference);
-        int age = birthday.getYear();
+        int age = birthday.getYear() - 70;
         return age;
     }
 }

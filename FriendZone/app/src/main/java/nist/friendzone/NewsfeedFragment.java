@@ -16,14 +16,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import nist.friendzone.Model.GsonDateAdapter;
 import nist.friendzone.Model.Post;
 
 public class NewsfeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
@@ -79,9 +82,9 @@ public class NewsfeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                     for (int i = 0; i < response.length(); i++)
                     {
                         JSONObject object = response.getJSONObject(i);
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
                         Post post = gson.fromJson(object.toString(), Post.class);
-                        posts.add(0, post);
+                        posts.add(post);
                     }
                     adapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);

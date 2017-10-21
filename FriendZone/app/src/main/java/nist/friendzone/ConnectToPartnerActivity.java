@@ -7,22 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import nist.friendzone.Model.GsonDateAdapter;
 import nist.friendzone.Model.User;
 
 public class ConnectToPartnerActivity extends AppCompatActivity implements View.OnClickListener
@@ -76,11 +76,11 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
     public void onClick(View v)
     {
         String partnerEmail = null;
-        final String partnerValue = null;
         switch (v.getId())
         {
             case R.id.deletePartnerButton:
                 partnerEmail = partnerTextView.getText().toString();
+                MyPreferences.setPartnerEmail(this, null);
 
                 emailEditText.setVisibility(View.VISIBLE);
                 partnerTextView.setVisibility(View.GONE);
@@ -89,6 +89,7 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
             case R.id.findPartnerButton:
                 partnerEmail = emailEditText.getText().toString();
                 partnerTextView.setText(partnerEmail);
+                MyPreferences.setPartnerEmail(this, MyPreferences.getLoggedInEmail(this));
 
                 emailEditText.setVisibility(View.GONE);
                 partnerTextView.setVisibility(View.VISIBLE);
@@ -99,33 +100,42 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
         String url = MyApplication.baseUrl + "user?Email=" + partnerEmail;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        StringRequest request = new StringRequest
+                (
                 Request.Method.GET,
                 url,
-                null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<String>()
+                {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        User partner = gson.fromJson(response.toString(), User.class);
-
-                        if (partner != null)
+                    public void onResponse(String response)
+                    {
+                        if (!response.equals("null"))
                         {
-                            partner.Partner = partnerValue;
+                            Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
+                            User partner = gson.fromJson(response, User.class);
+                            partner.Partner = MyPreferences.getPartnerEmail(getBaseContext());
                             UpdateUser(partner);
+                        }
+                        else
+                        {
+                            //TODO: Opret Global String
+                            Toast.makeText(getBaseContext(), "Bruger findes ikke", Toast.LENGTH_LONG).show();
+                            emailEditText.setVisibility(View.VISIBLE);
+                            partnerTextView.setVisibility(View.GONE);
+                            deletePartnerButton.setVisibility(View.GONE);
                         }
                     }
                 },
-                new Response.ErrorListener() {
+                new Response.ErrorListener()
+                {
                     @Override
-                    public void onErrorResponse(VolleyError error){
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error.toString());
                     }
                 }
         );
 
-        // add JsonObjectRequest to the RequestQueue
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(request);
     }
 
     private void UpdateUser(final User user)
@@ -150,11 +160,20 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
                 })
         {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String>  params = new HashMap<>();
-                Gson gson = new Gson();
-                params.put("user", gson.toJson(user));
-                return params;
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                byte[] body = null;
+                try {
+                    Gson gson = new Gson();
+                    body = gson.toJson(user).getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "Unable to gets bytes from JSON", e.fillInStackTrace());
+                }
+                return body;
             }
         };
 

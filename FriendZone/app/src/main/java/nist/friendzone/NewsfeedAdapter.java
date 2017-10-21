@@ -47,17 +47,24 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
     {
         final Post post = posts.get(position);
         holder.mItem = post;
-        StorageReference myStorageReference = storage.getReferenceFromUrl(post.User.ProfilePicture);
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(myStorageReference)
-                .into(holder.part1AvatarView);
-
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(post.User.User2.ProfilePicture);
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(partnerStorageReference)
-                .into(holder.part2AvatarView);
+        if (post.User.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference myStorageReference = storage.getReferenceFromUrl(post.User.ProfilePicture);
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(myStorageReference)
+                    .into(holder.part1AvatarView);
+        }
+        if (post.User.User2.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference partnerStorageReference = storage.getReferenceFromUrl(post.User.User2.ProfilePicture);
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(partnerStorageReference)
+                    .into(holder.part2AvatarView);
+        }
 
         String names = post.User.Firstname + " & " + post.User.User2.Firstname;
         holder.namesTextView.setText(names);

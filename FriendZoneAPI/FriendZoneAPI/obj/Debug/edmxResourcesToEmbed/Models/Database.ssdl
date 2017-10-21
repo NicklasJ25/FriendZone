@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PostID" Type="int" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="200" />
@@ -14,7 +14,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="Time" Type="datetime" Precision="0" Nullable="false" />
@@ -30,7 +30,7 @@
     <Property Name="Phone" Type="varchar" MaxLength="15" />
     <Property Name="Streetname" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Postalcode" Type="varchar" MaxLength="4" Nullable="false" />
-    <Property Name="ProfilePicture" Type="varchar" MaxLength="45" />
+    <Property Name="ProfilePicture" Type="varchar" MaxLength="200" />
     <Property Name="Partner" Type="varchar" MaxLength="45" />
     <Property Name="Password" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>

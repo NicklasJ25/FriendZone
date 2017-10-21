@@ -54,21 +54,29 @@ public class OurSiteFragment extends Fragment
         User user = RealmDatabase.GetUser(email);
 
         myNameTextView.setText(user.Firstname + " " + user.Lastname);
-        myAgeTextView.setText(User.GetAge(user.Birthday));
+        myAgeTextView.setText(User.GetAge(user.Birthday) + "år");
 
         partnerNameTextView.setText(user.User2.Firstname + " " + user.User2.Lastname);
-        partnerAgeTextView.setText(User.GetAge(user.User2.Birthday));
+        partnerAgeTextView.setText(User.GetAge(user.User2.Birthday) + "år");
 
-        StorageReference myStorageReference = storage.getReferenceFromUrl(user.ProfilePicture);
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(myStorageReference)
-                .into(myAvatarView);
+        if (user.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference myStorageReference = storage.getReferenceFromUrl(user.ProfilePicture);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(myStorageReference)
+                    .into(myAvatarView);
+        }
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(user.User2.ProfilePicture);
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(partnerStorageReference)
-                .into(partnerAvatarView);
+        if (user.User2.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference partnerStorageReference = storage.getReferenceFromUrl(user.User2.ProfilePicture);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(partnerStorageReference)
+                    .into(partnerAvatarView);
+        }
     }
 }

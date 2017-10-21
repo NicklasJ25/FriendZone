@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,11 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 import nist.friendzone.Model.Comment;
+import nist.friendzone.Model.GsonDateAdapter;
 import nist.friendzone.Model.Post;
 import nist.friendzone.Model.RealmDatabase;
 import nist.friendzone.Model.User;
@@ -147,15 +151,30 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
                     })
             {
                 @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String>  params = new HashMap<>();
-                    Gson gson = new Gson();
-                    params.put("comment", gson.toJson(comment));
-                    return params;
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    byte[] body = null;
+                    try {
+                        Gson gson = new Gson();
+                        body = gson.toJson(comment).getBytes("UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        Log.e(TAG, "Unable to gets bytes from JSON", e.fillInStackTrace());
+                    }
+                    return body;
                 }
             };
 
             requestQueue.add(req);
+
+            commentEditText.setText("");
+
+            comments.clear();
+            endlessScrollListener.resetState();
+            getCommentsAtPage(0);
         }
         else
         {
@@ -165,17 +184,25 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
 
     private void SetPostDetails()
     {
-        StorageReference myStorageReference = storage.getReferenceFromUrl(post.User.ProfilePicture);
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(myStorageReference)
-                .into(part1AvatarView);
+        if (post.User.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference myStorageReference = storage.getReferenceFromUrl(post.User.ProfilePicture);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(myStorageReference)
+                    .into(part1AvatarView);
+        }
 
-        StorageReference partnerStorageReference = storage.getReferenceFromUrl(post.User.User2.ProfilePicture);
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(partnerStorageReference)
-                .into(part2AvatarView);
+        if(post.User.User2.ProfilePicture != null)
+        {
+            //TODO: Hent billede andet sted
+            StorageReference partnerStorageReference = storage.getReferenceFromUrl(post.User.User2.ProfilePicture);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(partnerStorageReference)
+                    .into(part2AvatarView);
+        }
 
         String names = post.User.Firstname + " & " + post.User.User2.Firstname;
         namesTextView.setText(names);
@@ -189,7 +216,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
     {
         int start = page * commentsPrPage;
         int count = start + commentsPrPage;
-        String url = MyApplication.baseUrl + "post?PostID=" + post.ID + "&Start=" + start + "&Count=" + count;
+        String url = MyApplication.baseUrl + "Comment?PostID=" + post.ID + "&Start=" + start + "&Count=" + count;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         JsonArrayRequest req = new JsonArrayRequest(url, new Response.Listener<JSONArray> () {
@@ -199,7 +226,7 @@ public class CommentsFragment extends Fragment implements View.OnClickListener
                     for (int i = 0; i < response.length(); i++)
                     {
                         JSONObject object = response.getJSONObject(i);
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
                         Comment comment = gson.fromJson(object.toString(), Comment.class);
                         comments.add(comment);
                     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,11 +81,20 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
                 })
         {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String>  params = new HashMap<>();
-                Gson gson = new Gson();
-                params.put("post", gson.toJson(post));
-                return params;
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                byte[] body = null;
+                try {
+                    Gson gson = new Gson();
+                    body = gson.toJson(post).getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "Unable to gets bytes from JSON", e.fillInStackTrace());
+                }
+                return body;
             }
         };
 
