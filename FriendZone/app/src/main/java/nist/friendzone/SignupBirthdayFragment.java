@@ -42,7 +42,7 @@ public class SignupBirthdayFragment extends Fragment implements View.OnClickList
         Bundle bundle = getArguments();
         bundle.putLong("Birthday", birthday.getTimeInMillis());
 
-        Fragment fragment = new SignupPictureFragment();
+        Fragment fragment = new SignupAddressFragment();
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 .addToBackStack(null)

@@ -55,8 +55,8 @@ public class SignupCreateFragment extends Fragment implements View.OnClickListen
             Date birthday = new Date();
             birthday.setTime(getArguments().getLong("Birthday"));
             String phone = getArguments().getString("Phone");
-            String streetname = "Streetname";
-            String postalcode = "2640";
+            String streetname = getArguments().getString("Address");
+            String postalcode = getArguments().getString("Postalcode");
             String profilePicture = getArguments().getString("ProfilePicture");
             String password = getArguments().getString("Password");
 

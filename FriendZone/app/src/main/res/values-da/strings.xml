@@ -41,4 +41,5 @@
     <string name="createPostTextView">Skriv en besked og opret et opslag</string>
     <string name="createPostButton">Opret opslag</string>
     <string name="postedTimeText">"Lagt op "</string>
+    <string name="addressEditText">Adresse</string>
 </resources>
