@@ -1,5 +1,6 @@
 package nist.friendzone;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -178,5 +179,62 @@ public class ConnectToPartnerActivity extends AppCompatActivity implements View.
         };
 
         requestQueue.add(req);
+    }
+
+    private class listener extends AsyncTask
+    {
+        private String partnerEmail;
+
+        @Override
+        protected Object doInBackground(Object[] objects)
+        {
+            String email = MyPreferences.getLoggedInEmail(getBaseContext());
+            while (partnerEmail == null)
+            {
+                String url = MyApplication.baseUrl + "user?Email=" + email;
+                RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());
+
+                StringRequest request = new StringRequest
+                        (
+                                Request.Method.GET,
+                                url,
+                                new Response.Listener<String>()
+                                {
+                                    @Override
+                                    public void onResponse(String response)
+                                    {
+                                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
+                                        User user = gson.fromJson(response, User.class);
+                                        partnerEmail = user.Email;
+                                        UpdateUser(user);
+                                    }
+                                },
+                                new Response.ErrorListener()
+                                {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.e(TAG, error.toString());
+                                    }
+                                }
+                        );
+
+                requestQueue.add(request);
+                try
+                {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o)
+        {
+
+
+        }
     }
 }
